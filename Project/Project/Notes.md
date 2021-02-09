@@ -4,6 +4,13 @@
 	- [x] create the structures and enumerators 
 	- [ ] figure out how to implement arrays
 2. [ ] create functions to work with said data types
+	- [ ] create sample - make a random object
+	- [ ] show - print one object
+	- [ ] insert in vector
+	- [ ] enter object - let the user create the object
+	- [ ] show vector - print a vector
+	- check inputs!
+	- think of more functions
 3. [ ] create i/o functions to simplify workflow
 
 ---
@@ -112,3 +119,10 @@ enum class STATUS
 ```
 ---
 ---
+---
+
+# Notes? idk
+
+I plan on using a name database to pull both students' and teachers' names from said database.
+
+I have found a repo on github with a large and comprehensive database. https://github.com/smashew/NameDatabases
