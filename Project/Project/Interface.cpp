@@ -22,9 +22,18 @@ std::vector<std::wstring> GenerateNameVector(std::string path)
 	return vec;
 }
 
-void PrintInBoxStyle(std::wstring header, std::wstring content)
+void PrintInBoxStyle(std::wstring header, std::wstring content) 
 {
 	std::wcout << L"\n┃";
+	std::wstring overflow = L"empty";
+	if (content.size() >= (header.size() - 5))
+	{
+		overflow = content.substr(header.size() - 5, content.size() - (header.size() - 5));
+		wchar_t tempC = L'-';
+		if (content[header.size() - 6] == L' ')
+			tempC = ' ';
+		content = content.substr(0, header.size() - 5) +  tempC;
+	}
 	int dif = (header.size() - 3) - content.size();
 	if (dif % 2 == 1)
 		std::wcout << ' ';
@@ -32,10 +41,17 @@ void PrintInBoxStyle(std::wstring header, std::wstring content)
 	for (size_t i = 0; i < dif / 2; i++)
 		padding += ' ';
 	std::wcout << padding << content << padding << L'┃';
+	if (overflow != L"empty")
+	{
+		PrintInBoxStyle(header, overflow);
+	}
 	//It would be easy to make the padding left or right too!
 	//| hello          |
 	//|           help |
+	//| break the nigh |
+	//| t initial d    |
 }
+//Create overflow preventions!!!!
 
 /*
 string line;
