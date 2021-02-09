@@ -102,10 +102,9 @@ void PrintStudent(STUDENT st)
 	std::wcout << footer;
 }
 
-template <typename T>
-void AddToVector(std::vector<T>& vec, T obj)
+void AddToVector(std::vector<STUDENT>& vec, STUDENT st)
 {
-	vec.push_back(obj);
+	vec.push_back(st);
 }
 //IDK if this works... test!!!
 

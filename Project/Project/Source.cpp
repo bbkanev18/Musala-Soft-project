@@ -21,4 +21,7 @@ int main()
 
 	STUDENT st = CreateSampleStudent(NamesList, SurNamesList);
 	PrintStudent(st);
+
+	std::vector<STUDENT> vec;
+	AddToVector(vec, st);
 }

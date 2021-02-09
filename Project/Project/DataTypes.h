@@ -43,8 +43,8 @@ STUDENT CreateSampleStudent(std::vector<std::wstring> names, std::vector<std::ws
 
 void PrintStudent(STUDENT st);
 
-template <typename T>
-void AddToVector(std::vector<T>& vec, T obj);
+
+void AddToVector(std::vector<STUDENT>& vec, STUDENT st);
 //IDK if this works... test!!!
 
 STUDENT EnterStudent();
