@@ -9,7 +9,9 @@ struct EMAIL
 	std::wstring domain = L"";
 };
 
-EMAIL GenerateEmail(std::wstring email);
+EMAIL WstringToEmail(std::wstring email);
+
+std::wstring EmailToWstring(EMAIL email);
 
 enum class ROLE
 {

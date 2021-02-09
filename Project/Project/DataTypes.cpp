@@ -1,19 +1,22 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include <vector>
 #include <algorithm>
 
 #include "DataTypes.h"
+#include "Interface.h"
 
-
-EMAIL GenerateEmail(std::wstring email)
+EMAIL WstringToEmail(std::wstring email)
 {
 	EMAIL out;
 	bool writeInUsername = true;
 	for (size_t i = 0; i < email.length(); i++)
 	{
 		if (email[i] == L'@')
+		{
 			writeInUsername = false;
+			continue;
+		}
 
 		if (writeInUsername)
 			out.username += email[i];
@@ -21,6 +24,11 @@ EMAIL GenerateEmail(std::wstring email)
 			out.domain += email[i];
 	}
 	return out;
+}
+
+std::wstring EmailToWstring(EMAIL email)
+{
+	return (email.username + L'@' + email.domain);
 }
 
 STUDENT CreateSampleStudent(std::vector<std::wstring> names, std::vector<std::wstring> surnames, int index)
@@ -56,13 +64,42 @@ STUDENT CreateSampleStudent(std::vector<std::wstring> names, std::vector<std::ws
 		email += L"UF!!!";
 		break;
 	}
-	st.Email = GenerateEmail((email + L"@sample.io"));
+	st.Email = WstringToEmail((email + L"@sample.io"));
 	return st;
 }
 
 void PrintStudent(STUDENT st)
 {
-
+	//┃━┏┓┗┛┫┣
+	std::wstring header = L"\n┏━━━━━━━━━━━━━━┫STUDENT┣━━━━━━━━━━━━━━┓";
+	std::wstring footer = L"\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
+	std::wstring temp = L"";
+	std::wcout << header;
+	PrintInBoxStyle(header, (st.Name + L' ' + st.SurName));
+	temp = st.Class;
+	PrintInBoxStyle(header, (L"Class " + temp));
+	switch (st.Role)
+	{
+	case ROLE::Undefined:
+		PrintInBoxStyle(header, (L"Undefined"));
+		break;
+	case ROLE::ScrumTrainer:
+		PrintInBoxStyle(header, (L"Scrum Trainer"));
+		break;
+	case ROLE::QAEngineer:
+		PrintInBoxStyle(header, (L"Q&A Engineer"));
+		break;
+	case ROLE::BackendDev:
+		PrintInBoxStyle(header, (L"Backend Developer"));
+		break;
+	case ROLE::FrontendDev:
+		PrintInBoxStyle(header, (L"Frontend Developer"));
+		break;
+	default:
+		break;
+	}
+	PrintInBoxStyle(header, EmailToWstring(st.Email));
+	std::wcout << footer;
 }
 
 template <typename T>

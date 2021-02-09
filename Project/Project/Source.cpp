@@ -20,5 +20,5 @@ int main()
 	std::vector<std::wstring> SurNamesList = GenerateNameVector("Database\\surnames.txt");
 
 	STUDENT st = CreateSampleStudent(NamesList, SurNamesList);
-
+	PrintStudent(st);
 }

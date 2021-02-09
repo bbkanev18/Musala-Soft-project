@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 #include <ctime>
 #include <string>
@@ -20,6 +20,21 @@ std::vector<std::wstring> GenerateNameVector(std::string path)
 	}
 	File.close();
 	return vec;
+}
+
+void PrintInBoxStyle(std::wstring header, std::wstring content)
+{
+	std::wcout << L"\n┃";
+	int dif = (header.size() - 3) - content.size();
+	if (dif % 2 == 1)
+		std::wcout << ' ';
+	std::wstring padding = L"";
+	for (size_t i = 0; i < dif / 2; i++)
+		padding += ' ';
+	std::wcout << padding << content << padding << L'┃';
+	//It would be easy to make the padding left or right too!
+	//| hello          |
+	//|           help |
 }
 
 /*
