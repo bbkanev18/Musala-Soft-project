@@ -38,4 +38,12 @@
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Database\firstnames.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Database\surnames.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

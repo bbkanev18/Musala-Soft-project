@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include "windows.h"
 
 #include "DataTypes.h"
 #include "Interface.h"
@@ -23,6 +24,8 @@ EMAIL WstringToEmail(std::wstring email)
 		else
 			out.domain += email[i];
 	}
+	if (out.domain.empty())
+		out.domain = L"@badinput.io";
 	return out;
 }
 
@@ -31,89 +34,139 @@ std::wstring EmailToWstring(EMAIL email)
 	return (email.username + L'@' + email.domain);
 }
 
-STUDENT CreateSampleStudent(std::vector<std::wstring> names, std::vector<std::wstring> surnames, int index)
+STUDENT CreateSampleStudent(std::vector<std::wstring> names, std::vector<std::wstring> surnames)
 {
 	STUDENT st;
 	std::wstring email = L"";
-	st.Name = names[rand() % names.size()];
-	email += st.Name + L'.';
-	st.SurName = surnames[rand() % surnames.size()];
-	email += st.SurName + L'.';
+	st.name = names[rand() % names.size()];
+	email += st.name + L'_';
+	st.surName = surnames[rand() % surnames.size()];
+	email += st.surName + L'.';
 	std::transform(email.begin(), email.end(), email.begin(), ::tolower);
 	st.Class = char(rand() % 4 + 65);
 	switch (rand() % 4)
 	{
 	case 0:
-		st.Role = ROLE::BackendDev;
+		st.role = ROLE::BackendDev;
 		email += L"BD";
 		break;
 	case 1:
-		st.Role = ROLE::FrontendDev;
+		st.role = ROLE::FrontendDev;
 		email += L"FD";
 		break;
 	case 2:
-		st.Role = ROLE::QAEngineer;
+		st.role = ROLE::QAEngineer;
 		email += L"QA";
 		break;
 	case 3:
-		st.Role = ROLE::ScrumTrainer;
+		st.role = ROLE::ScrumTrainer;
 		email += L"ST";
 		break;
 	default:
-		st.Role = ROLE::Undefined;
+		st.role = ROLE::Undefined;
 		email += L"UF!!!";
 		break;
 	}
-	st.Email = WstringToEmail((email + L"@sample.io"));
+	st.email = WstringToEmail((email + L"@sample.io"));
 	return st;
 }
 
-void PrintStudent(STUDENT st)
+void PrintStudent(STUDENT st, HANDLE hConsole)
 {
 	//┃━┏┓┗┛┫┣
 	std::wstring header = L"\n┏━━━━━━━━━━━━━━┫STUDENT┣━━━━━━━━━━━━━━┓";
 	std::wstring footer = L"\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
 	std::wstring temp = L"";
+	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 	std::wcout << header;
-	PrintInBoxStyle(header, (st.Name + L' ' + st.SurName));
+	PrintInBoxStyle(header, hConsole,(st.name + L' ' + st.surName), BASE_COLOUR, NAME_COLOUR);
 	temp = st.Class;
-	PrintInBoxStyle(header, (L"Class " + temp));
-	switch (st.Role)
+	PrintInBoxStyle(header, hConsole, (L"Class " + temp), BASE_COLOUR, CLASS_COLOUR);
+	temp = L"Undefined";
+	switch (st.role)
 	{
 	case ROLE::Undefined:
-		PrintInBoxStyle(header, (L"Undefined"));
+		temp = L"Undefined";
 		break;
 	case ROLE::ScrumTrainer:
-		PrintInBoxStyle(header, (L"Scrum Trainer"));
+		temp = L"Scrum Trainer";
 		break;
 	case ROLE::QAEngineer:
-		PrintInBoxStyle(header, (L"Q&A Engineer"));
+		temp = L"Q&A Engineer";
 		break;
 	case ROLE::BackendDev:
-		PrintInBoxStyle(header, (L"Backend Developer"));
+		temp = L"Backend Developer";
 		break;
 	case ROLE::FrontendDev:
-		PrintInBoxStyle(header, (L"Frontend Developer"));
+		temp = L"Frontend Developer";
 		break;
 	default:
 		break;
 	}
-	PrintInBoxStyle(header, EmailToWstring(st.Email));
+	PrintInBoxStyle(header, hConsole, temp, BASE_COLOUR, ROLE_COLOUR);
+	PrintInBoxStyle(header, hConsole, EmailToWstring(st.email), BASE_COLOUR, EMAIL_COLOUR);
+	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 	std::wcout << footer;
 }
 
-void AddToVector(std::vector<STUDENT>& vec, STUDENT st)
-{
-	vec.push_back(st);
-}
-//IDK if this works... test!!!
+//Job for q&a
+//Pls test enterStudent with all kinds of values!
 
 STUDENT EnterStudent()
 {
-	return STUDENT();
+	STUDENT st;
+	std::wstring email = L"";
+	char temp = ' ';
+	std::wcout << L"Name and Surname: ";
+	std::wcin >> st.name >> st.surName;
+	std::wcout << L"Class (A,B,C...): ";
+	std::cin >> st.Class;
+	if (st.Class >= 'a' and st.Class <= 'z')
+		st.Class -= 32;
+	if (!(st.Class >= 'A' and st.Class <= 'Z'))
+		st.Class = 'U';
+	std::wcout << L"Role (1.BackendDev, 2.FrontendDev, 3.QAEngineer, 4.ScrumTrainer): ";
+	std::cin >> temp;
+	switch (rand() % 4)
+	{
+	case '1':
+		st.role = ROLE::BackendDev;
+		break;
+	case '2':
+		st.role = ROLE::FrontendDev;
+		break;
+	case '3':
+		st.role = ROLE::QAEngineer;
+		break;
+	case '4':
+		st.role = ROLE::ScrumTrainer;
+		break;
+	default:
+		st.role = ROLE::Undefined;
+		break;
+	}
+	std::wcout << L"Email: ";
+	std::wcin >> email;
+	st.email = WstringToEmail(email);
+	return st;
 }
 
-void PrintStVector(std::vector<STUDENT> vec)
+void CreateSampleStudentVector(std::vector<std::wstring> names, std::vector<std::wstring> surnames, std::vector<STUDENT>& vec, size_t amount)
 {
+	for (size_t i = 0; i < amount; i++)
+		AddStudentToVector(vec, CreateSampleStudent(names, surnames));
+}
 
+void PrintStudentVector(std::vector<STUDENT> vec, HANDLE hConsole)
+{
+	for (size_t i = 0; i < vec.size(); i++)
+	{
+		PrintStudent(vec[i], hConsole);
+		std::wcout << L'\n';
+	}
+}
+
+void AddStudentToVector(std::vector<STUDENT>& vec, STUDENT st)
+{
+	vec.push_back(st);
 }

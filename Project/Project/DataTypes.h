@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ctime>
 #include <vector>
+#include "windows.h"
 
 struct EMAIL
 {
@@ -32,28 +33,28 @@ enum class STATUS
 
 struct STUDENT
 {
-	std::wstring Name;
-	std::wstring SurName;
-	char Class;
-	enum class ROLE Role = ROLE::Undefined;
-	struct EMAIL Email;
+	std::wstring name = L"Boris";
+	std::wstring surName = L"Johnson";
+	char Class = 'G';
+	enum class ROLE role = ROLE::Undefined;
+	struct EMAIL email = WstringToEmail(L"boris.johnson@gov.uk");
 };
 
-STUDENT CreateSampleStudent(std::vector<std::wstring> names, std::vector<std::wstring> surnames, int index = -1);
-
-void PrintStudent(STUDENT st);
-
-
-void AddToVector(std::vector<STUDENT>& vec, STUDENT st);
-//IDK if this works... test!!!
+void PrintStudent(STUDENT st, HANDLE hConsole);
 
 STUDENT EnterStudent();
 
-void PrintStVector(std::vector<STUDENT> vec);
+STUDENT CreateSampleStudent(std::vector<std::wstring> names, std::vector<std::wstring> surnames);
+
+void CreateSampleStudentVector(std::vector<std::wstring> names, std::vector<std::wstring> surnames, std::vector<STUDENT>& vec, size_t amount = 5);
+
+void AddStudentToVector(std::vector<STUDENT>& vec, STUDENT st);
+
+void PrintStudentVector(std::vector<STUDENT> vec, HANDLE hConsole);
 
 struct TEAM
 {
-	std::wstring Name;
+	std::wstring name;
 	std::wstring Description;
 	struct tm DateOfSetup;
 	struct STUDENT Students[4];
@@ -62,15 +63,15 @@ struct TEAM
 
 struct TEACHER
 {
-	std::wstring Name;
-	std::wstring SurName;
+	std::wstring name;
+	std::wstring surName;
 	//Array of teams the object is in
-	struct EMAIL Email;
+	struct EMAIL email;
 };
 
 struct SCHOOL
 {
-	std::wstring Name;
+	std::wstring name;
 	std::wstring City;
 	std::wstring Address;
 	//array of Students

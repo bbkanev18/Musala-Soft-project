@@ -36,7 +36,7 @@ idk
 struct STUDENT
 {
 	std::wstring Name;
-	std::wstring SurName;
+	std::wstring surName;
 	char Class;
 	enum class ROLE role;
 	struct EMAIL email;
@@ -61,7 +61,7 @@ struct TEAM
 struct TEACHER
 {
 	std::wstring Name;
-	std::wstring SurName;
+	std::wstring surName;
 	//Array of teams the object is in
 	struct EMAIL email;
 };
@@ -125,4 +125,8 @@ enum class STATUS
 
 I plan on using a name database to pull both students' and teachers' names from said database.
 
-I have found a repo on github with a large and comprehensive database.   
+I have found a repo on github with a large and comprehensive name database. https://github.com/smashew/NameDatabases
+
+Student structure is almost finished. I need to add input validation, and sorting functions.
+
+Added basic colours!

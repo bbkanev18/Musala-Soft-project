@@ -2,6 +2,8 @@
 #include <fstream>
 #include <ctime>
 #include <string>
+#include "windows.h"
+
 #include "Interface.h"
 
 std::vector<std::wstring> GenerateNameVector(std::string path)
@@ -22,8 +24,9 @@ std::vector<std::wstring> GenerateNameVector(std::string path)
 	return vec;
 }
 
-void PrintInBoxStyle(std::wstring header, std::wstring content) 
+void PrintInBoxStyle(std::wstring header, HANDLE hConsole, std::wstring content, int baseColour, int specialColour)
 {
+	SetConsoleTextAttribute(hConsole, baseColour);
 	std::wcout << L"\n┃";
 	std::wstring overflow = L"empty";
 	if (content.size() >= (header.size() - 5))
@@ -40,11 +43,14 @@ void PrintInBoxStyle(std::wstring header, std::wstring content)
 	std::wstring padding = L"";
 	for (size_t i = 0; i < dif / 2; i++)
 		padding += ' ';
-	std::wcout << padding << content << padding << L'┃';
+	SetConsoleTextAttribute(hConsole, baseColour);
+	std::wcout << padding;
+	SetConsoleTextAttribute(hConsole, specialColour);
+	std::wcout << content;
+	SetConsoleTextAttribute(hConsole, baseColour);
+	std::wcout << padding << L'┃';
 	if (overflow != L"empty")
-	{
-		PrintInBoxStyle(header, overflow);
-	}
+		PrintInBoxStyle(header, hConsole, overflow, baseColour, specialColour);
 	//It would be easy to make the padding left or right too!
 	//| hello          |
 	//|           help |

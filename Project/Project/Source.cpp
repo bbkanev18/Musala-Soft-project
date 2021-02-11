@@ -5,6 +5,7 @@
 
 #include "io.h"
 #include "fcntl.h"
+#include "windows.h"
 
 #include "DataTypes.h"
 #include "Interface.h"
@@ -12,16 +13,19 @@
 int main()
 {
 	srand(time(NULL));
+	
+	HANDLE hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 
 	int a = _setmode(_fileno(stdout), _O_U16TEXT);
 	a = _setmode(_fileno(stdin), _O_U16TEXT);
 
-	std::vector<std::wstring> NamesList = GenerateNameVector("Database\\firstnames.txt");
-	std::vector<std::wstring> SurNamesList = GenerateNameVector("Database\\surnames.txt");
-
-	STUDENT st = CreateSampleStudent(NamesList, SurNamesList);
-	PrintStudent(st);
+	std::vector<std::wstring> namesList = GenerateNameVector("Database\\firstnames.txt");
+	std::vector<std::wstring> surNamesList = GenerateNameVector("Database\\surnames.txt");
 
 	std::vector<STUDENT> vec;
-	AddToVector(vec, st);
+
+	CreateSampleStudentVector(namesList, surNamesList, vec);
+	PrintStudentVector(vec, hConsole);
 }

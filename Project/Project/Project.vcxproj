@@ -149,6 +149,10 @@
   <ItemGroup>
     <None Include="Notes.md" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Database\firstnames.txt" />
+    <Text Include="Database\surnames.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
