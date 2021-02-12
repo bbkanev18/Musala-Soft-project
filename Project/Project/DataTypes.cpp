@@ -121,6 +121,7 @@ STUDENT EnterStudent()
 	std::wcin >> st.name >> st.surName;
 	std::wcout << L"Class (A,B,C...): ";
 	std::cin >> st.Class;
+	//seperate into a function!
 	if (st.Class >= 'a' and st.Class <= 'z')
 		st.Class -= 32;
 	if (!(st.Class >= 'A' and st.Class <= 'Z'))
@@ -162,6 +163,7 @@ void PrintStudentVector(std::vector<STUDENT> vec, HANDLE hConsole)
 	for (size_t i = 0; i < vec.size(); i++)
 	{
 		PrintStudent(vec[i], hConsole);
+		SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 		std::wcout << L'\n';
 	}
 }

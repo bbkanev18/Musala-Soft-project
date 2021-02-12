@@ -26,6 +26,11 @@ int main()
 
 	std::vector<STUDENT> vec;
 
+	//Active work!
 	CreateSampleStudentVector(namesList, surNamesList, vec);
 	PrintStudentVector(vec, hConsole);
+
+	//for q&a testing!
+	//AddStudentToVector(vec, EnterStudent());
+	//PrintStudentVector(vec, hConsole);
 }
