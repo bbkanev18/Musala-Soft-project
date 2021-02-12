@@ -23,14 +23,12 @@ int main()
 
 	std::vector<std::wstring> namesList = GenerateNameVector("Database\\firstnames.txt");
 	std::vector<std::wstring> surNamesList = GenerateNameVector("Database\\surnames.txt");
+	std::vector<std::wstring> teamNamesList = GenerateNameVector("Database\\teamnames.txt");
 
 	std::vector<STUDENT> vec;
 
-	//Active work!
 	CreateSampleStudentVector(namesList, surNamesList, vec);
 	PrintStudentVector(vec, hConsole);
 
-	//for q&a testing!
-	//AddStudentToVector(vec, EnterStudent());
-	//PrintStudentVector(vec, hConsole);
+
 }

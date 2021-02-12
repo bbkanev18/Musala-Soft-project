@@ -2,6 +2,7 @@
 #include <fstream>
 #include <ctime>
 #include <string>
+
 #include "windows.h"
 
 #include "Interface.h"
@@ -57,25 +58,4 @@ void PrintInBoxStyle(std::wstring header, HANDLE hConsole, std::wstring content,
 	//| break the nigh |
 	//| t initial d    |
 }
-//Create overflow preventions!!!!
 
-/*
-string line;
-int random = 0;
-int numOfLines = 0;
-ifstream File("file.txt");
-
-	srand(time(0));
-	random = rand() % 50;
-
-while(getline(File, line))
-{
-	++numOfLines;
-
-	if(numOfLines == random)
-	{
-		cout << line;
-	}
-
-}
-*/

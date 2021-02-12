@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+
 #include "windows.h"
 
 #include "DataTypes.h"
@@ -171,4 +172,30 @@ void PrintStudentVector(std::vector<STUDENT> vec, HANDLE hConsole)
 void AddStudentToVector(std::vector<STUDENT>& vec, STUDENT st)
 {
 	vec.push_back(st);
+}
+
+TEAM CreateSampleTeam(std::vector<std::wstring> teamNames, std::vector<std::wstring> names, std::vector<std::wstring> surnames)
+{
+	TEAM tm;
+	tm.name = teamNames[rand() % teamNames.size()];
+	tm.description = L"Medesimi novellare fa divina niuno sé";
+	//Think about tm...
+	for (size_t i = 0; i < 4; i++)
+		tm.students[i] = CreateSampleStudent(names, surnames);
+	switch (rand() % 3)
+	{
+	case 0:
+		tm.status = STATUS::InUse;
+		break;
+	case 1:
+		tm.status = STATUS::Archived;
+		break;
+	case 2:
+		tm.status = STATUS::NotActive;
+		break;
+	default:
+		tm.status = STATUS::Undefined;
+		break;
+	}
+	return tm;
 }

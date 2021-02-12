@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ctime>
 #include <vector>
+
 #include "windows.h"
 
 struct EMAIL
@@ -55,11 +56,13 @@ void PrintStudentVector(std::vector<STUDENT> vec, HANDLE hConsole);
 struct TEAM
 {
 	std::wstring name;
-	std::wstring Description;
-	struct tm DateOfSetup;
-	struct STUDENT Students[4];
-	enum class STATUS Status = STATUS::Undefined;
+	std::wstring description;
+	struct tm dateOfSetup;
+	struct STUDENT students[4];
+	enum class STATUS status = STATUS::Undefined;
 };
+
+TEAM CreateSampleTeam(std::vector<std::wstring> teamNames);
 
 struct TEACHER
 {
