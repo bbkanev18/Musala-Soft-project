@@ -21,14 +21,12 @@ int main()
 	int a = _setmode(_fileno(stdout), _O_U16TEXT);
 	a = _setmode(_fileno(stdin), _O_U16TEXT);
 
-	std::vector<std::wstring> namesList = GenerateNameVector("Database\\firstnames.txt");
+	std::vector<std::wstring> namesList =   GenerateNameVector("Database\\firstnames.txt");
 	std::vector<std::wstring> surNamesList = GenerateNameVector("Database\\surnames.txt");
 	std::vector<std::wstring> teamNamesList = GenerateNameVector("Database\\teamnames.txt");
 
-	std::vector<STUDENT> vec;
-
-	CreateSampleStudentVector(namesList, surNamesList, vec);
-	PrintStudentVector(vec, hConsole);
-
+	TEAM team = CreateSampleTeam(teamNamesList, namesList, surNamesList);
+	PrintTeam(team, hConsole);
+	
 
 }

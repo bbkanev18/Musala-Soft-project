@@ -41,7 +41,7 @@ struct STUDENT
 	struct EMAIL email = WstringToEmail(L"boris.johnson@gov.uk");
 };
 
-void PrintStudent(STUDENT st, HANDLE hConsole);
+void PrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0);
 
 STUDENT EnterStudent();
 
@@ -58,11 +58,13 @@ struct TEAM
 	std::wstring name;
 	std::wstring description;
 	struct tm dateOfSetup;
-	struct STUDENT students[4];
 	enum class STATUS status = STATUS::Undefined;
+	struct STUDENT students[4];
 };
 
-TEAM CreateSampleTeam(std::vector<std::wstring> teamNames);
+TEAM CreateSampleTeam(std::vector<std::wstring> teamNames, std::vector<std::wstring> names, std::vector<std::wstring> surnames, bool empty = false);
+
+void PrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0);
 
 struct TEACHER
 {

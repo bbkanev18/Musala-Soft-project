@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <ctime>
 
 #include "windows.h"
 
@@ -72,23 +73,22 @@ STUDENT CreateSampleStudent(std::vector<std::wstring> names, std::vector<std::ws
 	return st;
 }
 
-void PrintStudent(STUDENT st, HANDLE hConsole)
+void PrintStudent(STUDENT st, HANDLE hConsole, size_t indent)
 {
-	//┃━┏┓┗┛┫┣
-	std::wstring header = L"\n┏━━━━━━━━━━━━━━┫STUDENT┣━━━━━━━━━━━━━━┓";
-	std::wstring footer = L"\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
+	//┌─┤├─┐└┘├┤─│
+	std::wstring header = L"┌──────────────┤ STUDENT ├──────────────┐";
+	std::wstring footer = L"└───────────────────────────────────────┘";
 	std::wstring temp = L"";
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+	std::wcout << L'\n';
+	PrintIndent(indent);
 	std::wcout << header;
-	PrintInBoxStyle(header, hConsole,(st.name + L' ' + st.surName), BASE_COLOUR, NAME_COLOUR);
+	PrintInBoxStyle(header, hConsole,(st.name + L' ' + st.surName), BASE_COLOUR, NAME_COLOUR, L'│', indent);
 	temp = st.Class;
-	PrintInBoxStyle(header, hConsole, (L"Class " + temp), BASE_COLOUR, CLASS_COLOUR);
+	PrintInBoxStyle(header, hConsole, (L"Class " + temp), BASE_COLOUR, CLASS_COLOUR, L'│', indent);
 	temp = L"Undefined";
 	switch (st.role)
 	{
-	case ROLE::Undefined:
-		temp = L"Undefined";
-		break;
 	case ROLE::ScrumTrainer:
 		temp = L"Scrum Trainer";
 		break;
@@ -104,9 +104,11 @@ void PrintStudent(STUDENT st, HANDLE hConsole)
 	default:
 		break;
 	}
-	PrintInBoxStyle(header, hConsole, temp, BASE_COLOUR, ROLE_COLOUR);
-	PrintInBoxStyle(header, hConsole, EmailToWstring(st.email), BASE_COLOUR, EMAIL_COLOUR);
+	PrintInBoxStyle(header, hConsole, temp, BASE_COLOUR, ROLE_COLOUR, L'│', indent);
+	PrintInBoxStyle(header, hConsole, EmailToWstring(st.email), BASE_COLOUR, EMAIL_COLOUR, L'│', indent);
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+	std::wcout << L'\n';
+	PrintIndent(indent);
 	std::wcout << footer;
 }
 
@@ -174,28 +176,81 @@ void AddStudentToVector(std::vector<STUDENT>& vec, STUDENT st)
 	vec.push_back(st);
 }
 
-TEAM CreateSampleTeam(std::vector<std::wstring> teamNames, std::vector<std::wstring> names, std::vector<std::wstring> surnames)
+TEAM CreateSampleTeam(std::vector<std::wstring> teamNames, std::vector<std::wstring> names, std::vector<std::wstring> surnames, bool empty)
 {
-	TEAM tm;
-	tm.name = teamNames[rand() % teamNames.size()];
-	tm.description = L"Medesimi novellare fa divina niuno sé";
-	//Think about tm...
-	for (size_t i = 0; i < 4; i++)
-		tm.students[i] = CreateSampleStudent(names, surnames);
+	TEAM team;
+	team.name = teamNames[rand() % teamNames.size()];
+	team.description = L"Medesimi novellare fa divina niuno sé";
+	time_t _t;
+	time(&_t);
+	localtime_s(&team.dateOfSetup, &_t);
+	if (!empty)
+	{
+		for (size_t i = 0; i < 4; i++)
+			team.students[i] = CreateSampleStudent(names, surnames);
+	}
 	switch (rand() % 3)
 	{
 	case 0:
-		tm.status = STATUS::InUse;
+		team.status = STATUS::InUse;
 		break;
 	case 1:
-		tm.status = STATUS::Archived;
+		team.status = STATUS::Archived;
 		break;
 	case 2:
-		tm.status = STATUS::NotActive;
+		team.status = STATUS::NotActive;
 		break;
 	default:
-		tm.status = STATUS::Undefined;
+		team.status = STATUS::Undefined;
 		break;
 	}
-	return tm;
+	return team;
+}
+
+void PrintTeam(TEAM team, HANDLE hConsole, size_t indent)
+{
+	//┃━┏┓┗┛┫┣
+	std::wstring header =   L"┏━━━━━━━━━━━━━━━━━━┫ TEAM ┣━━━━━━━━━━━━━━━━━━┓";
+	std::wstring splitstr = L"┗┅┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┅┛";
+	std::wstring splitend = L"┏┅┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┅┓";
+	std::wstring footer =   L"┗━━━━━━━━━━━━━━━━━━┫ END. ┣━━━━━━━━━━━━━━━━━━┛";
+	std::wstring temp = L"";
+	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+	std::wcout << L'\n';
+	std::wcout << header;
+	PrintInBoxStyle(header, hConsole, team.name, BASE_COLOUR, NAME_COLOUR, L'┃'); //TAKE CARE OF COLOURS!!
+	PrintInBoxStyle(header, hConsole, team.description, BASE_COLOUR, DESCRIPTION_COLOUR, L'┃');
+	PrintInBoxStyle(header, hConsole, (TmToWstring(team.dateOfSetup ,7) + L" " + TmToWstring(team.dateOfSetup, 4) + L"-" + TmToWstring(team.dateOfSetup, 5) + L"-" + TmToWstring(team.dateOfSetup, 6)), BASE_COLOUR, DATEOFSETUP_COLOUR, L'┃');
+	std::wcout << L'\n';
+	std::wcout << splitstr;
+	PrintStudent(team.students[0], hConsole, indent + 2);
+	PrintStudent(team.students[1], hConsole, indent + 2);
+	PrintStudent(team.students[2], hConsole, indent + 2);
+	PrintStudent(team.students[3], hConsole, indent + 2);
+	std::wcout << L'\n';
+	std::wcout << splitend;
+	int activeColor = UNDEFINED_COLOUR;
+	temp = L"Undefined";
+	switch (team.status)
+	{
+	case STATUS::InUse:
+		temp = L"In Use";
+		activeColor = INUSE_COLOUR;
+		break;
+	case STATUS::NotActive:
+		temp = L"Not Active";
+		activeColor = NOTACTIVE_COLOUR;
+		break;
+	case STATUS::Archived:
+		temp = L"Archived";
+		activeColor = ARCHIVED_COLOUR;
+		break;
+	default:
+		break;
+	}
+	PrintInBoxStyle(header, hConsole, temp, BASE_COLOUR, activeColor, L'┃');
+	//Add smt to show the teacher responsible for this team!
+	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+	std::wcout << L'\n';
+	std::wcout << footer;
 }

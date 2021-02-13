@@ -130,3 +130,5 @@ I have found a repo on github with a large and comprehensive name database. http
 Student structure is almost finished. I need to add input validation, and sorting functions.
 
 Added basic colours!
+
+tm struct has been figured out!!!
