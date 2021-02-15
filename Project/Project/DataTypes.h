@@ -36,7 +36,7 @@ struct STUDENT
 {
 	std::wstring name = L"Boris";
 	std::wstring surName = L"Johnson";
-	char Class = 'G';
+	wchar_t Class = '!';
 	enum class ROLE role = ROLE::Undefined;
 	struct EMAIL email = WstringToEmail(L"boris.johnson@gov.uk");
 };
@@ -83,3 +83,6 @@ struct SCHOOL
 	//array of Teams
 	//array of Teachers
 };
+
+//print school -> school - team(teacher,students)
+

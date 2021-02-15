@@ -26,8 +26,10 @@ EMAIL WstringToEmail(std::wstring email)
 		else
 			out.domain += email[i];
 	}
+	if (out.username.empty())
+		out.username = L"Wrong_Input";
 	if (out.domain.empty())
-		out.domain = L"@badinput.io";
+		out.domain = L"badinput.io";
 	return out;
 }
 
@@ -119,19 +121,21 @@ STUDENT EnterStudent()
 {
 	STUDENT st;
 	std::wstring email = L"";
-	char temp = ' ';
-	std::wcout << L"Name and Surname: ";
-	std::wcin >> st.name >> st.surName;
+	wchar_t temp = ' ';
+	std::wcout << L"Name: ";
+	std::wcin >> st.name;
+	std::wcout << L"Surname: ";
+	std::wcin >> st.surName;
 	std::wcout << L"Class (A,B,C...): ";
-	std::cin >> st.Class;
+	std::wcin >> st.Class;
 	//seperate into a function!
 	if (st.Class >= 'a' and st.Class <= 'z')
-		st.Class -= 32;
+		st.Class -= ('a' - 'A');
 	if (!(st.Class >= 'A' and st.Class <= 'Z'))
-		st.Class = 'U';
-	std::wcout << L"Role (1.BackendDev, 2.FrontendDev, 3.QAEngineer, 4.ScrumTrainer): ";
-	std::cin >> temp;
-	switch (rand() % 4)
+		st.Class = '?';
+	std::wcout << L"Role (1.BackendDev, 2.FrontendDev, 3.Q&AEngineer, 4.ScrumTrainer): ";
+	std::wcin >> temp;
+	switch (temp)
 	{
 	case '1':
 		st.role = ROLE::BackendDev;
