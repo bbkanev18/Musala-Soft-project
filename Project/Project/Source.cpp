@@ -25,10 +25,10 @@ int main()
 	std::vector<std::wstring> surNamesList = GenerateNameVector("Database\\surnames.txt");
 	std::vector<std::wstring> teamNamesList = GenerateNameVector("Database\\teamnames.txt");
 
-	//TEAM team = CreateSampleTeam(teamNamesList, namesList, surNamesList);
-	//PrintTeam(team, hConsole);
+	TEAM team = CreateSampleTeam(teamNamesList, namesList, surNamesList);
+	PrintTeam(team, hConsole);
 	
-	STUDENT st = EnterStudent();
-	PrintStudent(st, hConsole, 0);
+	//STUDENT st = EnterStudent();
+	//PrintStudent(st, hConsole, 0);
 
 }

@@ -38,43 +38,6 @@ std::wstring EmailToWstring(EMAIL email)
 	return (email.username + L'@' + email.domain);
 }
 
-STUDENT CreateSampleStudent(std::vector<std::wstring> names, std::vector<std::wstring> surnames)
-{
-	STUDENT st;
-	std::wstring email = L"";
-	st.name = names[rand() % names.size()];
-	email += st.name + L'_';
-	st.surName = surnames[rand() % surnames.size()];
-	email += st.surName + L'.';
-	std::transform(email.begin(), email.end(), email.begin(), ::tolower);
-	st.Class = char(rand() % 4 + 65);
-	switch (rand() % 4)
-	{
-	case 0:
-		st.role = ROLE::BackendDev;
-		email += L"BD";
-		break;
-	case 1:
-		st.role = ROLE::FrontendDev;
-		email += L"FD";
-		break;
-	case 2:
-		st.role = ROLE::QAEngineer;
-		email += L"QA";
-		break;
-	case 3:
-		st.role = ROLE::ScrumTrainer;
-		email += L"ST";
-		break;
-	default:
-		st.role = ROLE::Undefined;
-		email += L"UF!!!";
-		break;
-	}
-	st.email = WstringToEmail((email + L"@sample.io"));
-	return st;
-}
-
 void PrintStudent(STUDENT st, HANDLE hConsole, size_t indent)
 {
 	//┌─┤├─┐└┘├┤─│
@@ -159,13 +122,55 @@ STUDENT EnterStudent()
 	return st;
 }
 
-void CreateSampleStudentVector(std::vector<std::wstring> names, std::vector<std::wstring> surnames, std::vector<STUDENT>& vec, size_t amount)
+STUDENT CreateSampleStudent(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames)
+{
+	STUDENT st;
+	std::wstring email = L"";
+	st.name = names[rand() % names.size()];
+	email += st.name + L'_';
+	st.surName = surnames[rand() % surnames.size()];
+	email += st.surName + L'.';
+	std::transform(email.begin(), email.end(), email.begin(), ::tolower);
+	st.Class = char(rand() % 4 + 65);
+	switch (rand() % 4)
+	{
+	case 0:
+		st.role = ROLE::BackendDev;
+		email += L"BD";
+		break;
+	case 1:
+		st.role = ROLE::FrontendDev;
+		email += L"FD";
+		break;
+	case 2:
+		st.role = ROLE::QAEngineer;
+		email += L"QA";
+		break;
+	case 3:
+		st.role = ROLE::ScrumTrainer;
+		email += L"ST";
+		break;
+	default:
+		st.role = ROLE::Undefined;
+		email += L"UF!!!";
+		break;
+	}
+	st.email = WstringToEmail((email + L"@sample.io"));
+	return st;
+}
+
+void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<STUDENT>& vec, size_t amount)
 {
 	for (size_t i = 0; i < amount; i++)
 		AddStudentToVector(vec, CreateSampleStudent(names, surnames));
 }
 
-void PrintStudentVector(std::vector<STUDENT> vec, HANDLE hConsole)
+void AddStudentToVector(std::vector<STUDENT>& vec, STUDENT st)
+{
+	vec.push_back(st);
+}
+
+void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole)
 {
 	for (size_t i = 0; i < vec.size(); i++)
 	{
@@ -175,12 +180,7 @@ void PrintStudentVector(std::vector<STUDENT> vec, HANDLE hConsole)
 	}
 }
 
-void AddStudentToVector(std::vector<STUDENT>& vec, STUDENT st)
-{
-	vec.push_back(st);
-}
-
-TEAM CreateSampleTeam(std::vector<std::wstring> teamNames, std::vector<std::wstring> names, std::vector<std::wstring> surnames, bool empty)
+TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty)
 {
 	TEAM team;
 	team.name = teamNames[rand() % teamNames.size()];
@@ -221,17 +221,20 @@ void PrintTeam(TEAM team, HANDLE hConsole, size_t indent)
 	std::wstring temp = L"";
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 	std::wcout << L'\n';
+	PrintIndent(indent);
 	std::wcout << header;
-	PrintInBoxStyle(header, hConsole, team.name, BASE_COLOUR, NAME_COLOUR, L'┃'); //TAKE CARE OF COLOURS!!
-	PrintInBoxStyle(header, hConsole, team.description, BASE_COLOUR, DESCRIPTION_COLOUR, L'┃');
-	PrintInBoxStyle(header, hConsole, (TmToWstring(team.dateOfSetup ,7) + L" " + TmToWstring(team.dateOfSetup, 4) + L"-" + TmToWstring(team.dateOfSetup, 5) + L"-" + TmToWstring(team.dateOfSetup, 6)), BASE_COLOUR, DATEOFSETUP_COLOUR, L'┃');
+	PrintInBoxStyle(header, hConsole, team.name, BASE_COLOUR, NAME_COLOUR, L'┃', indent); //TAKE CARE OF COLOURS!!
+	PrintInBoxStyle(header, hConsole, team.description, BASE_COLOUR, DESCRIPTION_COLOUR, L'┃', indent);
+	PrintInBoxStyle(header, hConsole, (TmToWstring(team.dateOfSetup ,7) + L" " + TmToWstring(team.dateOfSetup, 4) + L"-" + TmToWstring(team.dateOfSetup, 5) + L"-" + TmToWstring(team.dateOfSetup, 6)), BASE_COLOUR, DATEOFSETUP_COLOUR, L'┃', indent);
 	std::wcout << L'\n';
+	PrintIndent(indent);
 	std::wcout << splitstr;
 	PrintStudent(team.students[0], hConsole, indent + 2);
 	PrintStudent(team.students[1], hConsole, indent + 2);
 	PrintStudent(team.students[2], hConsole, indent + 2);
 	PrintStudent(team.students[3], hConsole, indent + 2);
 	std::wcout << L'\n';
+	PrintIndent(indent);
 	std::wcout << splitend;
 	int activeColor = UNDEFINED_COLOUR;
 	temp = L"Undefined";
@@ -252,9 +255,10 @@ void PrintTeam(TEAM team, HANDLE hConsole, size_t indent)
 	default:
 		break;
 	}
-	PrintInBoxStyle(header, hConsole, temp, BASE_COLOUR, activeColor, L'┃');
+	PrintInBoxStyle(header, hConsole, temp, BASE_COLOUR, activeColor, L'┃', indent);
 	//Add smt to show the teacher responsible for this team!
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 	std::wcout << L'\n';
+	PrintIndent(indent);
 	std::wcout << footer;
 }

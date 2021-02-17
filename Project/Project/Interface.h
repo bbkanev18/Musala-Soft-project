@@ -39,4 +39,4 @@ Args:
 */
 std::wstring TmToWstring(tm tm, BYTE args);
 
-void PrintIndent(size_t indent);
+void PrintIndent(size_t indent = 3);

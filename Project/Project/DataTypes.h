@@ -45,13 +45,13 @@ void PrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0);
 
 STUDENT EnterStudent();
 
-STUDENT CreateSampleStudent(std::vector<std::wstring> names, std::vector<std::wstring> surnames);
+STUDENT CreateSampleStudent(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames);
 
-void CreateSampleStudentVector(std::vector<std::wstring> names, std::vector<std::wstring> surnames, std::vector<STUDENT>& vec, size_t amount = 5);
+void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<STUDENT>& vec, size_t amount = 5);
 
 void AddStudentToVector(std::vector<STUDENT>& vec, STUDENT st);
 
-void PrintStudentVector(std::vector<STUDENT> vec, HANDLE hConsole);
+void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole);
 
 struct TEAM
 {
@@ -62,9 +62,9 @@ struct TEAM
 	struct STUDENT students[4];
 };
 
-TEAM CreateSampleTeam(std::vector<std::wstring> teamNames, std::vector<std::wstring> names, std::vector<std::wstring> surnames, bool empty = false);
-
 void PrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0);
+
+TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty = false);
 
 struct TEACHER
 {

@@ -132,3 +132,5 @@ Student structure is almost finished. I need to add input validation, and sortin
 Added basic colours!
 
 tm struct has been figured out!!!
+
+!!!PASS ALL VECTORS BY REFERENCE &
