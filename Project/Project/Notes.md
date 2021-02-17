@@ -36,7 +36,7 @@ idk
 struct STUDENT
 {
 	std::wstring Name;
-	std::wstring surName;
+	std::wstring surname;
 	char Class;
 	enum class ROLE role;
 	struct EMAIL email;
@@ -61,7 +61,7 @@ struct TEAM
 struct TEACHER
 {
 	std::wstring Name;
-	std::wstring surName;
+	std::wstring surname;
 	//Array of teams the object is in
 	struct EMAIL email;
 };
@@ -134,3 +134,39 @@ Added basic colours!
 tm struct has been figured out!!!
 
 !!!PASS ALL VECTORS BY REFERENCE &
+
+```
+  ┌──────────────┤ STUDENT ├──────────────┐
+  │          Rosemarie Salisbury          │
+  │                Class B                │
+  │              Q&A Engineer             │
+  │    rosemarie_salisbury.QA@sample.io   │
+  └───────────────────────────────────────┘
+```
+^ This is the standart Print Student Function's output.
+
+Create a PrintInline Function???
+
+```
+| Rosemarie Salisbury | Class B | Q&A Engineer | rosemarie_salisbury.QA@sample.io |
+```
+
+A PrintInline Function would ease readability when read in mass
+
+A PrintInLine Function was created! However... It does not Level off each row, and you get
+```
+| Rita Fearnley | Class D | Q&A Engineer | rita_fearnley.QA@sample.io |
+| Alan Caton | Class D | Backend Developer | alan_caton.BD@sample.io |
+| Willena Butt | Class A | Frontend Developer | willena_butt.FD@sample.io |
+| Venus Eddy | Class D | Q&A Engineer | venus_eddy.QA@sample.io |
+| Bessie Ogden | Class D | Q&A Engineer | bessie_ogden.QA@sample.io |
+```
+instead of
+```
+| Rita Fearnley | Class D | Q&A Engineer       | rita_fearnley.QA@sample.io |
+| Alan Caton    | Class D | Backend Developer  | alan_caton.BD@sample.io    |
+| Willena Butt  | Class A | Frontend Developer | willena_butt.FD@sample.io  |
+| Venus Eddy    | Class D | Q&A Engineer       | venus_eddy.QA@sample.io    |
+| Bessie Ogden  | Class D | Q&A Engineer       | bessie_ogden.QA@sample.io  |
+```
+Keep thinking of a better way!!!

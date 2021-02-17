@@ -29,7 +29,7 @@ std::vector<std::wstring> GenerateNameVector(std::string path)
 // |
 // V
 
-void PrintInBoxStyle(std::wstring header, HANDLE hConsole, std::wstring content, int baseColour, int specialColour, wchar_t wall, size_t indent)
+void PrintBoxStyle(std::wstring header, HANDLE hConsole, std::wstring content, int baseColour, int specialColour, wchar_t wall, size_t indent)
 {
 	size_t hSize = header.size();
 	SetConsoleTextAttribute(hConsole, baseColour);
@@ -60,7 +60,7 @@ void PrintInBoxStyle(std::wstring header, HANDLE hConsole, std::wstring content,
 		std::wcout << ' ';
 	std::wcout << padding << wall;
 	if (overflow != L"empty")
-		PrintInBoxStyle(header, hConsole, overflow, baseColour, specialColour, wall, indent);
+		PrintBoxStyle(header, hConsole, overflow, baseColour, specialColour, wall, indent);
 	//It would be easy to make the padding left or right too!
 	//| hello          |
 	//|           help |
@@ -135,4 +135,22 @@ void PrintIndent(size_t indent)
 {
 	for (size_t i = 0; i < indent; i++)
 		std::wcout << ' ';
+}
+
+void PrintInlineStyle(std::vector<std::wstring>& content, HANDLE hConsole, size_t indent, wchar_t seperator)
+{
+
+	PrintIndent(indent);
+	SetConsoleTextAttribute(hConsole, WALL_COLOUR);
+	std::wcout << seperator << L' ';
+	for (size_t i = 0; i < content.size(); i++)
+	{
+		SetConsoleTextAttribute(hConsole, INLINEPRINT_COLOUR);
+		std::wcout << content[i];
+		SetConsoleTextAttribute(hConsole, WALL_COLOUR);
+		std::wcout << L' ' << seperator;
+		if (i != content.size() - 1)
+			std::wcout << L' ';
+	}
+	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 }

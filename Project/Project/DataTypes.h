@@ -24,6 +24,8 @@ enum class ROLE
 	FrontendDev
 };
 
+std::wstring RoleToWstring(ROLE role, bool shortVersion = false);
+
 enum class STATUS
 {
 	Undefined,
@@ -35,13 +37,15 @@ enum class STATUS
 struct STUDENT
 {
 	std::wstring name = L"Boris";
-	std::wstring surName = L"Johnson";
+	std::wstring surname = L"Johnson";
 	wchar_t Class = '!';
 	enum class ROLE role = ROLE::Undefined;
 	struct EMAIL email = WstringToEmail(L"boris.johnson@gov.uk");
 };
 
-void PrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0);
+void BoxPrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0);
+
+void InlinePrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0);
 
 STUDENT EnterStudent();
 
@@ -51,7 +55,7 @@ void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std
 
 void AddStudentToVector(std::vector<STUDENT>& vec, STUDENT st);
 
-void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole);
+void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole, bool inlineStudents = false);
 
 struct TEAM
 {
@@ -62,14 +66,22 @@ struct TEAM
 	struct STUDENT students[4];
 };
 
-void PrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0);
+void BoxPrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0, bool inlineStudents = false);
 
 TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty = false);
+
+//TEAM EnterTeam();
+
+void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& vec, size_t amount = 5, bool empty = false);
+
+void AddTeamToVector(std::vector<TEAM>& vec, TEAM team);
+
+void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, bool inlineStudents = false);
 
 struct TEACHER
 {
 	std::wstring name;
-	std::wstring surName;
+	std::wstring surname;
 	//Array of teams the object is in
 	struct EMAIL email;
 };
@@ -85,4 +97,3 @@ struct SCHOOL
 };
 
 //print school -> school - team(teacher,students)
-
