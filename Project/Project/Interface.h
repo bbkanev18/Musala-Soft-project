@@ -10,12 +10,13 @@ std::vector<std::wstring> GenerateNameVector(std::string path);
 
 #define BACKGROUND_COLOUR 0
 #define BASE_COLOUR        (7  + BACKGROUND_COLOUR * 16)
+#define ERROR_COLOUR       (2  + BACKGROUND_COLOUR * 16)
 #define WALL_COLOUR        (4  + BACKGROUND_COLOUR * 16)
 #define NAME_COLOUR        (14 + BACKGROUND_COLOUR * 16)
 #define CLASS_COLOUR       (9  + BACKGROUND_COLOUR * 16)
 #define ROLE_COLOUR        (11 + BACKGROUND_COLOUR * 16)
 #define EMAIL_COLOUR       (6  + BACKGROUND_COLOUR * 16)
-#define DESCRIPTION_COLOUR (10 + BACKGROUND_COLOUR * 16)
+#define DESCRIPTION_COLOUR (3  + BACKGROUND_COLOUR * 16)
 #define DATEOFSETUP_COLOUR (12 + BACKGROUND_COLOUR * 16)
 #define INLINEPRINT_COLOUR (10 + BACKGROUND_COLOUR * 16) //Find a better colour!!!
 #define INUSE_COLOUR       (9  + 6 * 16)

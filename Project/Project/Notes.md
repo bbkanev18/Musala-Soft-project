@@ -170,3 +170,6 @@ instead of
 | Bessie Ogden  | Class D | Q&A Engineer       | bessie_ogden.QA@sample.io  |
 ```
 Keep thinking of a better way!!!
+
+1. [ ] Add colours to the input functions!!!
+2. [ ] Create menues!!!

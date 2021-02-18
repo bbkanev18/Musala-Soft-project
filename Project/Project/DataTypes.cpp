@@ -66,6 +66,26 @@ std::wstring RoleToWstring(ROLE role, bool shortVersion)
 	return L"ERROR!";
 }
 
+std::wstring StatusToWstring(STATUS status, int& activeColor)
+{
+	switch (status)
+	{
+	case STATUS::InUse:
+		activeColor = INUSE_COLOUR;
+		return L"In Use";
+	case STATUS::NotActive:
+		activeColor = NOTACTIVE_COLOUR;
+		return L"Not Active";
+	case STATUS::Archived:
+		activeColor = ARCHIVED_COLOUR;
+		return L"Archived";
+	default:
+		activeColor = UNDEFINED_COLOUR;
+		return L"Undefined";
+	}
+
+}
+
 void BoxPrintStudent(STUDENT st, HANDLE hConsole, size_t indent)
 {
 	//┌─┤├─┐└┘├┤─│
@@ -122,24 +142,7 @@ STUDENT EnterStudent()
 		st.Class = '?';
 	std::wcout << L"Role (1.BackendDev, 2.FrontendDev, 3.Q&AEngineer, 4.ScrumTrainer): ";
 	std::wcin >> temp;
-	switch (temp)
-	{
-	case '1':
-		st.role = ROLE::BackendDev;
-		break;
-	case '2':
-		st.role = ROLE::FrontendDev;
-		break;
-	case '3':
-		st.role = ROLE::QAEngineer;
-		break;
-	case '4':
-		st.role = ROLE::ScrumTrainer;
-		break;
-	default:
-		st.role = ROLE::Undefined;
-		break;
-	}
+	st.role = ROLE(int(temp) - 48);
 	std::wcout << L"Email: ";
 	std::wcin >> email;
 	st.email = WstringToEmail(email);
@@ -210,7 +213,7 @@ void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole, bool inlineS
 	}
 }
 
-void BoxPrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents)
+void PrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents)
 {
 	//┃━┏┓┗┛┫┣
 	std::wstring header =   L"┏━━━━━━━━━━━━━━━━━━┫ TEAM ┣━━━━━━━━━━━━━━━━━━┓";
@@ -250,24 +253,7 @@ void BoxPrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents
 	PrintIndent(indent);
 	std::wcout << splitend;
 	int activeColor = UNDEFINED_COLOUR;
-	temp = L"Undefined";
-	switch (team.status)
-	{
-	case STATUS::InUse:
-		temp = L"In Use";
-		activeColor = INUSE_COLOUR;
-		break;
-	case STATUS::NotActive:
-		temp = L"Not Active";
-		activeColor = NOTACTIVE_COLOUR;
-		break;
-	case STATUS::Archived:
-		temp = L"Archived";
-		activeColor = ARCHIVED_COLOUR;
-		break;
-	default:
-		break;
-	}
+	temp = StatusToWstring(team.status, activeColor);
 	PrintBoxStyle(header, hConsole, temp, BASE_COLOUR, activeColor, L'┃', indent);
 	//Add smt to show the teacher responsible for this team!
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
@@ -308,6 +294,40 @@ TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wst
 	return team;
 }
 
+TEAM EnterTeam()
+{
+	wchar_t temp = ' ';
+	TEAM team;
+	std::wcout << L"Team Name: ";
+	//std::wcin >> team.name;
+	getline(std::wcin, team.name);
+	std::wcout << L"Description: ";
+	//std::wcin >> team.description;
+	getline(std::wcin, team.description);
+	
+	//TEMPORARY SOLUTION!!!
+	
+	time_t _t;
+	time(&_t);
+	localtime_s(&team.dateOfSetup, &_t);
+
+	//LET THE USER CHOOSE!!!
+	
+	std::wcout << L"Status (1.InUse, 2.Not Active, 3.Archived): ";
+	std::wcin >> temp;
+	team.status = STATUS(int(temp) - 48);
+	//Seperate into a function?!
+	std::wcout << L"\nStudent 1\n";
+	team.students[0] = EnterStudent();
+	std::wcout << L"\nStudent 2\n";
+	team.students[1] = EnterStudent();
+	std::wcout << L"\nStudent 3\n";
+	team.students[2] = EnterStudent();
+	std::wcout << L"\nStudent 4\n";
+	team.students[3] = EnterStudent();
+	return team;
+}
+
 void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& vec, size_t amount, bool empty)
 {
 	for (size_t i = 0; i < amount; i++)
@@ -323,7 +343,7 @@ void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, bool inlineStudent
 {
 	for (size_t i = 0; i < vec.size(); i++)
 	{
-		BoxPrintTeam(vec[i], hConsole, 0, inlineStudents);
+		PrintTeam(vec[i], hConsole, 0, inlineStudents);
 		SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 		std::wcout << L"\n\n";
 	}

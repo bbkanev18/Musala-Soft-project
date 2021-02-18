@@ -34,6 +34,8 @@ enum class STATUS
 	Archived
 };
 
+std::wstring StatusToWstring(STATUS status, int& activeColor);
+
 struct STUDENT
 {
 	std::wstring name = L"Boris";
@@ -66,11 +68,11 @@ struct TEAM
 	struct STUDENT students[4];
 };
 
-void BoxPrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0, bool inlineStudents = false);
+void PrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0, bool inlineStudents = false);
 
 TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty = false);
 
-//TEAM EnterTeam();
+TEAM EnterTeam();
 
 void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& vec, size_t amount = 5, bool empty = false);
 

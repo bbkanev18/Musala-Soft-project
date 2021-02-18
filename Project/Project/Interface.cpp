@@ -154,3 +154,4 @@ void PrintInlineStyle(std::vector<std::wstring>& content, HANDLE hConsole, size_
 	}
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 }
+//Find a way to print a content field up to said amounts of chars

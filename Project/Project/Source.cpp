@@ -31,6 +31,8 @@ int main()
 	//CreateSampleTeamVector(teamNamesList, namesList, surnamesList, tvec);
 	//PrintTeamVector(tvec, hConsole, true);
 
+	TEAM team = EnterTeam();
+	PrintTeam(team, hConsole);
 
 	//STUDENT testing site
 
