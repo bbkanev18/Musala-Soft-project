@@ -31,6 +31,8 @@ int main()
 	//TEAM team = EnterTeam();
 	//PrintTeam(team, hConsole);
 	
+	//TEAM vector testing site
+
 	//std::vector<TEAM> tvec;
 	//CreateSampleTeamVector(teamNamesList, namesList, surnamesList, tvec);
 	//PrintTeamVector(tvec, hConsole, true);
@@ -40,6 +42,9 @@ int main()
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	//STUDENT testing site
+
+
+	//STUDENT vector testing site
 
 	//std::vector<STUDENT> stvec;
 	//CreateSampleStudentVector(namesList, surnamesList, stvec, 50);
@@ -55,4 +60,5 @@ int main()
 	std::wcout << L"\n\n\n";
 	InlinePrintTeacher(tch, hConsole);
 
+	//TEACHER vector testing site
 }

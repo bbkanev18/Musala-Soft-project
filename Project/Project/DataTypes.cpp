@@ -346,15 +346,15 @@ TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::w
 
 void BoxPrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent)
 {
-	//┌─┤├─┐└┘├┤─│
-	std::wstring header = L"┌──────────────┤ TEACHER ├──────────────┐";
-	std::wstring footer = L"└───────────────────────────────────────┘";
+	//─┤├──┠┨┎┒┃┖┚
+	std::wstring header = L"┎──────────────┨ TEACHER ┠──────────────┒";
+	std::wstring footer = L"┖───────────────────────────────────────┚";
 	std::wstring temp = L"";
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 	PrintIndent(indent);
 	std::wcout << header;
-	PrintBoxStyle(header, hConsole, (tch.name + L' ' + tch.surname), BASE_COLOUR, NAME_COLOUR, L'│', indent);
-	PrintBoxStyle(header, hConsole, EmailToWstring(tch.email), BASE_COLOUR, EMAIL_COLOUR, L'│', indent);
+	PrintBoxStyle(header, hConsole, (tch.name + L' ' + tch.surname), BASE_COLOUR, NAME_COLOUR, L'┃', indent);
+	PrintBoxStyle(header, hConsole, EmailToWstring(tch.email), BASE_COLOUR, EMAIL_COLOUR, L'┃', indent);
 
 	//Implement a way to connect a team with a teacher and vise versa!!!
 
