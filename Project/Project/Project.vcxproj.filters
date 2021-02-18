@@ -45,5 +45,8 @@
     <Text Include="Database\surnames.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Database\teamnames.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

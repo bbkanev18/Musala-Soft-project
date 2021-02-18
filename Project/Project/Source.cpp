@@ -25,15 +25,20 @@ int main()
 	std::vector<std::wstring> surnamesList = GenerateNameVector("Database\\surnames.txt");
 	std::vector<std::wstring> teamNamesList = GenerateNameVector("Database\\teamnames.txt");
 
+	/////////////////////////////////////////////////////////////////////////////////////
 	//TEAM testing site
 
+	//TEAM team = EnterTeam();
+	//PrintTeam(team, hConsole);
+	
 	//std::vector<TEAM> tvec;
 	//CreateSampleTeamVector(teamNamesList, namesList, surnamesList, tvec);
 	//PrintTeamVector(tvec, hConsole, true);
+	//std::wcout << L"\n\n\n";
+	//PrintTeamVector(tvec, hConsole, false);
 
-	TEAM team = EnterTeam();
-	PrintTeam(team, hConsole);
-
+	
+	/////////////////////////////////////////////////////////////////////////////////////
 	//STUDENT testing site
 
 	//std::vector<STUDENT> stvec;
@@ -42,4 +47,12 @@ int main()
 	//PrintStudentVector(stvec, hConsole, true);
 
 	
+	/////////////////////////////////////////////////////////////////////////////////////
+	//TEACHER testing site
+
+	TEACHER tch = CreateSampleTeacher(namesList, surnamesList);
+	BoxPrintTeacher(tch, hConsole);
+	std::wcout << L"\n\n\n";
+	InlinePrintTeacher(tch, hConsole);
+
 }

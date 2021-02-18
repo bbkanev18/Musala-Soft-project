@@ -44,23 +44,23 @@ std::wstring RoleToWstring(ROLE role, bool shortVersion)
 	{
 	case ROLE::ScrumTrainer:
 		if (shortVersion)
-			return L"Scrum";
+			return L"ST";
 		return L"Scrum Trainer";
 	case ROLE::QAEngineer:
 		if (shortVersion)
-			return L"QA Engi";
+			return L"QA";
 		return L"Q&A Engineer";
 	case ROLE::BackendDev:
 		if (shortVersion)
-			return L"Backend";
+			return L"BD";
 		return L"Backend Developer";
 	case ROLE::FrontendDev:
 		if (shortVersion)
-			return L"Frontend";
+			return L"FD";
 		return L"Frontend Developer";
 	default:
 		if (shortVersion)
-			return L"Undef";
+			return L"UF";
 		return L"Undefined";
 	}
 	return L"ERROR!";
@@ -159,29 +159,8 @@ STUDENT CreateSampleStudent(std::vector<std::wstring>& names, std::vector<std::w
 	email += st.surname + L'.';
 	std::transform(email.begin(), email.end(), email.begin(), ::tolower);
 	st.Class = char(rand() % 4 + 65);
-	switch (rand() % 4)
-	{
-	case 0:
-		st.role = ROLE::BackendDev;
-		email += L"BD";
-		break;
-	case 1:
-		st.role = ROLE::FrontendDev;
-		email += L"FD";
-		break;
-	case 2:
-		st.role = ROLE::QAEngineer;
-		email += L"QA";
-		break;
-	case 3:
-		st.role = ROLE::ScrumTrainer;
-		email += L"ST";
-		break;
-	default:
-		st.role = ROLE::Undefined;
-		email += L"UF!!!";
-		break;
-	}
+	st.role = ROLE(rand() % 4);
+	email += RoleToWstring(st.role, true);
 	st.email = WstringToEmail((email + L"@sample.io"));
 	return st;
 }
@@ -347,4 +326,54 @@ void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, bool inlineStudent
 		SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 		std::wcout << L"\n\n";
 	}
+}
+
+TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames)
+{
+	TEACHER tch;
+	std::wstring email = L"";
+	tch.name = names[rand() % names.size()];
+	email += tch.name + L'_';
+	tch.surname = surnames[rand() % surnames.size()];
+	email += tch.surname + L'.';
+	std::transform(email.begin(), email.end(), email.begin(), ::tolower);
+	tch.email = WstringToEmail((email + L"@sample.io"));
+
+	//Implement a way to connect a team with a teacher and vise versa!!!
+
+	return tch;
+}
+
+void BoxPrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent)
+{
+	//┌─┤├─┐└┘├┤─│
+	std::wstring header = L"┌──────────────┤ TEACHER ├──────────────┐";
+	std::wstring footer = L"└───────────────────────────────────────┘";
+	std::wstring temp = L"";
+	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+	PrintIndent(indent);
+	std::wcout << header;
+	PrintBoxStyle(header, hConsole, (tch.name + L' ' + tch.surname), BASE_COLOUR, NAME_COLOUR, L'│', indent);
+	PrintBoxStyle(header, hConsole, EmailToWstring(tch.email), BASE_COLOUR, EMAIL_COLOUR, L'│', indent);
+
+	//Implement a way to connect a team with a teacher and vise versa!!!
+
+	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+	std::wcout << L'\n';
+	PrintIndent(indent);
+	std::wcout << footer;
+	std::wcout << L'\n';
+}
+
+void InlinePrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent)
+{
+	std::vector<std::wstring> content;
+	content.push_back(tch.name + L" " + tch.surname);
+	content.push_back(EmailToWstring(tch.email));
+
+	//Implement a way to connect a team with a teacher and vise versa!!!
+	
+	PrintInlineStyle(content, hConsole, indent);
+	content.clear();
+	std::wcout << L'\n';
 }

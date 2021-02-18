@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
 #include <ctime>
 #include <vector>
@@ -61,11 +61,11 @@ void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole, bool inlineS
 
 struct TEAM
 {
-	std::wstring name;
-	std::wstring description;
+	std::wstring name = L"‎Conservative";
+	std::wstring description = L"I have no idea. I took the Boris Johnson meme too far.";
 	struct tm dateOfSetup;
 	enum class STATUS status = STATUS::Undefined;
-	struct STUDENT students[4];
+	struct STUDENT students[4] = {};
 };
 
 void PrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0, bool inlineStudents = false);
@@ -88,6 +88,12 @@ struct TEACHER
 	struct EMAIL email;
 };
 
+TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames);
+
+void BoxPrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent = 0);
+
+void InlinePrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent = 0);
+
 struct SCHOOL
 {
 	std::wstring name;
@@ -99,3 +105,5 @@ struct SCHOOL
 };
 
 //print school -> school - team(teacher,students)
+
+//Maybe Seperate a function to create (name,surname,email) from Teacher/Student functions

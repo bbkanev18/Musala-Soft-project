@@ -152,6 +152,7 @@
   <ItemGroup>
     <Text Include="Database\firstnames.txt" />
     <Text Include="Database\surnames.txt" />
+    <Text Include="Database\teamnames.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
