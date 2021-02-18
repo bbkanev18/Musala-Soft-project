@@ -36,13 +36,20 @@ enum class STATUS
 
 std::wstring StatusToWstring(STATUS status, int& activeColor);
 
+struct PERSON
+{
+	std::wstring name = L"Homo";
+	std::wstring surname = L"Sapiens";
+	struct EMAIL email = WstringToEmail(L"Iamarealhuman@mars.com");
+};
+
+bool arePeopleEqual(PERSON a, PERSON b);
+
 struct STUDENT
 {
-	std::wstring name = L"Boris";
-	std::wstring surname = L"Johnson";
+	PERSON info = { L"Boris" , L"Johnson", WstringToEmail(L"boris.johnson@gov.uk") };
 	wchar_t Class = '!';
 	enum class ROLE role = ROLE::Undefined;
-	struct EMAIL email = WstringToEmail(L"boris.johnson@gov.uk");
 };
 
 void BoxPrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0);
@@ -66,9 +73,10 @@ struct TEAM
 	struct tm dateOfSetup;
 	enum class STATUS status = STATUS::Undefined;
 	struct STUDENT students[4] = {};
+	PERSON teacherInfo;
 };
 
-void PrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0, bool inlineStudents = false);
+void BoxPrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0, bool inlineStudents = false);
 
 TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty = false);
 
@@ -78,17 +86,18 @@ void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<st
 
 void AddTeamToVector(std::vector<TEAM>& vec, TEAM team);
 
-void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, bool inlineStudents = false);
+void BoxPrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, size_t indent, bool inlineStudents = false, bool inlineTeam = false);
+
+void InlinePrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0, bool inlineStudents = false);
 
 struct TEACHER
 {
-	std::wstring name;
-	std::wstring surname;
+	PERSON info;
 	//Array of teams the object is in
-	struct EMAIL email;
+	std::vector<TEAM> teams;
 };
 
-TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames);
+TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& teams);
 
 void BoxPrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent = 0);
 
@@ -97,9 +106,8 @@ void InlinePrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent = 0);
 struct SCHOOL
 {
 	std::wstring name;
-	std::wstring City;
-	std::wstring Address;
-	//array of Students
+	std::wstring city;
+	std::wstring address;
 	//array of Teams
 	//array of Teachers
 };

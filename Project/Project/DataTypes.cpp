@@ -86,6 +86,13 @@ std::wstring StatusToWstring(STATUS status, int& activeColor)
 
 }
 
+bool arePeopleEqual(PERSON a, PERSON b)
+{
+	if (EmailToWstring(a.email) == EmailToWstring(b.email) and a.name == b.name and a.surname == b.surname)
+		return true;
+	return false;
+}
+
 void BoxPrintStudent(STUDENT st, HANDLE hConsole, size_t indent)
 {
 	//┌─┤├─┐└┘├┤─│
@@ -95,11 +102,11 @@ void BoxPrintStudent(STUDENT st, HANDLE hConsole, size_t indent)
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 	PrintIndent(indent);
 	std::wcout << header;
-	PrintBoxStyle(header, hConsole,(st.name + L' ' + st.surname), BASE_COLOUR, NAME_COLOUR, L'│', indent);
+	PrintBoxStyle(header, hConsole,(st.info.name + L' ' + st.info.surname), BASE_COLOUR, NAME_COLOUR, L'│', indent);
 	temp = st.Class;
 	PrintBoxStyle(header, hConsole, (L"Class " + temp), BASE_COLOUR, CLASS_COLOUR, L'│', indent);
 	PrintBoxStyle(header, hConsole, RoleToWstring(st.role), BASE_COLOUR, ROLE_COLOUR, L'│', indent);
-	PrintBoxStyle(header, hConsole, EmailToWstring(st.email), BASE_COLOUR, EMAIL_COLOUR, L'│', indent);
+	PrintBoxStyle(header, hConsole, EmailToWstring(st.info.email), BASE_COLOUR, EMAIL_COLOUR, L'│', indent);
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 	std::wcout << L'\n';
 	PrintIndent(indent);
@@ -111,11 +118,11 @@ void InlinePrintStudent(STUDENT st, HANDLE hConsole, size_t indent)
 {
 	std::vector<std::wstring> content;
 	std::wstring temp = L"Class ";
-	content.push_back((st.name + L" " + st.surname));
+	content.push_back((st.info.name + L" " + st.info.surname));
 	temp += st.Class;
 	content.push_back(temp);
 	content.push_back(RoleToWstring(st.role));
-	content.push_back(EmailToWstring(st.email));
+	content.push_back(EmailToWstring(st.info.email));
 	PrintInlineStyle(content, hConsole, indent);
 	content.clear();
 	std::wcout << L'\n';
@@ -130,9 +137,9 @@ STUDENT EnterStudent()
 	std::wstring email = L"";
 	wchar_t temp = ' ';
 	std::wcout << L"Name: ";
-	std::wcin >> st.name;
+	std::wcin >> st.info.name;
 	std::wcout << L"Surname: ";
-	std::wcin >> st.surname;
+	std::wcin >> st.info.surname;
 	std::wcout << L"Class (A,B,C...): ";
 	std::wcin >> st.Class;
 	//seperate into a function!
@@ -145,7 +152,7 @@ STUDENT EnterStudent()
 	st.role = ROLE(int(temp) - 48);
 	std::wcout << L"Email: ";
 	std::wcin >> email;
-	st.email = WstringToEmail(email);
+	st.info.email = WstringToEmail(email);
 	return st;
 }
 
@@ -153,15 +160,15 @@ STUDENT CreateSampleStudent(std::vector<std::wstring>& names, std::vector<std::w
 {
 	STUDENT st;
 	std::wstring email = L"";
-	st.name = names[rand() % names.size()];
-	email += st.name + L'_';
-	st.surname = surnames[rand() % surnames.size()];
-	email += st.surname + L'.';
+	st.info.name = names[rand() % names.size()];
+	email += st.info.name + L'_';
+	st.info.surname = surnames[rand() % surnames.size()];
+	email += st.info.surname + L'.';
 	std::transform(email.begin(), email.end(), email.begin(), ::tolower);
 	st.Class = char(rand() % 4 + 65);
 	st.role = ROLE(rand() % 4);
 	email += RoleToWstring(st.role, true);
-	st.email = WstringToEmail((email + L"@sample.io"));
+	st.info.email = WstringToEmail(email + L"@sample.io");
 	return st;
 }
 
@@ -192,13 +199,15 @@ void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole, bool inlineS
 	}
 }
 
-void PrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents)
+void BoxPrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents)
 {
 	//┃━┏┓┗┛┫┣
 	std::wstring header =   L"┏━━━━━━━━━━━━━━━━━━┫ TEAM ┣━━━━━━━━━━━━━━━━━━┓";
 	std::wstring splitstr = L"┗┅┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┅┛";
 	std::wstring splitend = L"┏┅┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┅┓";
 	std::wstring footer =   L"┗━━━━━━━━━━━━━━━━━━┫ END. ┣━━━━━━━━━━━━━━━━━━┛";
+	std::wstring tchHeader = L"┎────────────┨ TEACHER ┠────────────┒";
+	std::wstring tchFooter = L"┖───────────────────────────────────┚";
 	std::wstring temp = L"";
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 	std::wcout << L'\n';
@@ -210,8 +219,19 @@ void PrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents)
 	std::wcout << L'\n';
 	PrintIndent(indent);
 	std::wcout << splitstr;
-	//FIGURE OUT A SMARTER SOLUTION!!!
 	std::wcout << L'\n';
+	std::wcout << L'\n';
+	PrintIndent(indent + 4);
+	std::wcout << tchHeader;
+	PrintBoxStyle(tchHeader, hConsole, (team.teacherInfo.name + L" " + team.teacherInfo.surname), BASE_COLOUR, NAME_COLOUR, L'┃', indent + 4);
+	PrintBoxStyle(tchHeader, hConsole, EmailToWstring(team.teacherInfo.email), BASE_COLOUR, EMAIL_COLOUR, L'┃', indent + 4);
+	std::wcout << L'\n';
+	PrintIndent(indent + 4);
+	std::wcout << tchFooter;
+	std::wcout << L'\n';
+	std::wcout << L'\n';
+	//FIGURE OUT A SMARTER SOLUTION!!!
+	//A FOR LOOP ISN'T GOOD ENOUGH!
 	if (inlineStudents)
 	{
 		InlinePrintStudent(team.students[0], hConsole, indent + 2);
@@ -229,8 +249,7 @@ void PrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents)
 		std::wcout << L'\n';
 		BoxPrintStudent(team.students[3], hConsole, indent + 2);
 	}
-	PrintIndent(indent);
-	std::wcout << splitend;
+	std::wcout << L'\n' << splitend;
 	int activeColor = UNDEFINED_COLOUR;
 	temp = StatusToWstring(team.status, activeColor);
 	PrintBoxStyle(header, hConsole, temp, BASE_COLOUR, activeColor, L'┃', indent);
@@ -240,6 +259,18 @@ void PrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents)
 	PrintIndent(indent);
 	std::wcout << footer;
 	std::wcout << L'\n';
+}
+
+void InlinePrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents)
+{
+	std::vector<std::wstring> content;
+	content.push_back((team.name));
+	int n = 0;
+	content.push_back(StatusToWstring(team.status, n));
+	PrintInlineStyle(content, hConsole, indent);
+	content.clear();
+	std::wcout << L'\n';
+
 }
 
 TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty)
@@ -318,46 +349,72 @@ void AddTeamToVector(std::vector<TEAM>& vec, TEAM team)
 	vec.push_back(team);
 }
 
-void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, bool inlineStudents)
+void BoxPrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, size_t indent, bool inlineStudents, bool inlineTeam)
 {
+	if (inlineTeam)
+		std::wcout << L'\n';
 	for (size_t i = 0; i < vec.size(); i++)
 	{
-		PrintTeam(vec[i], hConsole, 0, inlineStudents);
+		if (!inlineTeam)
+			BoxPrintTeam(vec[i], hConsole);
+		else
+			InlinePrintTeam(vec[i], hConsole, indent, inlineStudents);
 		SetConsoleTextAttribute(hConsole, BASE_COLOUR);
-		std::wcout << L"\n\n";
+		if (!inlineTeam)
+			std::wcout << L'\n';
 	}
 }
 
-TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames)
+TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& teams)
 {
 	TEACHER tch;
 	std::wstring email = L"";
-	tch.name = names[rand() % names.size()];
-	email += tch.name + L'_';
-	tch.surname = surnames[rand() % surnames.size()];
-	email += tch.surname + L'.';
+	tch.info.name = names[rand() % names.size()];
+	email += tch.info.name + L'_';
+	tch.info.surname = surnames[rand() % surnames.size()];
+	email += tch.info.surname + L'.';
 	std::transform(email.begin(), email.end(), email.begin(), ::tolower);
-	tch.email = WstringToEmail((email + L"@sample.io"));
+	tch.info.email = WstringToEmail(email + L"@sample.io");
 
 	//Implement a way to connect a team with a teacher and vise versa!!!
+	if (teams.size() > 0)
+	{
+		for (size_t i = 0; i < teams.size(); i++)
+		{
+			if (rand() % 100 + 1 >= 70 and arePeopleEqual(teams[i].teacherInfo, { L"Homo", L"Sapiens", WstringToEmail(L"Iamarealhuman@mars.com") }))
+			{
+				teams[i].teacherInfo = tch.info;
+				AddTeamToVector(tch.teams, teams[i]);
+			}
+		}
+	}
 
 	return tch;
 }
 
+//Team will be connected to BoxPrintTeacher only!!!
 void BoxPrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent)
 {
 	//─┤├──┠┨┎┒┃┖┚
-	std::wstring header = L"┎──────────────┨ TEACHER ┠──────────────┒";
-	std::wstring footer = L"┖───────────────────────────────────────┚";
+	std::wstring header =   L"┎────────────────┨ TEACHER ┠────────────────┒";
+	std::wstring splitstr = L"┖┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┚";
+	std::wstring splitend = L"┎┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┒";
+	std::wstring footer =   L"┖───────────────────────────────────────────┚";
 	std::wstring temp = L"";
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 	PrintIndent(indent);
 	std::wcout << header;
-	PrintBoxStyle(header, hConsole, (tch.name + L' ' + tch.surname), BASE_COLOUR, NAME_COLOUR, L'┃', indent);
-	PrintBoxStyle(header, hConsole, EmailToWstring(tch.email), BASE_COLOUR, EMAIL_COLOUR, L'┃', indent);
+	PrintBoxStyle(header, hConsole, (tch.info.name + L' ' + tch.info.surname), BASE_COLOUR, NAME_COLOUR, L'┃', indent);
+	PrintBoxStyle(header, hConsole, EmailToWstring(tch.info.email), BASE_COLOUR, EMAIL_COLOUR, L'┃', indent);
+	std::wcout << L'\n';
+	PrintIndent(indent);
+	std::wcout << splitstr;
 
 	//Implement a way to connect a team with a teacher and vise versa!!!
+	BoxPrintTeamVector(tch.teams, hConsole, 3, true, true);
 
+	PrintIndent(indent);
+	std::wcout << splitend;
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 	std::wcout << L'\n';
 	PrintIndent(indent);
@@ -365,14 +422,12 @@ void BoxPrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent)
 	std::wcout << L'\n';
 }
 
+//Team will be connected to BoxPrintTeacher only!!!
 void InlinePrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent)
 {
 	std::vector<std::wstring> content;
-	content.push_back(tch.name + L" " + tch.surname);
-	content.push_back(EmailToWstring(tch.email));
-
-	//Implement a way to connect a team with a teacher and vise versa!!!
-	
+	content.push_back(tch.info.name + L" " + tch.info.surname);
+	content.push_back(EmailToWstring(tch.info.email));
 	PrintInlineStyle(content, hConsole, indent);
 	content.clear();
 	std::wcout << L'\n';

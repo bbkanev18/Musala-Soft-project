@@ -29,15 +29,16 @@ int main()
 	//TEAM testing site
 
 	//TEAM team = EnterTeam();
-	//PrintTeam(team, hConsole);
+	//BoxPrintTeam(team, hConsole);
 	
 	//TEAM vector testing site
 
-	//std::vector<TEAM> tvec;
-	//CreateSampleTeamVector(teamNamesList, namesList, surnamesList, tvec);
-	//PrintTeamVector(tvec, hConsole, true);
+	std::vector<TEAM> tvec;
+	CreateSampleTeamVector(teamNamesList, namesList, surnamesList, tvec, 50);
+	//BoxPrintTeamVector(tvec, hConsole, true);
 	//std::wcout << L"\n\n\n";
-	//PrintTeamVector(tvec, hConsole, false);
+	//BoxPrintTeamVector(tvec, hConsole, false);
+	//std::wcout << L"\n\n\n";
 
 	
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -55,10 +56,10 @@ int main()
 	/////////////////////////////////////////////////////////////////////////////////////
 	//TEACHER testing site
 
-	TEACHER tch = CreateSampleTeacher(namesList, surnamesList);
-	BoxPrintTeacher(tch, hConsole);
-	std::wcout << L"\n\n\n";
-	InlinePrintTeacher(tch, hConsole);
+	//TEACHER tch = CreateSampleTeacher(namesList, surnamesList, tvec);
+	//BoxPrintTeacher(tch, hConsole);
+	//std::wcout << L"\n\n\n";
+	//InlinePrintTeacher(tch, hConsole);
 
 	//TEACHER vector testing site
 }
