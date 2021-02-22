@@ -43,6 +43,10 @@ struct PERSON
 	struct EMAIL email = WstringToEmail(L"Iamarealhuman@mars.com");
 };
 
+PERSON EnterPerson();
+
+PERSON CreateSamplePerson(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames);
+
 bool arePeopleEqual(PERSON a, PERSON b);
 
 struct STUDENT
@@ -103,6 +107,12 @@ void BoxPrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent = 0);
 
 void InlinePrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent = 0);
 
+void BoxPrintTeacherVector(std::vector<TEACHER> vec, HANDLE hConsole, size_t indent = 0, bool inlineTeacher = false);
+
+void CreateSampleTeacherVector(std::vector<TEAM>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEACHER>& vec, size_t amount = 5, bool empty = false);
+
+void AddTeacherToVector(std::vector<TEACHER>& vec, TEACHER tch);
+
 struct SCHOOL
 {
 	std::wstring name;
@@ -115,3 +125,11 @@ struct SCHOOL
 //print school -> school - team(teacher,students)
 
 //Maybe Seperate a function to create (name,surname,email) from Teacher/Student functions
+
+//Issue with create sample teacher! - First sample has the most teams!
+
+//Try to maker addtovec
+//not as different functions,
+//but as a few functions,
+//that have the same name
+//and are overloads of eachother

@@ -86,6 +86,33 @@ std::wstring StatusToWstring(STATUS status, int& activeColor)
 
 }
 
+PERSON EnterPerson()
+{
+	PERSON info;
+	std::wstring email = L"";
+	std::wcout << L"Name: ";
+	std::wcin >> info.name;
+	std::wcout << L"Surname: ";
+	std::wcin >> info.surname;
+	std::wcout << L"Email: ";
+	std::wcin >> email;
+	info.email = WstringToEmail(email);
+	return info;
+}
+
+PERSON CreateSamplePerson(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames)
+{
+	PERSON info;
+	std::wstring email = L"";
+	info.name = names[rand() % names.size()];
+	email += info.name + L'.';
+	info.surname = surnames[rand() % surnames.size()];
+	email += info.surname;
+	std::transform(email.begin(), email.end(), email.begin(), ::tolower);
+	info.email = WstringToEmail(email + L"@sample.io");
+	return info;
+}
+
 bool arePeopleEqual(PERSON a, PERSON b)
 {
 	if (EmailToWstring(a.email) == EmailToWstring(b.email) and a.name == b.name and a.surname == b.surname)
@@ -129,20 +156,16 @@ void InlinePrintStudent(STUDENT st, HANDLE hConsole, size_t indent)
 }
 
 //Job for q&a
-//Pls test enterStudent with all kinds of values!
+//Pls test EnterStudent with all kinds of values!
 
 STUDENT EnterStudent()
 {
 	STUDENT st;
-	std::wstring email = L"";
 	wchar_t temp = ' ';
-	std::wcout << L"Name: ";
-	std::wcin >> st.info.name;
-	std::wcout << L"Surname: ";
-	std::wcin >> st.info.surname;
+	st.info = EnterPerson();
 	std::wcout << L"Class (A,B,C...): ";
 	std::wcin >> st.Class;
-	//seperate into a function!
+	//seperate into a function?
 	if (st.Class >= 'a' and st.Class <= 'z')
 		st.Class -= ('a' - 'A');
 	if (!(st.Class >= 'A' and st.Class <= 'Z'))
@@ -150,25 +173,15 @@ STUDENT EnterStudent()
 	std::wcout << L"Role (1.BackendDev, 2.FrontendDev, 3.Q&AEngineer, 4.ScrumTrainer): ";
 	std::wcin >> temp;
 	st.role = ROLE(int(temp) - 48);
-	std::wcout << L"Email: ";
-	std::wcin >> email;
-	st.info.email = WstringToEmail(email);
 	return st;
 }
 
 STUDENT CreateSampleStudent(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames)
 {
 	STUDENT st;
-	std::wstring email = L"";
-	st.info.name = names[rand() % names.size()];
-	email += st.info.name + L'_';
-	st.info.surname = surnames[rand() % surnames.size()];
-	email += st.info.surname + L'.';
-	std::transform(email.begin(), email.end(), email.begin(), ::tolower);
 	st.Class = char(rand() % 4 + 65);
 	st.role = ROLE(rand() % 4);
-	email += RoleToWstring(st.role, true);
-	st.info.email = WstringToEmail(email + L"@sample.io");
+	st.info = CreateSamplePerson(names, surnames);
 	return st;
 }
 
@@ -381,7 +394,7 @@ TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::w
 	{
 		for (size_t i = 0; i < teams.size(); i++)
 		{
-			if (rand() % 100 + 1 >= 70 and arePeopleEqual(teams[i].teacherInfo, { L"Homo", L"Sapiens", WstringToEmail(L"Iamarealhuman@mars.com") }))
+			if (rand() % 100 + 1 >= 80 and arePeopleEqual(teams[i].teacherInfo, { L"Homo", L"Sapiens", WstringToEmail(L"Iamarealhuman@mars.com") }))
 			{
 				teams[i].teacherInfo = tch.info;
 				AddTeamToVector(tch.teams, teams[i]);
@@ -431,4 +444,31 @@ void InlinePrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent)
 	PrintInlineStyle(content, hConsole, indent);
 	content.clear();
 	std::wcout << L'\n';
+}
+
+void BoxPrintTeacherVector(std::vector<TEACHER> vec, HANDLE hConsole, size_t indent, bool inlineTeacher)
+{
+	if (inlineTeacher)
+		std::wcout << L'\n';
+	for (size_t i = 0; i < vec.size(); i++)
+	{
+		if (!inlineTeacher)
+			BoxPrintTeacher(vec[i], hConsole, indent);
+		else
+			InlinePrintTeacher(vec[i], hConsole, indent);
+		SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+		if (!inlineTeacher)
+			std::wcout << L'\n';
+	}
+}
+
+void CreateSampleTeacherVector(std::vector<TEAM>& teams, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEACHER>& vec, size_t amount, bool empty)
+{
+	for (size_t i = 0; i < amount; i++)
+		AddTeacherToVector(vec, CreateSampleTeacher(names, surnames, teams));
+}
+
+void AddTeacherToVector(std::vector<TEACHER>& vec, TEACHER tch)
+{
+	vec.push_back(tch);
 }

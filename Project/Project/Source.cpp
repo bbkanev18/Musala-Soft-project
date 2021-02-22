@@ -44,6 +44,8 @@ int main()
 	/////////////////////////////////////////////////////////////////////////////////////
 	//STUDENT testing site
 
+	//STUDENT st = EnterStudent();
+	//BoxPrintStudent(st, hConsole);
 
 	//STUDENT vector testing site
 
@@ -57,9 +59,16 @@ int main()
 	//TEACHER testing site
 
 	//TEACHER tch = CreateSampleTeacher(namesList, surnamesList, tvec);
+	//tch = CreateSampleTeacher(namesList, surnamesList, tvec);
 	//BoxPrintTeacher(tch, hConsole);
 	//std::wcout << L"\n\n\n";
 	//InlinePrintTeacher(tch, hConsole);
 
 	//TEACHER vector testing site
+
+	std::vector<TEACHER> tcvec;
+	CreateSampleTeacherVector(tvec, namesList, surnamesList, tcvec);
+	BoxPrintTeacherVector(tcvec, hConsole, 0, true);
+	std::wcout << L"\n\n\n";
+	BoxPrintTeacherVector(tcvec, hConsole, 0, false);
 }
