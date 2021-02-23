@@ -26,21 +26,14 @@ std::vector<std::wstring> GenerateNameVector(std::string path);
 
 void PrintBoxStyle(std::wstring header, HANDLE hConsole, std::wstring content = L"", int baseColour = 7, int specialColour = 7, wchar_t wall = L'|', size_t indent = 0);
 
-std::wstring Add0BeforeIntSmallerThan10(int num);
+std::wstring AddLeadingZeroes(int num);
 //Pick a better name!!
 
-/*
-Args:
-	1. second
-	2. minute
-	3. hour
-	4. day of month
-	5. month
-	6. year
-	7. day of week
-	8. day of year
-*/
-std::wstring TmToWstring(tm tm, BYTE args);
+std::wstring TmToDateOfSetupWstring(tm tm);
+
+std::wstring TmToDateWstring(tm tm, wchar_t delimiter = L'-');
+
+std::wstring TmToTimeWstring(tm tm, wchar_t delimiter = L':');
 
 void PrintIndent(size_t indent = 3);
 

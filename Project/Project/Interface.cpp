@@ -6,6 +6,8 @@
 #include "windows.h"
 
 #include "Interface.h"
+#include "Log.h"
+#include "DataTypes.h"
 
 std::vector<std::wstring> GenerateNameVector(std::string path)
 {
@@ -68,7 +70,7 @@ void PrintBoxStyle(std::wstring header, HANDLE hConsole, std::wstring content, i
 	//| t initial d    |
 }
 
-std::wstring Add0BeforeIntSmallerThan10(int num)
+std::wstring AddLeadingZeroes(int num)
 {
 	std::wstring st = L"";
 	if (num < 10 and num >= 0)
@@ -77,58 +79,58 @@ std::wstring Add0BeforeIntSmallerThan10(int num)
 	return st;
 }
 
-std::wstring TmToWstring(tm tm, BYTE args)
+std::wstring TmToDateOfSetupWstring(tm tm)
 {
-/*
-Args:
-	1. second
-	2. minute
-	3. hour
-	4. day of month
-	5. month
-	6. year
-	7. day of week
-	8. day of year
-*/
-	switch (args)
+	std::wstring out = L"";
+	switch (tm.tm_wday)
 	{
-	case 1: //second
-		return Add0BeforeIntSmallerThan10(tm.tm_sec);
-	case 2: //minute
-		return Add0BeforeIntSmallerThan10(tm.tm_min);
-	case 3: //hour
-		return Add0BeforeIntSmallerThan10(tm.tm_hour);
-	case 4: //day of month
-		return Add0BeforeIntSmallerThan10(tm.tm_mday);
-	case 5: //month
-		return Add0BeforeIntSmallerThan10(tm.tm_mon + 1);
-	case 6: //year
-		return Add0BeforeIntSmallerThan10(tm.tm_year + 1900);
-	case 7: //day of week
-		switch (tm.tm_wday)
-		{
-		case 0:
-			return L"Monday";
-		case 1:
-			return L"Tuesday";
-		case 2:
-			return L"Wednesday";
-		case 3:
-			return L"Thursday";
-		case 4:
-			return L"Friday";
-		case 5:
-			return L"Saturday";
-		case 6:
-			return L"Sunday";
-		default:
-			return L"";
-		}
-	case 8: //day of year
-		return Add0BeforeIntSmallerThan10(tm.tm_yday);
+	case 0:
+		out = L"Monday ";
+		break;
+	case 1:
+		out = L"Tuesday ";
+		break;
+	case 2:
+		out = L"Wednesday ";
+		break;
+	case 3:
+		out = L"Thursday ";
+		break;
+	case 4:
+		out = L"Friday ";
+		break;
+	case 5:
+		out = L"Saturday ";
+		break;
+	case 6:
+		out = L"Sunday ";
+		break;
 	default:
-		return L"";
+		out = L"";
+		break;
 	}
+	out += AddLeadingZeroes(tm.tm_mday) + L'-';
+	out += AddLeadingZeroes(tm.tm_mon + 1) + L'-';
+	out += AddLeadingZeroes(tm.tm_year + 1900);
+	return out;
+}
+
+std::wstring TmToDateWstring(tm tm, wchar_t delimiter)
+{
+	std::wstring out = L"";
+	out += AddLeadingZeroes(tm.tm_year + 1900) + delimiter;
+	out += AddLeadingZeroes(tm.tm_mon + 1) + delimiter;
+	out += AddLeadingZeroes(tm.tm_mday);
+	return out;
+}
+
+std::wstring TmToTimeWstring(tm tm, wchar_t delimiter)
+{
+	std::wstring out = L"";
+	out += AddLeadingZeroes(tm.tm_hour) + delimiter;
+	out += AddLeadingZeroes(tm.tm_min) + delimiter;
+	out += AddLeadingZeroes(tm.tm_sec);
+	return out;
 }
 
 void PrintIndent(size_t indent)

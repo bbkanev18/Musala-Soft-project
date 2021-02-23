@@ -8,6 +8,7 @@
 
 #include "DataTypes.h"
 #include "Interface.h"
+#include "Log.h"
 
 EMAIL WstringToEmail(std::wstring email)
 {
@@ -113,7 +114,7 @@ PERSON CreateSamplePerson(std::vector<std::wstring>& names, std::vector<std::wst
 	return info;
 }
 
-bool arePeopleEqual(PERSON a, PERSON b)
+bool ArePeopleEqual(PERSON a, PERSON b)
 {
 	if (EmailToWstring(a.email) == EmailToWstring(b.email) and a.name == b.name and a.surname == b.surname)
 		return true;
@@ -173,6 +174,7 @@ STUDENT EnterStudent()
 	std::wcout << L"Role (1.BackendDev, 2.FrontendDev, 3.Q&AEngineer, 4.ScrumTrainer): ";
 	std::wcin >> temp;
 	st.role = ROLE(int(temp) - 48);
+	std::wcout << L'\n';
 	return st;
 }
 
@@ -228,7 +230,7 @@ void BoxPrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents
 	std::wcout << header;
 	PrintBoxStyle(header, hConsole, team.name, BASE_COLOUR, NAME_COLOUR, L'┃', indent); //TAKE CARE OF COLOURS!!
 	PrintBoxStyle(header, hConsole, team.description, BASE_COLOUR, DESCRIPTION_COLOUR, L'┃', indent);
-	PrintBoxStyle(header, hConsole, (TmToWstring(team.dateOfSetup ,7) + L" " + TmToWstring(team.dateOfSetup, 4) + L"-" + TmToWstring(team.dateOfSetup, 5) + L"-" + TmToWstring(team.dateOfSetup, 6)), BASE_COLOUR, DATEOFSETUP_COLOUR, L'┃', indent);
+	PrintBoxStyle(header, hConsole, (TmToDateOfSetupWstring(team.dateOfSetup)), BASE_COLOUR, DATEOFSETUP_COLOUR, L'┃', indent);
 	std::wcout << L'\n';
 	PrintIndent(indent);
 	std::wcout << splitstr;
@@ -394,7 +396,7 @@ TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::w
 	{
 		for (size_t i = 0; i < teams.size(); i++)
 		{
-			if (rand() % 100 + 1 >= 80 and arePeopleEqual(teams[i].teacherInfo, { L"Homo", L"Sapiens", WstringToEmail(L"Iamarealhuman@mars.com") }))
+			if (rand() % 100 + 1 >= 80 and ArePeopleEqual(teams[i].teacherInfo, { L"Homo", L"Sapiens", WstringToEmail(L"Iamarealhuman@mars.com") }))
 			{
 				teams[i].teacherInfo = tch.info;
 				AddTeamToVector(tch.teams, teams[i]);

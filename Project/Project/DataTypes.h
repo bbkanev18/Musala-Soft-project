@@ -47,7 +47,7 @@ PERSON EnterPerson();
 
 PERSON CreateSamplePerson(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames);
 
-bool arePeopleEqual(PERSON a, PERSON b);
+bool ArePeopleEqual(PERSON a, PERSON b);
 
 struct STUDENT
 {

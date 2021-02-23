@@ -173,3 +173,4 @@ Keep thinking of a better way!!!
 
 1. [ ] Add colours to the input functions!!!
 2. [ ] Create menues!!!
+
