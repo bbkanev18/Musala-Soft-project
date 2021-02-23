@@ -174,3 +174,14 @@ Keep thinking of a better way!!!
 1. [ ] Add colours to the input functions!!!
 2. [ ] Create menues!!!
 
+print school -> school - team(teacher,students)
+
+Maybe Seperate a function to create (name,surname,email) from Teacher/Student functions
+
+Issue with create sample teacher! - First sample has the most teams!
+
+Try to maker addtovec
+not as different functions,
+but as a few functions,
+that have the same name
+and are overloads of eachother

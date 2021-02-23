@@ -9,127 +9,143 @@
 #include "Log.h"
 #include "DataTypes.h"
 
-std::vector<std::wstring> GenerateNameVector(std::string path)
+std::vector<std::wstring> GenerateWstringVector(std::string path)
 {
 	std::vector<std::wstring> vec;
-
-	std::wstring line;
+	std::wstring line = L"0";
 	std::wifstream File(path);
 
-	while (true)
+	while (line != L"")
 	{
 		getline(File, line);
-		if (line == L"")
-			break;
 		vec.push_back(line);
 	}
+
 	File.close();
 	return vec;
 }
 
-//Its possible to send online a size_t of header Size rather than the wstring itselv 
-// |
-// V
-
-void PrintBoxStyle(std::wstring header, HANDLE hConsole, std::wstring content, int baseColour, int specialColour, wchar_t wall, size_t indent)
+void PrintBoxStyle(size_t hSize, HANDLE hConsole, std::wstring content, int baseColour, int specialColour, wchar_t wall, size_t indent)
 {
-	size_t hSize = header.size();
+	std::wstring overflow = L"empty";			//Is the wstring that overflows through the boundry
+	int dif = (hSize - 3) - content.size();		//Is the difference between header's size and content's size
+	wchar_t tempC = L'-';						//Is a temporary wchar_t
+	
 	SetConsoleTextAttribute(hConsole, baseColour);
-	std::wcout << L'\n';
+	NewLine();
 	PrintIndent(indent);
 	std::wcout << wall << L' ';
-	std::wstring overflow = L"empty";
-	if (content.size() >= (hSize - 5))
+	
+	//Overflow protection
+	if (content.size() >= (hSize - 5))	//If the size of the content is bigger than the header's size - 5
 	{
+		//Overflow becomes a substring of content from hSize and is long (content's size - (header's size - 5))
 		overflow = content.substr(hSize - 5, content.size() - (hSize - 5));
-		wchar_t tempC = L'-';
+
 		if (content[hSize - 6] == L' ')
 			tempC = ' ';
+
 		content = content.substr(0, hSize - 5) +  tempC;
 	}
-	int dif = (hSize - 3) - content.size();
-	std::wstring padding = L"";
-	for (size_t i = 0; i < dif / 2; i++)
-		padding += ' ';
+	
 	SetConsoleTextAttribute(hConsole, baseColour);
-	std::wcout << padding;
+	PrintIndent(dif / 2);
 	SetConsoleTextAttribute(hConsole, specialColour);
 	std::wcout << content;
+	
 	SetConsoleTextAttribute(hConsole, baseColour);
 	if (hSize % 2 == 1 and content.size() % 2 == 1)
 		std::wcout << ' ';
 	else if (hSize % 2 == 0 and content.size() % 2 == 0)
 		std::wcout << ' ';
-	std::wcout << padding << wall;
-	if (overflow != L"empty")
-		PrintBoxStyle(header, hConsole, overflow, baseColour, specialColour, wall, indent);
-	//It would be easy to make the padding left or right too!
-	//| hello          |
-	//|           help |
-	//| break the nigh |
-	//| t initial d    |
+
+	PrintIndent(dif / 2);
+	std::wcout << wall;
+
+	if (overflow != L"empty")			//If there is any content in the overflow wstring recurse through PrintBoxStyle
+		PrintBoxStyle(hSize, hConsole, overflow, baseColour, specialColour, wall, indent);
+}
+
+void PrintInlineStyle(std::vector<std::wstring>& content, HANDLE hConsole, size_t indent, wchar_t seperator)
+{
+	SetConsoleTextAttribute(hConsole, WALL_COLOUR);
+	PrintIndent(indent);
+	std::wcout << seperator << L' ';
+
+	for (size_t i = 0; i < content.size(); i++)
+	{
+		SetConsoleTextAttribute(hConsole, INLINEPRINT_COLOUR);
+		std::wcout << content[i];
+		SetConsoleTextAttribute(hConsole, WALL_COLOUR);
+		std::wcout << L' ' << seperator;
+
+		if (i != content.size() - 1)
+			std::wcout << L' ';
+	}
+	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 }
 
 std::wstring AddLeadingZeroes(int num)
 {
 	std::wstring st = L"";
+
 	if (num < 10 and num >= 0)
 		st += L'0';
+
 	st += std::to_wstring(num);
+
 	return st;
 }
 
-std::wstring TmToDateOfSetupWstring(tm tm)
+std::wstring TmToDateWstring(tm tm, bool addWeekday, wchar_t delimiter)
 {
 	std::wstring out = L"";
-	switch (tm.tm_wday)
-	{
-	case 0:
-		out = L"Monday ";
-		break;
-	case 1:
-		out = L"Tuesday ";
-		break;
-	case 2:
-		out = L"Wednesday ";
-		break;
-	case 3:
-		out = L"Thursday ";
-		break;
-	case 4:
-		out = L"Friday ";
-		break;
-	case 5:
-		out = L"Saturday ";
-		break;
-	case 6:
-		out = L"Sunday ";
-		break;
-	default:
-		out = L"";
-		break;
-	}
-	out += AddLeadingZeroes(tm.tm_mday) + L'-';
-	out += AddLeadingZeroes(tm.tm_mon + 1) + L'-';
-	out += AddLeadingZeroes(tm.tm_year + 1900);
-	return out;
-}
 
-std::wstring TmToDateWstring(tm tm, wchar_t delimiter)
-{
-	std::wstring out = L"";
+	if (addWeekday)
+	{
+		switch (tm.tm_wday)
+		{
+		case 0:
+			out = L"Monday ";
+			break;
+		case 1:
+			out = L"Tuesday ";
+			break;
+		case 2:
+			out = L"Wednesday ";
+			break;
+		case 3:
+			out = L"Thursday ";
+			break;
+		case 4:
+			out = L"Friday ";
+			break;
+		case 5:
+			out = L"Saturday ";
+			break;
+		case 6:
+			out = L"Sunday ";
+			break;
+		default:
+			out = L"";
+			break;
+		}
+	}
 	out += AddLeadingZeroes(tm.tm_year + 1900) + delimiter;
 	out += AddLeadingZeroes(tm.tm_mon + 1) + delimiter;
 	out += AddLeadingZeroes(tm.tm_mday);
+
 	return out;
 }
 
 std::wstring TmToTimeWstring(tm tm, wchar_t delimiter)
 {
 	std::wstring out = L"";
+
 	out += AddLeadingZeroes(tm.tm_hour) + delimiter;
 	out += AddLeadingZeroes(tm.tm_min) + delimiter;
 	out += AddLeadingZeroes(tm.tm_sec);
+	
 	return out;
 }
 
@@ -139,21 +155,8 @@ void PrintIndent(size_t indent)
 		std::wcout << ' ';
 }
 
-void PrintInlineStyle(std::vector<std::wstring>& content, HANDLE hConsole, size_t indent, wchar_t seperator)
+void NewLine(size_t lines)
 {
-
-	PrintIndent(indent);
-	SetConsoleTextAttribute(hConsole, WALL_COLOUR);
-	std::wcout << seperator << L' ';
-	for (size_t i = 0; i < content.size(); i++)
-	{
-		SetConsoleTextAttribute(hConsole, INLINEPRINT_COLOUR);
-		std::wcout << content[i];
-		SetConsoleTextAttribute(hConsole, WALL_COLOUR);
-		std::wcout << L' ' << seperator;
-		if (i != content.size() - 1)
-			std::wcout << L' ';
-	}
-	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+	for (size_t i = 0; i < lines; i++)
+		std::cout << L'\n';
 }
-//Find a way to print a content field up to said amounts of chars
