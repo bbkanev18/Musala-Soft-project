@@ -15,7 +15,7 @@ std::vector<std::wstring> GenerateWstringVector(std::string path)
 	std::wstring line = L"0";
 	std::wifstream File(path);
 
-	while (line != L"")
+	while (line != L"ENDOFFILE")
 	{
 		getline(File, line);
 		vec.push_back(line);
@@ -66,10 +66,20 @@ void PrintBoxStyle(size_t hSize, HANDLE hConsole, std::wstring content, int base
 		PrintBoxStyle(hSize, hConsole, overflow, baseColour, specialColour, wall, indent);
 }
 
-void PrintInlineStyle(std::vector<std::wstring>& content, HANDLE hConsole, size_t indent, wchar_t seperator)
+void PrintInlineStyle(std::vector<std::wstring>& content, HANDLE hConsole, size_t indent, int id, wchar_t seperator)
 {
-	SetConsoleTextAttribute(hConsole, WALL_COLOUR);
 	PrintIndent(indent);
+
+	if (id != -1)
+	{
+		SetConsoleTextAttribute(hConsole, WALL_COLOUR);
+		std::wcout << seperator;
+		SetConsoleTextAttribute(hConsole, INLINEPRINT_COLOUR);
+		std::wcout << L' ' << std::to_wstring(id + 1) << L' ';
+	}
+
+
+	SetConsoleTextAttribute(hConsole, WALL_COLOUR);
 	std::wcout << seperator << L' ';
 
 	for (size_t i = 0; i < content.size(); i++)
@@ -158,5 +168,5 @@ void PrintIndent(size_t indent)
 void NewLine(size_t lines)
 {
 	for (size_t i = 0; i < lines; i++)
-		std::cout << L'\n';
+		std::wcout << L'\n';
 }

@@ -15,7 +15,9 @@ struct EMAIL
 };
 
 //Separate a wstring into an email struct
-EMAIL WstringToEmail(std::wstring email);
+EMAIL WstringToEmail(std::wstring email, std::wstring name = L"", std::wstring surname = L"");
+
+EMAIL AutogenEmail(std::wstring name, std::wstring surname);
 
 //Combines the elements of an email struct to a wstring
 std::wstring EmailToWstring(EMAIL email);
@@ -56,13 +58,14 @@ struct PERSON
 };
 
 //Return a PERSON made by user input
-PERSON EnterPerson();
+PERSON EnterPerson(HANDLE hConsole);
 
 //Return a PERSON made by the computer
 PERSON CreateSamplePerson(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames);
 
 //Checks if 2 People (2 PERSONs) are the same
-bool ArePeopleEqual(PERSON a, PERSON b);
+//If no person is pushed to b, b will be the default value of PERSON
+bool ArePeopleEqual(PERSON a, PERSON b = { L"Homo", L"Sapiens", L"Iamarealhuman" , L"mars.com"});
 
 //A struct to store STUDENT info
 struct STUDENT
@@ -79,7 +82,7 @@ void BoxPrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0);
 void InlinePrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0);
 
 //Return a STUDENT made by user input
-STUDENT EnterStudent();
+STUDENT EnterStudent(HANDLE hConsole);
 
 //Return a STUDENT made by the computer
 STUDENT CreateSampleStudent(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames);
@@ -90,6 +93,9 @@ void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std
 //Adds a STUDENT to a vector of STUDENTs
 void AddObjectToVector(std::vector<STUDENT>& vec, STUDENT obj);
 
+//Removes a STUDENT from a vector of STUDENTs
+void RemoveObjectFromVector(std::vector<STUDENT>& vec, size_t posStart, size_t posEnd = 0);
+
 //Prints a vector of STUDENTs
 //Styles can be toggled by changing inlineStudents to true(for inline) or false(for box)
 void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole, bool inlineStudents = false);
@@ -99,7 +105,7 @@ struct TEAM
 {
 	std::wstring name = L"‎Decameron";
 	std::wstring description = L"Ora";				//Short summary of the team
-	struct tm dateOfSetup;							//TimeStamp for when the team was added
+	struct tm dateOfSetup = {};						//TimeStamp for when the team was added
 	enum class STATUS status = STATUS::Undefined;	//Project's (Team's) current status
 	struct STUDENT students[4] = {};				//An array of students that are a part of the team
 	PERSON teacherInfo;								//Personal info for the teacher that is the team's mentor
@@ -109,13 +115,13 @@ struct TEAM
 void BoxPrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0, bool inlineStudents = false);
 
 //Print a TEAM in Inline Style
-void InlinePrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0, bool inlineStudents = false);
+void InlinePrintTeam(TEAM team, HANDLE hConsole, size_t indent = 0, int id = -1);
 
 //Return a TEAM made by the computer
 TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty = false);
 
 //Return a TEAM made by user input
-TEAM EnterTeam();
+TEAM EnterTeam(HANDLE hConsole);
 
 //Fills a vector with TEAMs made by the computer
 void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& vec, size_t amount = 5, bool empty = false);
@@ -123,10 +129,16 @@ void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<st
 //Adds a TEAM to a vector of TEAMs
 void AddObjectToVector(std::vector<TEAM>& vec, TEAM obj);
 
+//Removes a TEAM from a vector of TEAMs
+void RemoveObjectFromVector(std::vector<TEAM>& vec, size_t posStart, size_t posEnd = 0);
+
 //Prints a vector of TEAMs
 //Styles for the students in the teams can be toggled by changing inlineStudents to true(for inline) or false(for box)
 //Styles for the teams can be toggled by changing inlineTeamss to true(for inline) or false(for box)
-void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, size_t indent, bool inlineStudents = false, bool inlineTeams = false);
+void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, size_t indent, bool inlineTeams = false, bool inlineStudents = false);
+
+//A function that updates a vector with the teams that dont have a teacher
+void UpdateTeacherlessTeamVector(std::vector<TEAM>& allTeams, std::vector<TEAM>& tchlessTeams);
 
 //A struct to store TEACHER info
 struct TEACHER
@@ -143,7 +155,7 @@ void BoxPrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent = 0);
 void InlinePrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent = 0);
 
 //Return a TEACHER made by user input
-TEACHER EnterTeacher();
+TEACHER EnterTeacher(std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeams, HANDLE hConsole);
 
 //Return a TEACHER made by the computer
 TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& teams);
@@ -153,6 +165,9 @@ void CreateSampleTeacherVector(std::vector<TEAM>& teamNames, std::vector<std::ws
 
 //Adds a TEACHER to a vector of TEACHERs
 void AddObjectToVector(std::vector<TEACHER>& vec, TEACHER obj);
+
+//Removes a TEACHER from a vector of TEACHERs
+void RemoveObjectFromVector(std::vector<TEACHER>& vec, size_t posStart, size_t posEnd = 0);
 
 //Prints a vector of TEACHERs
 //Styles can be toggled by changing inlineStudents to true(for inline) or false(for box)

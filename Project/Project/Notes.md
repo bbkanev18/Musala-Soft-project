@@ -1,4 +1,15 @@
-﻿# TODO
+﻿<style>
+	h1		{color:#CC8CE9;}
+	h2		{color:#C619D3;}
+	h3		{color:#D31983;}
+	body	{background-color: #111F59;}
+	li		{color: #E0D527}
+	hr		{height:2px;border-width:0;color:gray;background-color:gray}
+	p		{color: #E1E3EA}
+</style>
+
+# TODO
+
 
 1. [ ] create the data types
 	- [x] create the structures and enumerators 
@@ -13,18 +24,18 @@
 	- think of more functions
 3. [ ] create i/o functions to simplify workflow
 
----
----
----
+<br>
+<br>
+<br>
 
 # Thinking place...
 
 idk
 
 
----
----
----
+<br>
+<br>
+<br>
 
 # Data Types
 
@@ -43,8 +54,11 @@ struct STUDENT
 };
 ```
 
----
-### ●Team Structure
+<hr>
+
+
+###	●Team Structure
+
 ```c++
 struct TEAM
 {
@@ -55,8 +69,11 @@ struct TEAM
 	enum class STATUS status = STATUS::Undefined;
 };
 ```
----
-### ●Teacher Structure
+<hr>
+
+
+###	●Teacher Structure
+
 ```c++
 struct TEACHER
 {
@@ -67,8 +84,11 @@ struct TEACHER
 };
 ```
 
----
-### ●School Structure
+<hr>
+
+
+###	●School Structure
+
 ```c++
 struct SCHOOL
 {
@@ -81,8 +101,9 @@ struct SCHOOL
 };
 ```
 
----
----
+<br>
+<br>
+<br>
 
 ## 2.Secondary data types
 
@@ -97,8 +118,11 @@ enum class ROLE
 	FrontendDev
 };
 ```
----
+<hr>
+
+
 ### ●Email Structure
+
 ```c++
 struct EMAIL
 {
@@ -106,8 +130,11 @@ wstring username
 wstring domain
 }
 ```
----
+<hr>
+
+
 ### ●Project Status Enumerator
+
 ```c++
 enum class STATUS
 {
@@ -117,9 +144,10 @@ enum class STATUS
 	Archived
 };
 ```
----
----
----
+
+<br>
+<br>
+<br>
 
 # Notes? idk
 
@@ -185,3 +213,41 @@ not as different functions,
 but as a few functions,
 that have the same name
 and are overloads of eachother
+
+EnterTeacher -
+
+	EnterPerson
+	
+	Choose the teams!
+		Have it get passed a vec of all teams
+		and then print only those with default value for teacherInfo
+		from there let the user pick out from the list of the "free" teams
+	
+	That's all
+
+What to do when an invalid input has been detected:
+
+	Notify the user of the invalid input
+	Notify the user why their input was invalid
+	Let the user enter the input again
+	?Save a log of the wrong input?
+
+Person input validation
+
+
+<br>
+<br>
+<br>
+<br>
+
+I should be able to overload more functions
+
+Add id like functionality to all PrintVector functions!!!
+
+<br>
+<br>
+<br>
+
+Add a header to all enter functions
+
+eg: `___/====\| STUDENT |/====\___`

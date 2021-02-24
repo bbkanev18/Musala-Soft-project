@@ -33,7 +33,7 @@ void PrintBoxStyle(size_t hSize, HANDLE hConsole, std::wstring content = L"", in
 //Prints the content in Inline Style
 //Eg:
 //| Incominciare fragilita | Intendo ingannati volta cosa | Nostra |
-void PrintInlineStyle(std::vector<std::wstring>& content, HANDLE hConsole, size_t indent = 0, wchar_t seperator = L'|');
+void PrintInlineStyle(std::vector<std::wstring>& content, HANDLE hConsole, size_t indent = 0, int id = -1, wchar_t seperator = L'|');
 
 //Adds leading zeroes to num and returns it as a wstring
 //Eg: 5 -> 05

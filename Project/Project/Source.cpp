@@ -42,13 +42,16 @@ int main()
 		//TEAM testing site
 
 		//TEAM team = EnterTeam();
+		//TEAM team = CreateSampleTeam(teamnamesList, namesList, surnamesList);
 		//BoxPrintTeam(team, hConsole);
 	
 		//===========================================
 		//TEAM vector testing site
 
-		//std::vector<TEAM> tvec;
-		//CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tvec, 5);
+		std::vector<TEAM> tvec;
+		std::vector<TEAM> tchlessVec;
+		CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tvec, 15);
+		UpdateTeacherlessTeamVector(tvec, tchlessVec);
 		//PrintTeamVector(tvec, hConsole, true);
 		//NewLine(3);
 		//PrintTeamVector(tvec, hConsole, false);
@@ -81,11 +84,17 @@ int main()
 		//TEACHER testing site
 
 		//TEACHER tch = CreateSampleTeacher(namesList, surnamesList, tvec);
-		//tch = CreateSampleTeacher(namesList, surnamesList, tvec);
+		TEACHER tch2;
 		//BoxPrintTeacher(tch, hConsole);
-		//NewLine(3);
+		NewLine(3);
 		//InlinePrintTeacher(tch, hConsole);
 		//NewLine(3);
+		UpdateTeacherlessTeamVector(tvec, tchlessVec);
+		PrintTeamVector(tchlessVec, hConsole, 0, true, false);
+		NewLine(3);
+		tch2 = EnterTeacher(tchlessVec, tvec, hConsole);
+		BoxPrintTeacher(tch2, hConsole);
+
 
 		//===========================================
 		//TEACHER vector testing site
@@ -101,8 +110,6 @@ int main()
 		/////////////////////////////////////////////////////////////////////////////////////
 		//===========================================
 		//QA testing site
-
-
 
 		_log.Close();
 	}
