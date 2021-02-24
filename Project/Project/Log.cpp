@@ -35,6 +35,8 @@ std::wstring SeverityToWstring(SEVERITY severity)
 	}
 }
 
+//Log
+
 void LOG::MakeLog(SEVERITY inSeverity, std::wstring inMessage)
 {
 	if (inSeverity <= severityFilter)
@@ -55,7 +57,8 @@ std::wstring LOG::LogToWstring(wchar_t delimiter)
 
 void LOG::PrintLog()
 {
-	std::wcout << LogToWstring() << std::endl;
+	if (severity <= severityFilter)
+		std::wcout << LogToWstring() << std::endl;
 }
 
 bool LOG::Open(std::wstring fileName)
@@ -67,7 +70,7 @@ bool LOG::Open(std::wstring fileName)
 		time_t _t;
 		time(&_t);
 		localtime_s(&tm, &_t);
-		logWFStream << "\nStart of log (" << TmToDateWstring(tm) << " " << TmToTimeWstring(tm) << ")\n{\n";
+		logWFStream << "\n==============================================================================\nStart of log (" << TmToDateWstring(tm) << " " << TmToTimeWstring(tm) << ")\n\n";
 	}
 	return logWFStream.is_open();
 }
@@ -78,7 +81,7 @@ void LOG::Close()
 	time_t _t;
 	time(&_t);
 	localtime_s(&tm, &_t);
-	logWFStream << "}\nEnd of log (" << TmToDateWstring(tm) << " " << TmToTimeWstring(tm) << ");\n";
+	logWFStream << " \nEnd of log   (" << TmToDateWstring(tm) << " " << TmToTimeWstring(tm) << ")\n";
 	logWFStream.close();
 }
 
