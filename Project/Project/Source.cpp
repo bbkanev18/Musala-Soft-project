@@ -11,6 +11,10 @@
 #include "Interface.h"
 #include "Log.h"
 
+#include <sstream>
+#include <fstream>
+#include <codecvt>
+
 //_log is global in order to save time and effort of passing it to every function
 LOG _log;
 
@@ -37,6 +41,7 @@ int main()
 		std::vector<std::wstring> surnamesList =  GenerateWstringVector("Database\\surnames.txt"   );
 		std::vector<std::wstring> teamnamesList =  GenerateWstringVector("Database\\teamnames.txt"  );
 		std::vector<std::wstring> schoolnamesList = GenerateWstringVector("Database\\schoolnames.txt");
+
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		//===========================================

@@ -694,8 +694,6 @@ void BoxPrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent, bool inlineTeach
 	std::wcout << splitstr;
 	NewLine();
 
-	//MAKE IT PRINT STUDENTS TOO!
-
 	for (size_t i = 0; i < sch.teams.size(); i++)
 		PrintStudentsFromTeam(sch.teams[i], hConsole, indent + 3, inlineStudents);
 
@@ -724,6 +722,13 @@ void InlinePrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent, int id)
 
 SCHOOL EnterSchool(HANDLE hConsole)
 {
+	SCHOOL sch;
+
+	NewLine();
+	std::wcout << L"════════════════════════╣ MAKING SCHOOL ╠════════════════════════";
+	NewLine();
+
+
 	return SCHOOL();
 }
 

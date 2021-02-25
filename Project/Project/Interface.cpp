@@ -1,5 +1,7 @@
 ﻿#include <iostream>
+#include <sstream>
 #include <fstream>
+#include <codecvt>
 #include <ctime>
 #include <string>
 
@@ -11,19 +13,22 @@
 
 std::vector<std::wstring> GenerateWstringVector(std::string path)
 {
+	std::wifstream wif(path);
+	std::wstringstream wss;
 	std::vector<std::wstring> vec;
-	std::wstring line = L"0";
-	std::wifstream File(path);
+	std::wstring line = L"ENDOFFILE";
+
+	wif.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
+	wss << wif.rdbuf();
+	wif.close();
 
 	while (true)
 	{
-		getline(File, line);
+		getline(wss, line);
 		if (line == L"ENDOFFILE")
 			break;
 		vec.push_back(line);
 	}
-
-	File.close();
 	return vec;
 }
 
