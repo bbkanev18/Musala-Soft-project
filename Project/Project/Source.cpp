@@ -50,7 +50,7 @@ int main()
 
 		std::vector<TEAM> tvec;
 		std::vector<TEAM> tchlessVec;
-		CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tvec, 15);
+		CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tvec, 50);
 		UpdateTeacherlessTeamVector(tvec, tchlessVec);
 		//PrintTeamVector(tvec, hConsole, true);
 		//NewLine(3);
@@ -84,16 +84,16 @@ int main()
 		//TEACHER testing site
 
 		//TEACHER tch = CreateSampleTeacher(namesList, surnamesList, tvec);
-		TEACHER tch2;
+		//TEACHER tch2;
 		//BoxPrintTeacher(tch, hConsole);
-		NewLine(3);
+		//NewLine(3);
 		//InlinePrintTeacher(tch, hConsole);
 		//NewLine(3);
-		UpdateTeacherlessTeamVector(tvec, tchlessVec);
-		PrintTeamVector(tchlessVec, hConsole, 0, true, false);
-		NewLine(3);
-		tch2 = EnterTeacher(tchlessVec, tvec, hConsole);
-		BoxPrintTeacher(tch2, hConsole);
+		//UpdateTeacherlessTeamVector(tvec, tchlessVec);
+		//PrintTeamVector(tchlessVec, hConsole, 0, true, false);
+		//NewLine(3);
+		//tch2 = EnterTeacher(tchlessVec, tvec, hConsole);
+		//BoxPrintTeacher(tch2, hConsole);
 
 
 		//===========================================
@@ -101,10 +101,24 @@ int main()
 
 		//std::vector<TEACHER> tcvec;
 		//CreateSampleTeacherVector(tvec, namesList, surnamesList, tcvec);
-		//BoxPrintTeacherVector(tcvec, hConsole, 0, true);
+		//PrintTeacherVector(tcvec, hConsole, 0, true);
 		//NewLine(3);
-		//BoxPrintTeacherVector(tcvec, hConsole, 0, false);
+		//PrintTeacherVector(tcvec, hConsole, 0, false);
 		//NewLine(3);
+
+		
+		/////////////////////////////////////////////////////////////////////////////////////
+		//===========================================
+		//SCHOOL testing site
+
+
+
+		//===========================================
+		//SCHOOL vector testing site
+		
+		SCHOOL sch;
+		BoxPrintSchool(sch, hConsole);
+		InlinePrintSchool(sch, hConsole);
 
 
 		/////////////////////////////////////////////////////////////////////////////////////

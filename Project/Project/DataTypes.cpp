@@ -554,6 +554,8 @@ TEACHER EnterTeacher(std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeam
 	{
 		//Could use some cleanup, but it works!!!
 
+		//Maybe add an option to display a max of 30 teams and have the rest in seperate pages?
+		
 		choice = 0;
 		NewLine();
 		std::wcout << L"━━━━━━━━━━━━━━━━━━┫ AVAILABLE TEAMS ┣━━━━━━━━━━━━━━━━━━";
@@ -629,3 +631,89 @@ void CreateSampleTeacherVector(std::vector<TEAM>& teams, std::vector<std::wstrin
 }
 
 //School
+
+void BoxPrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent, bool inlineTeachers, bool inlineTeams, bool inlineStudents)
+{
+	//Symbols used for box
+	//─┤├──┠┨┎┒┃┖┚┄
+	//║╔╗╚╝╠═╍╌╣
+	std::wstring header =   L"╔════════════════╣ SCHOOL ╠════════════════╗";
+	std::wstring splitstr = L"╚╍╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╍╝";
+	std::wstring splitend = L"╔╍╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╍╗";
+	std::wstring footer =   L"╚══════════════════════════════════════════╝";
+	std::wstring temp = L"";
+
+	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+	PrintIndent(indent);
+	std::wcout << header;
+
+	PrintBoxStyle(header.size(), hConsole, sch.name, BASE_COLOUR, NAME_COLOUR, L'║', indent);
+	PrintBoxStyle(header.size(), hConsole, sch.city, BASE_COLOUR, EMAIL_COLOUR, L'║', indent);
+	PrintBoxStyle(header.size(), hConsole, sch.address, BASE_COLOUR, DESCRIPTION_COLOUR, L'║', indent);
+	
+	NewLine();
+	PrintIndent(indent);
+	std::wcout << splitstr;
+
+	PrintTeacherVector(sch.teachers, hConsole, 4, inlineTeachers);
+
+	PrintIndent(indent);
+	std::wcout << splitend;
+	NewLine();
+	PrintIndent(indent);
+	std::wcout << splitstr;
+
+	PrintTeamVector(sch.teams, hConsole, 6, inlineTeams, inlineStudents);
+
+	PrintIndent(indent);
+	std::wcout << splitend;
+	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+	NewLine();
+	PrintIndent(indent);
+	std::wcout << footer;
+	NewLine();
+}
+
+void InlinePrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent)
+{
+	std::vector<std::wstring> content;
+
+	content.push_back((sch.name));
+	content.push_back(sch.city);
+	content.push_back(sch.address);
+	PrintInlineStyle(content, hConsole, indent);
+	content.clear();
+	NewLine();
+}
+
+SCHOOL EnterSchool(HANDLE hConsole)
+{
+	return SCHOOL();
+}
+
+SCHOOL CreateSampleSchool(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& teams)
+{
+	return SCHOOL();
+}
+
+void CreateSampleSchoolVector(std::vector<TEAM>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<SCHOOL>& vec, size_t amount, bool empty)
+{
+
+}
+
+void AddObjectToVector(std::vector<SCHOOL>& vec, SCHOOL obj)
+{
+	vec.push_back(obj);
+}
+
+void RemoveObjectFromVector(std::vector<SCHOOL>& vec, size_t posStart, size_t posEnd)
+{
+	if (posEnd != 0)
+		vec.erase(vec.begin() + posStart, vec.begin() + posEnd);
+	vec.erase(vec.begin() + posStart);
+}
+
+void PrintSchoolVector(std::vector<SCHOOL> vec, HANDLE hConsole, size_t indent)
+{
+
+}

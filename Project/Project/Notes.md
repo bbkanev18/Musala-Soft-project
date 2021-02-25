@@ -251,3 +251,6 @@ Add id like functionality to all PrintVector functions!!!
 Add a header to all enter functions
 
 eg: `___/====\| STUDENT |/====\___`
+
+
+Make a function to print guides for inlinePrint, to make it more user friendly

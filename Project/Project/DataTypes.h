@@ -176,9 +176,33 @@ void PrintTeacherVector(std::vector<TEACHER> vec, HANDLE hConsole, size_t indent
 //A struct to store School info
 struct SCHOOL
 {
-	std::wstring name;
-	std::wstring city;
-	std::wstring address;
-	//array of Teams
-	//array of Teachers
+	std::wstring name = L"PGKPI";
+	std::wstring city = L"Burgas";
+	std::wstring address = L"Ортото 3";
+	std::vector<TEAM> teams = {};
+	std::vector<TEACHER> teachers = {};
 };
+
+//Print a SCHOOL in Box Style
+void BoxPrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent = 0, bool inlineTeachers = true, bool inlineTeams = true, bool inlineStudents = true);
+
+//Print a SCHOOL in Inline Style
+void InlinePrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent = 0);
+
+//Return a SCHOOL made by user input
+SCHOOL EnterSchool(HANDLE hConsole);
+
+//Return a SCHOOL made by the computer
+SCHOOL CreateSampleSchool(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& teams);
+
+//Fills a vector with SCHOOLs made by the computer
+void CreateSampleSchoolVector(std::vector<TEAM>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<SCHOOL>& vec, size_t amount = 5, bool empty = false);
+
+//Adds a SCHOOL to a vector of SCHOOLs
+void AddObjectToVector(std::vector<SCHOOL>& vec, SCHOOL obj);
+
+//Removes a SCHOOL from a vector of SCHOOLs
+void RemoveObjectFromVector(std::vector<SCHOOL>& vec, size_t posStart, size_t posEnd = 0);
+
+//Prints a vector of SCHOOLs
+void PrintSchoolVector(std::vector<SCHOOL> vec, HANDLE hConsole, size_t indent = 0);
