@@ -311,16 +311,7 @@ void BoxPrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents
 
 	//FIGURE OUT A SMARTER SOLUTION!!!
 	//A FOR LOOP ISN'T GOOD ENOUGH!
-	for (size_t i = 0; i < 4; i++)
-	{
-		if(inlineStudents)
-			InlinePrintStudent(team.students[i], hConsole, indent + 2);
-		else
-		{
-			BoxPrintStudent(team.students[i], hConsole, indent + 2);
-			NewLine();
-		}
-	}
+	PrintStudentsFromTeam(team, hConsole, indent, inlineStudents);
 
 	NewLine();
 	std::wcout << splitend;
@@ -467,6 +458,20 @@ void UpdateTeacherlessTeamVector(std::vector<TEAM>& allTeams, std::vector<TEAM>&
 }
 //Check back on this!
 //Possible memory leak
+
+void PrintStudentsFromTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents)
+{
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (inlineStudents)
+			InlinePrintStudent(team.students[i], hConsole, indent + 2);
+		else
+		{
+			BoxPrintStudent(team.students[i], hConsole, indent + 2);
+			NewLine();
+		}
+	}
+}
 
 //Teacher
 
@@ -642,10 +647,10 @@ void BoxPrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent, bool inlineTeach
 	//Symbols used for box
 	//─┤├──┠┨┎┒┃┖┚┄
 	//║╔╗╚╝╠═╍╌╣
-	std::wstring header =   L"╔════════════════╣ SCHOOL ╠════════════════╗";
-	std::wstring splitstr = L"╚╍╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╍╝";
-	std::wstring splitend = L"╔╍╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╍╗";
-	std::wstring footer =   L"╚══════════════════════════════════════════╝";
+	std::wstring header =   L"╔════════════════════════════╣ SCHOOL ╠════════════════════════════╗";
+	std::wstring splitstr = L"╚╍╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╍╝";
+	std::wstring splitend = L"╔╍╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╍╗";
+	std::wstring footer =   L"╚══════════════════════════════════════════════════════════════════╝";
 	std::wstring temp = L"";
 
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
@@ -660,20 +665,43 @@ void BoxPrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent, bool inlineTeach
 	PrintIndent(indent);
 	std::wcout << splitstr;
 
-	PrintTeacherVector(sch.teachers, hConsole, 4, inlineTeachers);
-
+	NewLine(2);
 	PrintIndent(indent);
 	std::wcout << splitend;
+	PrintBoxStyle(header.size(), hConsole, L"TEACHERS", BASE_COLOUR, ROLE_COLOUR, L'║', indent);
 	NewLine();
 	PrintIndent(indent);
 	std::wcout << splitstr;
 
-	PrintTeamVector(sch.teams, hConsole, 6, inlineTeams, inlineStudents);
+	PrintTeacherVector(sch.teachers, hConsole, indent + 1, inlineTeachers);
 
+	NewLine();
 	PrintIndent(indent);
 	std::wcout << splitend;
+	PrintBoxStyle(header.size(), hConsole, L"TEAMS", BASE_COLOUR, ROLE_COLOUR, L'║', indent);
+	NewLine();
+	PrintIndent(indent);
+	std::wcout << splitstr;
+	
+	PrintTeamVector(sch.teams, hConsole, indent + 2, inlineTeams, inlineStudents);
+
+	NewLine();
+	PrintIndent(indent);
+	std::wcout << splitend;
+	PrintBoxStyle(header.size(), hConsole, L"STUDENTS", BASE_COLOUR, ROLE_COLOUR, L'║', indent);
+	NewLine();
+	PrintIndent(indent);
+	std::wcout << splitstr;
+	NewLine();
 
 	//MAKE IT PRINT STUDENTS TOO!
+
+	for (size_t i = 0; i < sch.teams.size(); i++)
+		PrintStudentsFromTeam(sch.teams[i], hConsole, indent + 3, inlineStudents);
+
+	NewLine();
+	PrintIndent(indent);
+	std::wcout << splitend;
 
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 	NewLine();
@@ -682,14 +710,14 @@ void BoxPrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent, bool inlineTeach
 	NewLine();
 }
 
-void InlinePrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent)
+void InlinePrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent, int id)
 {
 	std::vector<std::wstring> content;
 
 	content.push_back((sch.name));
 	content.push_back(sch.city);
 	content.push_back(sch.address);
-	PrintInlineStyle(content, hConsole, indent);
+	PrintInlineStyle(content, hConsole, indent, id);
 	content.clear();
 	NewLine();
 }
@@ -709,7 +737,6 @@ SCHOOL CreateSampleSchool(std::vector<std::wstring>& schoolNames, std::vector<st
 	sch.address = L"I have no idea where? NULL island?";
 
 	CreateSampleTeamVector(teamNames, names, surnames, sch.teams, 100);
-	//tchlessVec = sch.teams;
 	UpdateTeacherlessTeamVector(sch.teams, tchlessVec);
 	CreateSampleTeacherVector(tchlessVec, names, surnames, sch.teachers, 10);
 	UpdateTeacherlessTeamVector(sch.teams, tchlessVec);
@@ -717,9 +744,10 @@ SCHOOL CreateSampleSchool(std::vector<std::wstring>& schoolNames, std::vector<st
 	return sch;
 }
 
-void CreateSampleSchoolVector(std::vector<TEAM>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<SCHOOL>& vec, size_t amount, bool empty)
+void CreateSampleSchoolVector(std::vector<std::wstring>& schoolNames, std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<SCHOOL>& vec, size_t amount, bool empty)
 {
-
+	for (size_t i = 0; i < amount; i++)
+		AddObjectToVector(vec, CreateSampleSchool(schoolNames, teamNames, names, surnames));
 }
 
 void AddObjectToVector(std::vector<SCHOOL>& vec, SCHOOL obj)
@@ -734,7 +762,23 @@ void RemoveObjectFromVector(std::vector<SCHOOL>& vec, size_t posStart, size_t po
 	vec.erase(vec.begin() + posStart);
 }
 
-void PrintSchoolVector(std::vector<SCHOOL> vec, HANDLE hConsole, size_t indent)
+void PrintSchoolVector(std::vector<SCHOOL> vec, HANDLE hConsole, size_t indent, bool inlineSchool, bool index)
 {
+	if (inlineSchool)
+		NewLine();
 
+	for (size_t i = 0; i < vec.size(); i++)
+	{
+		if (!inlineSchool)
+			BoxPrintSchool(vec[i], hConsole, indent);
+		else
+			if (index)
+				InlinePrintSchool(vec[i], hConsole, indent, i);
+			else
+				InlinePrintSchool(vec[i], hConsole, indent);
+
+		SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+		if (!inlineSchool)
+			NewLine();
+	}
 }

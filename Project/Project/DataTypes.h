@@ -140,6 +140,9 @@ void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, size_t indent, boo
 //A function that updates a vector with the teams that dont have a teacher
 void UpdateTeacherlessTeamVector(std::vector<TEAM>& allTeams, std::vector<TEAM>& tchlessTeams);
 
+//Prints all students that are from the same team
+void PrintStudentsFromTeam(TEAM team, HANDLE hConsole, size_t indent = 0, bool inlineStudents = true);
+
 //A struct to store TEACHER info
 struct TEACHER
 {
@@ -186,7 +189,7 @@ struct SCHOOL
 void BoxPrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent = 0, bool inlineTeachers = true, bool inlineTeams = true, bool inlineStudents = true);
 
 //Print a SCHOOL in Inline Style
-void InlinePrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent = 0);
+void InlinePrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent = 0, int id = -1);
 
 //Return a SCHOOL made by user input
 SCHOOL EnterSchool(HANDLE hConsole);
@@ -195,7 +198,7 @@ SCHOOL EnterSchool(HANDLE hConsole);
 SCHOOL CreateSampleSchool(std::vector<std::wstring>& schoolNames, std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames);
 
 //Fills a vector with SCHOOLs made by the computer
-void CreateSampleSchoolVector(std::vector<TEAM>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<SCHOOL>& vec, size_t amount = 5, bool empty = false);
+void CreateSampleSchoolVector(std::vector<std::wstring>& schoolNames, std::vector<TEAM>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<SCHOOL>& vec, size_t amount = 5, bool empty = false);
 
 //Adds a SCHOOL to a vector of SCHOOLs
 void AddObjectToVector(std::vector<SCHOOL>& vec, SCHOOL obj);
@@ -204,4 +207,4 @@ void AddObjectToVector(std::vector<SCHOOL>& vec, SCHOOL obj);
 void RemoveObjectFromVector(std::vector<SCHOOL>& vec, size_t posStart, size_t posEnd = 0);
 
 //Prints a vector of SCHOOLs
-void PrintSchoolVector(std::vector<SCHOOL> vec, HANDLE hConsole, size_t indent = 0);
+void PrintSchoolVector(std::vector<SCHOOL> vec, HANDLE hConsole, size_t indent = 0, bool inlineSchool = false, bool index = false);
