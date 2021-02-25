@@ -2,6 +2,7 @@
 	h1		{color:#CC8CE9;}
 	h2		{color:#C619D3;}
 	h3		{color:#D31983;}
+	h4		{color:#D31983;}
 	body	{background-color: #111F59;}
 	li		{color: #E0D527}
 	hr		{height:2px;border-width:0;color:gray;background-color:gray}
@@ -254,3 +255,15 @@ eg: `___/====\| STUDENT |/====\___`
 
 
 Make a function to print guides for inlinePrint, to make it more user friendly
+
+
+<br>
+<br>
+<br>
+
+
+#### IMPORTANT
+
+The file doesnt read Unicode and fails if given non ASCII values eg: Хелло
+
+FIND A FIX!!!

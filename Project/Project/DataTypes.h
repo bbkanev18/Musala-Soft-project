@@ -79,7 +79,7 @@ struct STUDENT
 void BoxPrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0);
 
 //Print a STUDENT in Inline Style
-void InlinePrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0);
+void InlinePrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0, int id = -1);
 
 //Return a STUDENT made by user input
 STUDENT EnterStudent(HANDLE hConsole);
@@ -98,7 +98,7 @@ void RemoveObjectFromVector(std::vector<STUDENT>& vec, size_t posStart, size_t p
 
 //Prints a vector of STUDENTs
 //Styles can be toggled by changing inlineStudents to true(for inline) or false(for box)
-void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole, bool inlineStudents = false);
+void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole, size_t indent, bool inlineStudents = false, bool index = false);
 
 //A struct to store TEAM info
 struct TEAM
@@ -135,7 +135,7 @@ void RemoveObjectFromVector(std::vector<TEAM>& vec, size_t posStart, size_t posE
 //Prints a vector of TEAMs
 //Styles for the students in the teams can be toggled by changing inlineStudents to true(for inline) or false(for box)
 //Styles for the teams can be toggled by changing inlineTeamss to true(for inline) or false(for box)
-void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, size_t indent, bool inlineTeams = false, bool inlineStudents = false);
+void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, size_t indent, bool inlineTeams = false, bool inlineStudents = false, bool index = false);
 
 //A function that updates a vector with the teams that dont have a teacher
 void UpdateTeacherlessTeamVector(std::vector<TEAM>& allTeams, std::vector<TEAM>& tchlessTeams);
@@ -144,15 +144,14 @@ void UpdateTeacherlessTeamVector(std::vector<TEAM>& allTeams, std::vector<TEAM>&
 struct TEACHER
 {
 	PERSON info;
-	//Array of teams the object is in
-	std::vector<TEAM> teams;
+	std::vector<TEAM> teams;	//Array of teams the object is in
 };
 
 //Print a TEACHER in Box Style
 void BoxPrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent = 0);
 
 //Print a TEACHER in Inline Style
-void InlinePrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent = 0);
+void InlinePrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent = 0, int id = -1);
 
 //Return a TEACHER made by user input
 TEACHER EnterTeacher(std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeams, HANDLE hConsole);
@@ -171,7 +170,7 @@ void RemoveObjectFromVector(std::vector<TEACHER>& vec, size_t posStart, size_t p
 
 //Prints a vector of TEACHERs
 //Styles can be toggled by changing inlineStudents to true(for inline) or false(for box)
-void PrintTeacherVector(std::vector<TEACHER> vec, HANDLE hConsole, size_t indent = 0, bool inlineTeacher = false);
+void PrintTeacherVector(std::vector<TEACHER>& vec, HANDLE hConsole, size_t indent = 0, bool inlineTeacher = false, bool index = false);
 
 //A struct to store School info
 struct SCHOOL
@@ -193,7 +192,7 @@ void InlinePrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent = 0);
 SCHOOL EnterSchool(HANDLE hConsole);
 
 //Return a SCHOOL made by the computer
-SCHOOL CreateSampleSchool(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& teams);
+SCHOOL CreateSampleSchool(std::vector<std::wstring>& schoolNames, std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames);
 
 //Fills a vector with SCHOOLs made by the computer
 void CreateSampleSchoolVector(std::vector<TEAM>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<SCHOOL>& vec, size_t amount = 5, bool empty = false);

@@ -15,9 +15,11 @@ std::vector<std::wstring> GenerateWstringVector(std::string path)
 	std::wstring line = L"0";
 	std::wifstream File(path);
 
-	while (line != L"ENDOFFILE")
+	while (true)
 	{
 		getline(File, line);
+		if (line == L"ENDOFFILE")
+			break;
 		vec.push_back(line);
 	}
 

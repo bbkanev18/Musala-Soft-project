@@ -33,9 +33,10 @@ int main()
 		int a = _setmode(_fileno(stdout), _O_U16TEXT);
 		a = _setmode(_fileno(stdin), _O_U16TEXT);
 
-		std::vector<std::wstring> namesList   = GenerateWstringVector("Database\\firstnames.txt");
-		std::vector<std::wstring> surnamesList = GenerateWstringVector("Database\\surnames.txt");
-		std::vector<std::wstring> teamnamesList = GenerateWstringVector("Database\\teamnames.txt");
+		std::vector<std::wstring> namesList =    GenerateWstringVector("Database\\firstnames.txt" );
+		std::vector<std::wstring> surnamesList =  GenerateWstringVector("Database\\surnames.txt"   );
+		std::vector<std::wstring> teamnamesList =  GenerateWstringVector("Database\\teamnames.txt"  );
+		std::vector<std::wstring> schoolnamesList = GenerateWstringVector("Database\\schoolnames.txt");
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		//===========================================
@@ -48,10 +49,10 @@ int main()
 		//===========================================
 		//TEAM vector testing site
 
-		std::vector<TEAM> tvec;
-		std::vector<TEAM> tchlessVec;
-		CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tvec, 50);
-		UpdateTeacherlessTeamVector(tvec, tchlessVec);
+		//std::vector<TEAM> tvec;
+		//std::vector<TEAM> tchlessVec;
+		//CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tvec, 50);
+		//UpdateTeacherlessTeamVector(tvec, tchlessVec);
 		//PrintTeamVector(tvec, hConsole, true);
 		//NewLine(3);
 		//PrintTeamVector(tvec, hConsole, false);
@@ -116,7 +117,7 @@ int main()
 		//===========================================
 		//SCHOOL vector testing site
 		
-		SCHOOL sch;
+		SCHOOL sch = CreateSampleSchool(schoolnamesList, teamnamesList, namesList, surnamesList);
 		BoxPrintSchool(sch, hConsole);
 		InlinePrintSchool(sch, hConsole);
 

@@ -178,7 +178,7 @@ void BoxPrintStudent(STUDENT st, HANDLE hConsole, size_t indent)
 	NewLine();
 }
 
-void InlinePrintStudent(STUDENT st, HANDLE hConsole, size_t indent)
+void InlinePrintStudent(STUDENT st, HANDLE hConsole, size_t indent, int id)
 {
 	std::vector<std::wstring> content;
 	std::wstring temp = L"Class ";
@@ -188,7 +188,7 @@ void InlinePrintStudent(STUDENT st, HANDLE hConsole, size_t indent)
 	content.push_back(temp);
 	content.push_back(RoleToWstring(st.role));
 	content.push_back(EmailToWstring(st.info.email));
-	PrintInlineStyle(content, hConsole, indent);
+	PrintInlineStyle(content, hConsole, indent, id);
 	content.clear();
 	NewLine();
 }
@@ -238,7 +238,7 @@ void RemoveObjectFromVector(std::vector<STUDENT>& vec, size_t posStart, size_t p
 	vec.erase(vec.begin() + posStart);
 }
 
-void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole, bool inlineStudents)
+void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole, size_t indent, bool inlineStudents, bool index)
 {
 	if (inlineStudents)
 		NewLine();
@@ -248,7 +248,11 @@ void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole, bool inlineS
 		if (!inlineStudents) 
 			BoxPrintStudent(vec[i], hConsole);
 		else
-			InlinePrintStudent(vec[i], hConsole);
+			if (index)
+				InlinePrintStudent(vec[i], hConsole, indent, i);
+			else
+				InlinePrintStudent(vec[i], hConsole, indent);
+
 		SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 		if(!inlineStudents)
 			NewLine();
@@ -430,7 +434,7 @@ void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<st
 		AddObjectToVector(vec, CreateSampleTeam(teamNames, names, surnames));
 }
 
-void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, size_t indent, bool inlineTeams, bool inlineStudents)
+void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, size_t indent, bool inlineTeams, bool inlineStudents, bool index)
 {
 	if (inlineTeams)
 		NewLine();
@@ -440,7 +444,10 @@ void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, size_t indent, boo
 		if (!inlineTeams)
 			BoxPrintTeam(vec[i], hConsole, indent, inlineStudents);
 		else
-			InlinePrintTeam(vec[i], hConsole, indent, i);
+			if (index)
+				InlinePrintTeam(vec[i], hConsole, indent, i);
+			else
+				InlinePrintTeam(vec[i], hConsole, indent);
 		
 		SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 		if (!inlineTeams)
@@ -462,34 +469,6 @@ void UpdateTeacherlessTeamVector(std::vector<TEAM>& allTeams, std::vector<TEAM>&
 //Possible memory leak
 
 //Teacher
-
-TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& teams)
-{
-	TEACHER tch;
-	std::wstring email = L"";
-	
-	tch.info.name = names[rand() % names.size()];
-	email += tch.info.name + L'_';
-	tch.info.surname = surnames[rand() % surnames.size()];
-	email += tch.info.surname + L'.';
-	std::transform(email.begin(), email.end(), email.begin(), ::tolower);
-	tch.info.email = WstringToEmail(email + L"@sample.io");
-
-	if (teams.size() > 0)
-	{
-		for (size_t i = 0; i < teams.size(); i++)
-		{
-			//There is an 80% chance for a team to be assigned to a teacher
-			if (rand() % 100 + 1 >= 80 and ArePeopleEqual(teams[i].teacherInfo))
-			{
-				teams[i].teacherInfo = tch.info;
-				AddObjectToVector(tch.teams, teams[i]);
-			}
-		}
-	}
-
-	return tch;
-}
 
 void BoxPrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent)
 {
@@ -524,13 +503,13 @@ void BoxPrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent)
 	NewLine();
 }
 
-void InlinePrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent)
+void InlinePrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent, int id)
 {
 	std::vector<std::wstring> content;
 
 	content.push_back(tch.info.name + L" " + tch.info.surname);
 	content.push_back(EmailToWstring(tch.info.email));
-	PrintInlineStyle(content, hConsole, indent);
+	PrintInlineStyle(content, hConsole, indent, id);
 	content.clear();
 	NewLine();
 }
@@ -594,6 +573,29 @@ TEACHER EnterTeacher(std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeam
 	return tch;
 }
 
+TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& teams)
+{
+	TEACHER tch;
+	std::wstring email = L"";
+
+	tch.info = CreateSamplePerson(names, surnames);
+
+	if (teams.size() > 0)
+	{
+		for (size_t i = 0; i < teams.size(); i++)
+		{
+			//There is an 80% chance for a team to be assigned to a teacher
+			if (rand() % 100 + 1 >= 80 and ArePeopleEqual(teams[i].teacherInfo))
+			{
+				teams[i].teacherInfo = tch.info;
+				AddObjectToVector(tch.teams, teams[i]);
+			}
+		}
+	}
+
+	return tch;
+}
+
 void AddObjectToVector(std::vector<TEACHER>& vec, TEACHER obj)
 {
 	vec.push_back(obj);
@@ -606,7 +608,7 @@ void RemoveObjectFromVector(std::vector<TEACHER>& vec, size_t posStart, size_t p
 	vec.erase(vec.begin() + posStart);
 }
 
-void PrintTeacherVector(std::vector<TEACHER> vec, HANDLE hConsole, size_t indent, bool inlineTeacher)
+void PrintTeacherVector(std::vector<TEACHER>& vec, HANDLE hConsole, size_t indent, bool inlineTeacher, bool index)
 {
 	if (inlineTeacher)
 		NewLine();
@@ -616,7 +618,10 @@ void PrintTeacherVector(std::vector<TEACHER> vec, HANDLE hConsole, size_t indent
 		if (!inlineTeacher)
 			BoxPrintTeacher(vec[i], hConsole, indent);
 		else
-			InlinePrintTeacher(vec[i], hConsole, indent);
+			if (index)
+				InlinePrintTeacher(vec[i], hConsole, indent, i);
+			else
+				InlinePrintTeacher(vec[i], hConsole, indent);
 		
 		SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 		if (!inlineTeacher)
@@ -667,6 +672,9 @@ void BoxPrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent, bool inlineTeach
 
 	PrintIndent(indent);
 	std::wcout << splitend;
+
+	//MAKE IT PRINT STUDENTS TOO!
+
 	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
 	NewLine();
 	PrintIndent(indent);
@@ -691,9 +699,22 @@ SCHOOL EnterSchool(HANDLE hConsole)
 	return SCHOOL();
 }
 
-SCHOOL CreateSampleSchool(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& teams)
+SCHOOL CreateSampleSchool(std::vector<std::wstring>& schoolNames, std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames)
 {
-	return SCHOOL();
+	SCHOOL sch;
+	std::vector<TEAM> tchlessVec;
+
+	sch.name = schoolNames[rand() % schoolNames.size()];
+	sch.city = L"Manberg";
+	sch.address = L"I have no idea where? NULL island?";
+
+	CreateSampleTeamVector(teamNames, names, surnames, sch.teams, 100);
+	//tchlessVec = sch.teams;
+	UpdateTeacherlessTeamVector(sch.teams, tchlessVec);
+	CreateSampleTeacherVector(tchlessVec, names, surnames, sch.teachers, 10);
+	UpdateTeacherlessTeamVector(sch.teams, tchlessVec);
+
+	return sch;
 }
 
 void CreateSampleSchoolVector(std::vector<TEAM>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<SCHOOL>& vec, size_t amount, bool empty)
