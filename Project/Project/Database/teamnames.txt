@@ -42,4 +42,7 @@ Triforce The Hoes
 AheadHeathers
 Knives N Guns and Bed
 MusakaSoft
+127.0.0.1
+localhost
+General failure
 ENDOFFILE

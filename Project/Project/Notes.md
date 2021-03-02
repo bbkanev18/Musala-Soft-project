@@ -3,14 +3,27 @@
 	h2		{color:#C619D3;}
 	h3		{color:#D31983;}
 	h4		{color:#D31983;}
-	body	{background-color: #111F59;}
+	body	
+	{
+		background-image: url("https://cdn.discordapp.com/attachments/588054501303255273/814543243260854312/cancer.jpg");
+		background-size: 100% auto;
+		background-repeat: repeat-y;
+		background-color: #111F59;
+	}
+	div
+	{
+		padding: 10px;
+		background-color: rgba(15,0,50,0.50);
+
+	}
 	li		{color: #E0D527}
 	hr		{height:2px;border-width:0;color:gray;background-color:gray}
 	p		{color: #E1E3EA}
 </style>
 
-# TODO
+<div>
 
+# TODO
 
 1. [ ] create the data types
 	- [x] create the structures and enumerators 
@@ -24,15 +37,6 @@
 	- check inputs!
 	- think of more functions
 3. [ ] create i/o functions to simplify workflow
-
-<br>
-<br>
-<br>
-
-# Thinking place...
-
-idk
-
 
 <br>
 <br>
@@ -235,18 +239,12 @@ What to do when an invalid input has been detected:
 
 Person input validation
 
-
-<br>
-<br>
-<br>
 <br>
 
 I should be able to overload more functions
 
 Add id like functionality to all PrintVector functions!!!
 
-<br>
-<br>
 <br>
 
 Add a header to all enter functions
@@ -256,14 +254,18 @@ eg: `___/====\| STUDENT |/====\___`
 
 Make a function to print guides for inlinePrint, to make it more user friendly
 
-
 <br>
-<br>
-<br>
-
 
 #### IMPORTANT
 
 The file doesnt read Unicode and fails if given non ASCII values eg: Хелло
 
 FIND A FIX!!!
+
+FIIXXXXEEED!!!!
+fixed by: passing the file data thru a wstringstream and doing some locale magic.
+
+
+
+
+</div>

@@ -18,6 +18,7 @@ std::vector<std::wstring> GenerateWstringVector(std::string path)
 	std::vector<std::wstring> vec;
 	std::wstring line = L"ENDOFFILE";
 
+	//Do some research to figure out how the hell it works
 	wif.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
 	wss << wif.rdbuf();
 	wif.close();

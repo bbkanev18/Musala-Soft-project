@@ -259,8 +259,10 @@ void PrintStudentVector(std::vector<STUDENT>& vec, HANDLE hConsole, size_t inden
 	}
 }
 
-void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<STUDENT>& stvec, size_t amount)
+void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<STUDENT>& stvec, size_t amount, bool empty)
 {
+	if (empty)
+		return;
 	for (size_t i = 0; i < amount; i++)
 		AddObjectToVector(stvec, CreateSampleStudent(names, surnames));
 }
@@ -288,8 +290,8 @@ void BoxPrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents
 	PrintBoxStyle(header.size(), hConsole, team.name, BASE_COLOUR, NAME_COLOUR, L'┃', indent); //TAKE CARE OF COLOURS!!
 	PrintBoxStyle(header.size(), hConsole, team.description, BASE_COLOUR, DESCRIPTION_COLOUR, L'┃', indent);
 	PrintBoxStyle(header.size(), hConsole, (TmToDateWstring(team.dateOfSetup, true)), BASE_COLOUR, DATEOFSETUP_COLOUR, L'┃', indent);
-	NewLine();
 
+	NewLine();
 	PrintIndent(indent);
 	std::wcout << splitstr;
 	NewLine(2);
@@ -314,6 +316,7 @@ void BoxPrintTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents
 	PrintStudentsFromTeam(team, hConsole, indent, inlineStudents);
 
 	NewLine();
+	PrintIndent(indent);
 	std::wcout << splitend;
 
 	temp = StatusToWstring(team.status, activeColor);
@@ -340,7 +343,7 @@ void InlinePrintTeam(TEAM team, HANDLE hConsole, size_t indent, int id)
 
 TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty)
 {
-	TEAM team;
+	struct TEAM team;
 	team.name = teamNames[rand() % teamNames.size()];
 	team.description = L"Medesimi novellare fa divina niuno sé";
 	
@@ -377,8 +380,10 @@ TEAM EnterTeam(HANDLE hConsole)
 {
 	TEAM team;
 	wchar_t temp = ' ';
-	
-	std::wcout << L"Team Name: ";
+
+	std::wcin.clear();
+	std::wcin.ignore();
+	std::wcout << L"Name: ";
 	getline(std::wcin, team.name);
 	std::wcout << L"Description: ";
 	getline(std::wcin, team.description);
@@ -421,6 +426,8 @@ void RemoveObjectFromVector(std::vector<TEAM>& vec, size_t posStart, size_t posE
 
 void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& vec, size_t amount, bool empty)
 {
+	if (empty)
+		return;
 	for (size_t i = 0; i < amount; i++)
 		AddObjectToVector(vec, CreateSampleTeam(teamNames, names, surnames));
 }
@@ -453,11 +460,26 @@ void UpdateTeacherlessTeamVector(std::vector<TEAM>& allTeams, std::vector<TEAM>&
 			RemoveObjectFromVector(tchlessTeams, i);
 
 	for (size_t i = 0; i < allTeams.size(); i++)
-		if (ArePeopleEqual(allTeams[i].teacherInfo))
+		if (ArePeopleEqual(allTeams[i].teacherInfo))	//broke
 			AddObjectToVector(tchlessTeams, allTeams[i]);
 }
 //Check back on this!
 //Possible memory leak
+
+
+void _test_UpdateTeacherlessTeamVector(std::vector<TEAM>& allTeams, std::vector<TEAM>& tchlessTeams)
+{
+	int size = tchlessTeams.size();
+	for (int i = size - 1; i >= 0; i--)
+	{
+		if (!ArePeopleEqual(tchlessTeams[i].teacherInfo))
+		{
+			AddObjectToVector(allTeams, tchlessTeams[i]);
+			RemoveObjectFromVector(tchlessTeams, i);
+		}
+	}
+}
+
 
 void PrintStudentsFromTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents)
 {
@@ -523,6 +545,8 @@ TEACHER EnterTeacher(std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeam
 {
 	TEACHER tch;
 
+	UpdateTeacherlessTeamVector(allTeams, tchlessTeams);
+
 	NewLine();
 	std::wcout << L"━━━━━━━━━━━━┫ MAKING TEACHER ┣━━━━━━━━━━━━";
 	NewLine();
@@ -544,7 +568,7 @@ TEACHER EnterTeacher(std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeam
 		NewLine();
 		std::wcout << L"━━━━━━━━━━━━━━━━━━┫ AVAILABLE TEAMS ┣━━━━━━━━━━━━━━━━━━";
 		NewLine();
-		PrintTeamVector(tchlessTeams, hConsole, 4, true);
+		PrintTeamVector(tchlessTeams, hConsole, 4, true, true, true);
 		NewLine();
 		std::wcout << L"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
 		NewLine(2);
@@ -552,7 +576,7 @@ TEACHER EnterTeacher(std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeam
 		{
 			std::wcout << L"━━━━━━━━━━━━━━━━━━┫ ASSIGNED TEAMS ┣━━━━━━━━━━━━━━━━━━";
 			NewLine();
-			PrintTeamVector(tch.teams, hConsole, 0, true);
+			PrintTeamVector(tch.teams, hConsole, 0, true, true, true);
 			NewLine();
 			std::wcout << L"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
 			NewLine();
@@ -560,13 +584,14 @@ TEACHER EnterTeacher(std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeam
 		std::wcout << L"Choose a team from the available teams to assign the teacher to \n(0 to stop assigning) \n(negative number to remove a team from the assigned teams)\n: ";
 		std::wcin >> choice;
 		std::wcin.clear();
+		//BREAKS THE PROGRAM WHEN THE USER INPUTS -1 AND THE TCH.TEAMS IS EMPTY
 		if (choice < 0 and (choice * -1) - 1 <= tch.teams.size())
 		{
 			AddObjectToVector(tchlessTeams, tch.teams[(choice * -1) - 1]);
 			tchlessTeams[tchlessTeams.size() - 1].teacherInfo = { L"Homo", L"Sapiens", L"Iamarealhuman" , L"mars.com" };
 			RemoveObjectFromVector(tch.teams, (choice * -1) - 1);
 		}
-		if (choice - 1 <= tchlessTeams.size())
+		if (choice - 1 < tchlessTeams.size())
 		{
 			tchlessTeams[choice - 1].teacherInfo = tch.info;
 			AddObjectToVector(tch.teams, tchlessTeams[choice - 1]);
@@ -578,22 +603,23 @@ TEACHER EnterTeacher(std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeam
 	return tch;
 }
 
-TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& teams)
+TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeams)
 {
 	TEACHER tch;
 	std::wstring email = L"";
 
 	tch.info = CreateSamplePerson(names, surnames);
 
-	if (teams.size() > 0)
+	if (tchlessTeams.size() > 0)
 	{
-		for (size_t i = 0; i < teams.size(); i++)
+		for (size_t i = 0; i < tchlessTeams.size(); i++)
 		{
 			//There is an 80% chance for a team to be assigned to a teacher
-			if (rand() % 100 + 1 >= 80 and ArePeopleEqual(teams[i].teacherInfo))
+			if (rand() % 100 + 1 >= 80 and ArePeopleEqual(tchlessTeams[i].teacherInfo))
 			{
-				teams[i].teacherInfo = tch.info;
-				AddObjectToVector(tch.teams, teams[i]);
+				tchlessTeams[i].teacherInfo = tch.info;
+				AddObjectToVector(tch.teams, tchlessTeams[i]);
+				RemoveObjectFromVector(tchlessTeams, i);
 			}
 		}
 	}
@@ -634,10 +660,19 @@ void PrintTeacherVector(std::vector<TEACHER>& vec, HANDLE hConsole, size_t inden
 	}
 }
 
-void CreateSampleTeacherVector(std::vector<TEAM>& teams, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEACHER>& vec, size_t amount, bool empty)
+void CreateSampleTeacherVector(std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeams, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEACHER>& vec, size_t amount, bool empty)
 {
+	if (empty)
+		return;
+	//UpdateTeacherlessTeamVector(allTeams, tchlessTeams);
+	_test_UpdateTeacherlessTeamVector(allTeams, tchlessTeams);
 	for (size_t i = 0; i < amount; i++)
-		AddObjectToVector(vec, CreateSampleTeacher(names, surnames, teams));
+	{
+		AddObjectToVector(vec, CreateSampleTeacher(names, surnames, tchlessTeams, allTeams));
+
+		if (tchlessTeams.empty())
+			return;
+	}
 }
 
 //School
@@ -673,6 +708,8 @@ void BoxPrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent, bool inlineTeach
 	PrintIndent(indent);
 	std::wcout << splitstr;
 
+	if (!inlineTeachers)
+		NewLine();
 	PrintTeacherVector(sch.teachers, hConsole, indent + 1, inlineTeachers);
 
 	NewLine();
@@ -683,6 +720,8 @@ void BoxPrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent, bool inlineTeach
 	PrintIndent(indent);
 	std::wcout << splitstr;
 	
+	if (!inlineTeams)
+		NewLine();
 	PrintTeamVector(sch.teams, hConsole, indent + 2, inlineTeams, inlineStudents);
 
 	NewLine();
@@ -694,6 +733,8 @@ void BoxPrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent, bool inlineTeach
 	std::wcout << splitstr;
 	NewLine();
 
+	if (!inlineStudents)
+			NewLine();
 	for (size_t i = 0; i < sch.teams.size(); i++)
 		PrintStudentsFromTeam(sch.teams[i], hConsole, indent + 3, inlineStudents);
 
@@ -720,16 +761,79 @@ void InlinePrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent, int id)
 	NewLine();
 }
 
-SCHOOL EnterSchool(HANDLE hConsole)
+SCHOOL EnterSchool(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, HANDLE hConsole)
 {
 	SCHOOL sch;
+	std::vector<TEAM> tchlessVec;
+	std::vector<TEAM> tempTeam;
+	size_t temp = 0;
+	bool automatic = true;
 
 	NewLine();
 	std::wcout << L"════════════════════════╣ MAKING SCHOOL ╠════════════════════════";
 	NewLine();
+	
+	//wsrtring name
+	std::wcout << L"Name: ";
+	std::wcin >> sch.name;
+	
+	//wsrtring city
+	std::wcout << L"City: ";
+	std::wcin >> sch.city;
 
+	//wsrtring address
+	std::wcout << L"Address (seperate with a comma ','): ";
+	std::wcin >> sch.address;
 
-	return SCHOOL();
+	//Make Teams
+	//Ask how many
+	std::wcout << L"How many Teams (0 for none): ";
+	std::wcin >> temp;
+	
+	if (temp != 0)
+	{
+		//Ask if user wants to make the teams manually or automatically
+		std::wcout << L"Create Teams manually or automatically (0 - for manual; 1 - for automatic): ";
+		std::wcin >> automatic;
+		if (automatic)
+			CreateSampleTeamVector(teamNames, names, surnames, tchlessVec, temp);
+		else
+			for (size_t i = 0; i < temp; i++)
+			{
+				std::wcout << L"Team" << i + 1;
+				NewLine();
+				AddObjectToVector(tchlessVec, EnterTeam(hConsole));
+			}
+	}
+
+	//Make Teachers
+	//Ask how many
+	temp = 0;
+	std::wcout << L"How many Teachers (0 for none): ";
+	std::wcin >> temp;	
+	if (temp != 0)
+	{
+		//Ask if user wants to make the teachers manually or automatically
+		std::wcout << L"Create Teachers manually or automatically(0 - for manual; 1 - for automatic): ";
+		std::wcin >> automatic;
+		if (automatic)
+			CreateSampleTeacherVector(tchlessVec, tempTeam, names, surnames, sch.teachers, temp);
+		else
+			for (size_t i = 0; i < temp; i++)
+				AddObjectToVector(sch.teachers, EnterTeacher(tchlessVec, tempTeam, hConsole));
+
+		size_t size = tchlessVec.size();
+		for (size_t i = 0; i < size; i++)
+			AddObjectToVector(sch.teams, tchlessVec[i]);
+
+		for (size_t i = 0; i < temp; i++)
+			for (size_t j = 0; j < sch.teachers[i].teams.size(); j++)
+				AddObjectToVector(sch.teams, sch.teachers[i].teams[j]);
+	}
+	else
+		sch.teams = tempTeam;
+
+	return sch;
 }
 
 SCHOOL CreateSampleSchool(std::vector<std::wstring>& schoolNames, std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames)
@@ -742,9 +846,7 @@ SCHOOL CreateSampleSchool(std::vector<std::wstring>& schoolNames, std::vector<st
 	sch.address = L"I have no idea where? NULL island?";
 
 	CreateSampleTeamVector(teamNames, names, surnames, sch.teams, 100);
-	UpdateTeacherlessTeamVector(sch.teams, tchlessVec);
-	CreateSampleTeacherVector(tchlessVec, names, surnames, sch.teachers, 10);
-	UpdateTeacherlessTeamVector(sch.teams, tchlessVec);
+	CreateSampleTeacherVector(tchlessVec, sch.teams, names, surnames, sch.teachers, 10);
 
 	return sch;
 }

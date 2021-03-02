@@ -88,7 +88,7 @@ STUDENT EnterStudent(HANDLE hConsole);
 STUDENT CreateSampleStudent(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames);
 
 //Fills a vector with STUDENTs made by the computer
-void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<STUDENT>& stvec, size_t amount = 5);
+void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<STUDENT>& stvec, size_t amount = 5, bool empty = false);
 
 //Adds a STUDENT to a vector of STUDENTs
 void AddObjectToVector(std::vector<STUDENT>& vec, STUDENT obj);
@@ -160,10 +160,10 @@ void InlinePrintTeacher(TEACHER tch, HANDLE hConsole, size_t indent = 0, int id 
 TEACHER EnterTeacher(std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeams, HANDLE hConsole);
 
 //Return a TEACHER made by the computer
-TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& teams);
+TEACHER CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeams);
 
 //Fills a vector with TEACHERs made by the computer
-void CreateSampleTeacherVector(std::vector<TEAM>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEACHER>& vec, size_t amount = 5, bool empty = false);
+void CreateSampleTeacherVector(std::vector<TEAM>& tchlessTeams, std::vector<TEAM>& allTeams, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEACHER>& vec, size_t amount = 5, bool empty = false);
 
 //Adds a TEACHER to a vector of TEACHERs
 void AddObjectToVector(std::vector<TEACHER>& vec, TEACHER obj);
@@ -192,7 +192,7 @@ void BoxPrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent = 0, bool inlineT
 void InlinePrintSchool(SCHOOL sch, HANDLE hConsole, size_t indent = 0, int id = -1);
 
 //Return a SCHOOL made by user input
-SCHOOL EnterSchool(HANDLE hConsole);
+SCHOOL EnterSchool(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, HANDLE hConsole);
 
 //Return a SCHOOL made by the computer
 SCHOOL CreateSampleSchool(std::vector<std::wstring>& schoolNames, std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames);

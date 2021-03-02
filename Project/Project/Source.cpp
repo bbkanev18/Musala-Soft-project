@@ -19,9 +19,7 @@
 LOG _log;
 
 int main()
-{
-	_log.severityFilter = SEVERITY::Info;
-	
+{	
 	CreateSaveDir();
 
 	if (_log.Open(L"c:\\ProjectSaveFiles\\Musala_Soft_Project\\Logs\\logs.log"))
@@ -90,7 +88,6 @@ int main()
 		//TEACHER testing site
 
 		//TEACHER tch = CreateSampleTeacher(namesList, surnamesList, tvec);
-		//TEACHER tch2;
 		//BoxPrintTeacher(tch, hConsole);
 		//NewLine(3);
 		//InlinePrintTeacher(tch, hConsole);
@@ -98,6 +95,7 @@ int main()
 		//UpdateTeacherlessTeamVector(tvec, tchlessVec);
 		//PrintTeamVector(tchlessVec, hConsole, 0, true, false);
 		//NewLine(3);
+		//TEACHER tch2;
 		//tch2 = EnterTeacher(tchlessVec, tvec, hConsole);
 		//BoxPrintTeacher(tch2, hConsole);
 
@@ -116,15 +114,19 @@ int main()
 		/////////////////////////////////////////////////////////////////////////////////////
 		//===========================================
 		//SCHOOL testing site
-
-
+		
+		//SCHOOL sch = CreateSampleSchool(schoolnamesList, teamnamesList, namesList, surnamesList);
+		//BoxPrintSchool(sch, hConsole);
+		//InlinePrintSchool(sch, hConsole);
+		SCHOOL sch = EnterSchool(teamnamesList, namesList, surnamesList, hConsole);
+		BoxPrintSchool(sch, hConsole);
+		std::wcout << L'\n';
+		BoxPrintSchool(sch, hConsole, false, false, false);
+		std::wcout << L'\n';
 
 		//===========================================
 		//SCHOOL vector testing site
-		
-		SCHOOL sch = CreateSampleSchool(schoolnamesList, teamnamesList, namesList, surnamesList);
-		BoxPrintSchool(sch, hConsole);
-		InlinePrintSchool(sch, hConsole);
+
 
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -134,3 +136,17 @@ int main()
 		_log.Close();
 	}
 }
+
+// SCHOOL IS OVERALL BROKEN RN
+// THE TEAMS IN THE TEACHERS DONT GET SYNCHRONIZED WITH THE TEAMS THEMSELVES
+// 
+// POSSIBLE SOLUTION!
+// MAYBE REMOVE THE TEAM VECTOR AND LEAVE THE TEAM VECTOR BE ONLY IN THE TEACHERS
+// 
+// SOLUTION WORKED!
+// HOWEVER, A FEW TEAMS GET LOST IN THE PROCCESS
+// 
+// MANUAL MODE ISNT FINISHED!!!
+// 
+// 
+// 
