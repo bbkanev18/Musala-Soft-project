@@ -5,6 +5,7 @@
 #include <ctime>
 #include <string>
 
+#include "conio.h"
 #include "windows.h"
 
 #include "Interface.h"

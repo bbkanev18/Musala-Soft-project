@@ -25,19 +25,20 @@
 
 # TODO
 
-1. [ ] create the data types
+1. [x] create the data types
 	- [x] create the structures and enumerators 
-	- [ ] figure out how to implement arrays
-2. [ ] create functions to work with said data types
-	- [ ] create sample - make a random object
-	- [ ] show - print one object
-	- [ ] insert in vector
-	- [ ] enter object - let the user create the object
-	- [ ] show vector - print a vector
-	- check inputs!
+	- [x] figure out how to implement arrays
+2. [x] create functions to work with said data types
+	- [x] create sample - make a random object
+	- [x] show - print one object
+	- [x] insert in vector
+	- [x] enter object - let the user create the object
+	- [x] show vector - print a vector
+	- [ ] show vector by a criteria - print a vector
+	- [ ] check inputs!
 	- think of more functions
 3. [ ] create i/o functions to simplify workflow
-
+4. [ ] make ui
 <br>
 <br>
 <br>
@@ -46,16 +47,30 @@
 
 ## 1.Primary data types
 
+###	●Person Structure
+
+```c++
+struct PERSON
+{
+	std::wstring name = L"Homo";
+	std::wstring surname = L"Sapiens";
+	struct EMAIL email = WstringToEmail(L"Iamarealhuman@mars.com");
+	//maybe add more fields?
+	//eg: age?
+};
+```
+
+<hr>
+
+
 ###	●Student Structure
 
 ```c++
 struct STUDENT
 {
-	std::wstring Name;
-	std::wstring surname;
-	char Class;
-	enum class ROLE role;
-	struct EMAIL email;
+	PERSON info;					//Student's Personal info
+	wchar_t Class = '!';				//The class that the student is in
+	enum class ROLE role = ROLE::Undefined;		//Student's role in the team
 };
 ```
 
@@ -67,11 +82,12 @@ struct STUDENT
 ```c++
 struct TEAM
 {
-	std::wstring Name;
-	std::wstring Description;
-	struct tm DateOfSetup;
-	struct STUDENT students[4];
-	enum class STATUS status = STATUS::Undefined;
+	std::wstring name = L"‎Decameron";
+	std::wstring description = L"Ora";				//Short summary of the team
+	struct tm dateOfSetup = {};					//TimeStamp for when the team was added
+	enum class STATUS status = STATUS::Undefined;			//Project's (Team's) current status
+	struct STUDENT students[4] = {};				//An array of students that are a part of the team
+	PERSON teacherInfo;						//Personal info for the teacher that is the team's mentor
 };
 ```
 <hr>
@@ -82,10 +98,8 @@ struct TEAM
 ```c++
 struct TEACHER
 {
-	std::wstring Name;
-	std::wstring surname;
-	//Array of teams the object is in
-	struct EMAIL email;
+	PERSON info;
+	std::vector<TEAM> teams;	//Array of teams the object is in
 };
 ```
 
@@ -97,12 +111,11 @@ struct TEACHER
 ```c++
 struct SCHOOL
 {
-	std::wstring Name;
-	std::wstring City;
-	std::wstring Address;
-	//array of Students
-	//array of Teams
-	//array of Teachers
+	std::wstring name = L"PGKPI";
+	std::wstring city = L"Burgas";
+	std::wstring address = L"Ортото 3";
+	std::vector<TEAM> teams = {};
+	std::vector<TEACHER> teachers = {};
 };
 ```
 
@@ -116,11 +129,11 @@ struct SCHOOL
 ```c++
 enum class ROLE
 {
-	Undefined,
-	ScrumTrainer,
-	QAEngineer,
-	BackendDev,
-	FrontendDev
+	Undefined,		//The role is not defined
+	ScrumTrainer,		//Scrum Trainer
+	QAEngineer,		//Q&A Engineer
+	BackendDev,		//Backend developer
+	FrontendDev		//Frontend developer
 };
 ```
 <hr>
@@ -131,9 +144,9 @@ enum class ROLE
 ```c++
 struct EMAIL
 {
-wstring username
-wstring domain
-}
+	std::wstring username = L"";		//First part of an email
+	std::wstring domain = L"";		//Second part of an email
+};
 ```
 <hr>
 
@@ -143,10 +156,10 @@ wstring domain
 ```c++
 enum class STATUS
 {
-	Undefined,
-	InUse,
-	NotActive,
-	Archived
+	Undefined,		//The status is not defined
+	InUse,			//The project/team is "in use"? - My guess is that they mean active instead of "in use"
+	NotActive,		//The project/team is inactive
+	Archived		//The project/team has been archived/finished
 };
 ```
 

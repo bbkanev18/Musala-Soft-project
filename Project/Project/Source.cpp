@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include <vector>
 #include <ctime>
@@ -120,9 +120,9 @@ int main()
 		//InlinePrintSchool(sch, hConsole);
 		SCHOOL sch = EnterSchool(teamnamesList, namesList, surnamesList, hConsole);
 		BoxPrintSchool(sch, hConsole);
-		std::wcout << L'\n';
-		BoxPrintSchool(sch, hConsole, false, false, false);
-		std::wcout << L'\n';
+		//std::wcout << L'\n';
+		//BoxPrintSchool(sch, hConsole, false, false, false);
+		//std::wcout << L'\n';
 
 		//===========================================
 		//SCHOOL vector testing site
@@ -132,6 +132,50 @@ int main()
 		/////////////////////////////////////////////////////////////////////////////////////
 		//===========================================
 		//QA testing site
+
+		//PERSON p;
+		//p = EnterPerson(hConsole);
+		//std::wcout << L'\n' << p.name;
+		//std::wcout << L'\n' << p.surname;
+		//std::wcout << L'\n' << EmailToWstring(p.email);
+
+
+
+
+
+
+		//▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+		/*
+		Main menu bs...
+		
+		# 1
+
+		main menu
+
+		1. load
+		2. save
+
+		3. school
+		4. teacher
+		5. team
+		6. student
+
+		9. info
+		0. quit
+
+		## 3,4,5 and 6 will have submenues
+
+
+
+		*/
+
+
+
+
+
+
+		//▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
 		_log.Close();
 	}

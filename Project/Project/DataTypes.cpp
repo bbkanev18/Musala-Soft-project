@@ -50,7 +50,7 @@ EMAIL AutogenEmail(std::wstring name, std::wstring surname)
 	email += name + L'.';
 	email += surname;
 	std::transform(email.begin(), email.end(), email.begin(), ::tolower);	//Sets all characters to lower case
-	out = WstringToEmail(email + L"@sample.io");						//Adds the sample domain
+	out = WstringToEmail(email + L"@sample.io");							//Adds the sample domain
 
 	return out;
 }
@@ -119,15 +119,17 @@ std::wstring StatusToWstring(STATUS status, int& activeColor)
 PERSON EnterPerson(HANDLE hConsole)
 {
 	PERSON info;
-	std::wstring email = L"";
+	std::wstring temp = L"";
 
 	std::wcout << L"Name: ";
 	std::wcin >> info.name;
+	info.name = NameInputCheck(info.name);
 	std::wcout << L"Surname: ";
 	std::wcin >> info.surname;
+	info.surname = NameInputCheck(info.surname);
 	std::wcout << L"Email (write: \"autogen\" or \"ag\" to skip): ";
-	std::wcin >> email;
-	info.email = WstringToEmail(email, info.name, info.surname);
+	std::wcin >> temp;
+	info.email = WstringToEmail(temp, info.name, info.surname);
 
 	return info;
 }
@@ -149,6 +151,26 @@ bool ArePeopleEqual(PERSON a, PERSON b)
 		return true;
 
 	return false;
+}
+
+std::wstring NameInputCheck(std::wstring name)
+{
+	std::wstring allowedSymbols = L"etaoinsrhdlucmfywgpbvkxqjzETAOINSRHDLUCMFYWGPBVKXQJZабвгдежзийклмнопрстфхшщцчъюяѝАБВГДЕЖЗИЙКЛМНОПРСТФХШЩЦЧЪЮЯЍ";
+	std::wstring out = L"";
+
+	for (size_t i = 0; i < name.length(); i++)
+	{
+		for (size_t j = 0; j < allowedSymbols.length(); j++)
+		{
+			if (name[i] == allowedSymbols[j])
+			{
+				out += name[i];
+				break;
+			}
+		}
+	}
+
+	return (out.empty() ? L"BadInput" : out);
 }
 
 //Student
@@ -193,7 +215,7 @@ void InlinePrintStudent(STUDENT st, HANDLE hConsole, size_t indent, int id)
 	NewLine();
 }
 
-STUDENT EnterStudent(HANDLE hConsole)
+STUDENT EnterStudent(HANDLE hConsole, int availableRoles)
 {
 	STUDENT st;
 	wchar_t temp = ' ';
@@ -205,11 +227,44 @@ STUDENT EnterStudent(HANDLE hConsole)
 	if (st.Class >= 'a' and st.Class <= 'z')
 		st.Class -= ('a' - 'A');
 	if (!(st.Class >= 'A' and st.Class <= 'Z'))
-		st.Class = '?';
-	
-	std::wcout << L"Role (1.BackendDev, 2.FrontendDev, 3.Q&AEngineer, 4.ScrumTrainer): ";
+		st.Class = char(rand() % 26 + 65);
+
+	//Add special restrictions for roles, so that there is only one role in a team
+	//Maybe optionall parameter
+
+	std::wcout << L"Role (1.BackendDev, 2.FrontendDev, 3.Q&A Engineer, 4.ScrumTrainer): ";
 	std::wcin >> temp;
-	st.role = ROLE(int(temp) - 48);
+	st.role = ROLE(int(temp) - 48);	
+	
+	/*
+	std::wcout << L"Role (";
+	
+	if(availableRoles % 2 == 1)				//---1
+		std::wcout << L"1.BackendDev ";
+	if((availableRoles / 10) % 2 == 1)		//--1-
+		std::wcout << L"2.FrontendDev ";
+	if((availableRoles / 100) % 2 == 1)		//-1--
+		std::wcout << L"3.Q&A Engineer ";
+	if((availableRoles / 1000) % 2 == 1)	//1---
+		std::wcout << L"4.ScrumTrainer ";
+
+	std::wcout << L"): ";
+	std::wcin >> temp;
+
+	//think of a smarter solution
+	if (temp == 1 and (availableRoles % 2 == 1))					//---1
+		st.role = ROLE(int(temp) - 48);
+	else if (temp == 2 and ((availableRoles / 10) % 2 == 1))		//--1-
+		st.role = ROLE(int(temp) - 48);
+	else if (temp == 3 and ((availableRoles / 100) % 2 == 1))		//-1--
+		st.role = ROLE(int(temp) - 48);
+	else if (temp == 4 and ((availableRoles / 1000) % 2 == 1))		//1---
+		st.role = ROLE(int(temp) - 48);
+	else
+	{
+
+	}
+	*/
 
 	NewLine();
 	return st;
@@ -352,10 +407,7 @@ TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wst
 	localtime_s(&team.dateOfSetup, &_t);
 	
 	if (!empty)
-	{
-		for (size_t i = 0; i < 4; i++)
-			team.students[i] = CreateSampleStudent(names, surnames);
-	}
+		CreateSampleStudentVector(names, surnames, team.students, 4);
 	
 	switch (rand() % 3)
 	{
@@ -385,20 +437,26 @@ TEAM EnterTeam(HANDLE hConsole)
 	std::wcin.ignore();
 	std::wcout << L"Name: ";
 	getline(std::wcin, team.name);
+	team.name = NameInputCheck(team.name);
 	std::wcout << L"Description: ";
 	getline(std::wcin, team.description);
+	team.description = NameInputCheck(team.description);
 	
-	//TEMPORARY SOLUTION!!!
+	//TEMPORARY SOLUTION???
 	
 	time_t _t;
 	time(&_t);
 	localtime_s(&team.dateOfSetup, &_t);
 
-	//LET THE USER CHOOSE!!!
+	//LET THE USER CHOOSE???
 	
 	std::wcout << L"Status (1.InUse, 2.Not Active, 3.Archived): ";
 	std::wcin >> temp;
-	team.status = STATUS(int(temp) - 48);
+
+	if (temp >= 1 and temp <= 3)
+		team.status = STATUS(int(temp) - 48);
+	else
+		team.status = STATUS::Undefined;
 
 	//Seperate into a function?!
 	for (size_t i = 0; i < 4; i++)
@@ -406,9 +464,9 @@ TEAM EnterTeam(HANDLE hConsole)
 		NewLine();
 		std::wcout << L"Student " + std::to_wstring(i + 1);
 		NewLine();
-		team.students[i] = EnterStudent(hConsole);
+		team.students.push_back(EnterStudent(hConsole));
 	}
-	
+
 	return team;
 }
 
@@ -455,20 +513,6 @@ void PrintTeamVector(std::vector<TEAM>& vec, HANDLE hConsole, size_t indent, boo
 
 void UpdateTeacherlessTeamVector(std::vector<TEAM>& allTeams, std::vector<TEAM>& tchlessTeams)
 {
-	for (size_t i = 0; i < tchlessTeams.size(); i++)		//tchlessTeams gets changed and so does it's size. Possible memory leak... investigate
-		if (!ArePeopleEqual(tchlessTeams[i].teacherInfo))
-			RemoveObjectFromVector(tchlessTeams, i);
-
-	for (size_t i = 0; i < allTeams.size(); i++)
-		if (ArePeopleEqual(allTeams[i].teacherInfo))	//broke
-			AddObjectToVector(tchlessTeams, allTeams[i]);
-}
-//Check back on this!
-//Possible memory leak
-
-
-void _test_UpdateTeacherlessTeamVector(std::vector<TEAM>& allTeams, std::vector<TEAM>& tchlessTeams)
-{
 	int size = tchlessTeams.size();
 	for (int i = size - 1; i >= 0; i--)
 	{
@@ -479,7 +523,6 @@ void _test_UpdateTeacherlessTeamVector(std::vector<TEAM>& allTeams, std::vector<
 		}
 	}
 }
-
 
 void PrintStudentsFromTeam(TEAM team, HANDLE hConsole, size_t indent, bool inlineStudents)
 {
@@ -665,7 +708,7 @@ void CreateSampleTeacherVector(std::vector<TEAM>& tchlessTeams, std::vector<TEAM
 	if (empty)
 		return;
 	//UpdateTeacherlessTeamVector(allTeams, tchlessTeams);
-	_test_UpdateTeacherlessTeamVector(allTeams, tchlessTeams);
+	UpdateTeacherlessTeamVector(allTeams, tchlessTeams);
 	for (size_t i = 0; i < amount; i++)
 	{
 		AddObjectToVector(vec, CreateSampleTeacher(names, surnames, tchlessTeams, allTeams));
@@ -767,6 +810,7 @@ SCHOOL EnterSchool(std::vector<std::wstring>& teamNames, std::vector<std::wstrin
 	std::vector<TEAM> tchlessVec;
 	std::vector<TEAM> tempTeam;
 	size_t temp = 0;
+	std::wstring wstemp = L"";
 	bool automatic = true;
 
 	NewLine();
@@ -776,34 +820,52 @@ SCHOOL EnterSchool(std::vector<std::wstring>& teamNames, std::vector<std::wstrin
 	//wsrtring name
 	std::wcout << L"Name: ";
 	std::wcin >> sch.name;
-	
+	sch.name = NameInputCheck(sch.name);
 	//wsrtring city
 	std::wcout << L"City: ";
 	std::wcin >> sch.city;
+	sch.city = NameInputCheck(sch.city);
 
 	//wsrtring address
 	std::wcout << L"Address (seperate with a comma ','): ";
-	std::wcin >> sch.address;
+	std::wcin >> wstemp;
+	getline(std::wcin, sch.address);
+	wstemp += sch.address;
+	temp = wstemp.length();
+	sch.address = L"";
+	for (size_t i = 0; i < temp; i++)
+	{
+		if (i == temp - 1 and wstemp[i] == L',')
+			sch.address += L'.';
+		else
+			sch.address += wstemp[i];
+		if ((i + 1 < temp) and (wstemp[i] == L',' and wstemp[i + 1] != L' '))
+			sch.address += L' ';
+	}
+	temp = 0;
 
 	//Make Teams
 	//Ask how many
 	std::wcout << L"How many Teams (0 for none): ";
 	std::wcin >> temp;
 	
-	if (temp != 0)
+	if (temp > 0)
 	{
 		//Ask if user wants to make the teams manually or automatically
 		std::wcout << L"Create Teams manually or automatically (0 - for manual; 1 - for automatic): ";
 		std::wcin >> automatic;
-		if (automatic)
-			CreateSampleTeamVector(teamNames, names, surnames, tchlessVec, temp);
-		else
+		if (automatic == 0)
 			for (size_t i = 0; i < temp; i++)
 			{
-				std::wcout << L"Team" << i + 1;
+				NewLine();
+				std::wcout << L"Team ";
+				if (temp > 1)
+					std::wcout << i + 1;
 				NewLine();
 				AddObjectToVector(tchlessVec, EnterTeam(hConsole));
 			}
+		else
+			CreateSampleTeamVector(teamNames, names, surnames, tchlessVec, temp);
 	}
 
 	//Make Teachers
@@ -811,16 +873,16 @@ SCHOOL EnterSchool(std::vector<std::wstring>& teamNames, std::vector<std::wstrin
 	temp = 0;
 	std::wcout << L"How many Teachers (0 for none): ";
 	std::wcin >> temp;	
-	if (temp != 0)
+	if (temp > 0)
 	{
 		//Ask if user wants to make the teachers manually or automatically
 		std::wcout << L"Create Teachers manually or automatically(0 - for manual; 1 - for automatic): ";
 		std::wcin >> automatic;
-		if (automatic)
-			CreateSampleTeacherVector(tchlessVec, tempTeam, names, surnames, sch.teachers, temp);
-		else
+		if (automatic == 0)
 			for (size_t i = 0; i < temp; i++)
 				AddObjectToVector(sch.teachers, EnterTeacher(tchlessVec, tempTeam, hConsole));
+		else
+			CreateSampleTeacherVector(tchlessVec, tempTeam, names, surnames, sch.teachers, temp);
 
 		size_t size = tchlessVec.size();
 		for (size_t i = 0; i < size; i++)

@@ -67,6 +67,8 @@ PERSON CreateSamplePerson(std::vector<std::wstring>& names, std::vector<std::wst
 //If no person is pushed to b, b will be the default value of PERSON
 bool ArePeopleEqual(PERSON a, PERSON b = { L"Homo", L"Sapiens", L"Iamarealhuman" , L"mars.com"});
 
+std::wstring NameInputCheck(std::wstring name);
+
 //A struct to store STUDENT info
 struct STUDENT
 {
@@ -82,7 +84,7 @@ void BoxPrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0);
 void InlinePrintStudent(STUDENT st, HANDLE hConsole, size_t indent = 0, int id = -1);
 
 //Return a STUDENT made by user input
-STUDENT EnterStudent(HANDLE hConsole);
+STUDENT EnterStudent(HANDLE hConsole, int availableRoles = 1111);
 
 //Return a STUDENT made by the computer
 STUDENT CreateSampleStudent(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames);
@@ -107,7 +109,8 @@ struct TEAM
 	std::wstring description = L"Ora";				//Short summary of the team
 	struct tm dateOfSetup = {};						//TimeStamp for when the team was added
 	enum class STATUS status = STATUS::Undefined;	//Project's (Team's) current status
-	struct STUDENT students[4] = {};				//An array of students that are a part of the team
+	std::vector<STUDENT> students = {};				//A vector of students that are a part of the team
+	//struct STUDENT students[4] = {};				//An array of students that are a part of the team
 	PERSON teacherInfo;								//Personal info for the teacher that is the team's mentor
 };
 
