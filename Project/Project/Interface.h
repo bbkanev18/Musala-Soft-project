@@ -28,12 +28,12 @@ std::vector<std::wstring> GenerateWstringVector(std::string path);
 //Prints the content in Box Style
 //Eg:
 //| Esse esse allo occulta noi |
-void PrintBoxStyle(size_t hSize, HANDLE hConsole, std::wstring content = L"", int baseColour = 7, int specialColour = 7, wchar_t wall = L'|', size_t indent = 0);
+void PrintBoxStyle(size_t hSize, std::wstring content = L"", int baseColour = 7, int specialColour = 7, wchar_t wall = L'|', size_t indent = 0);
 
 //Prints the content in Inline Style
 //Eg:
 //| Incominciare fragilita | Intendo ingannati volta cosa | Nostra |
-void PrintInlineStyle(std::vector<std::wstring>& content, HANDLE hConsole, size_t indent = 0, int id = -1, wchar_t seperator = L'|');
+void PrintInlineStyle(std::vector<std::wstring>& content, size_t indent = 0, int id = -1, wchar_t seperator = L'|');
 
 //Adds leading zeroes to num and returns it as a wstring
 //Eg: 5 -> 05
@@ -51,3 +51,11 @@ void PrintIndent(size_t indent = 3);
 
 //Print new lines
 void NewLine(size_t lines = 1);
+
+char PrintMainMenu();
+
+char StructSubMenu(std::wstring type = L"", bool empty = true);
+
+size_t ReadSizeInput();
+
+void SetColour(const int colour);

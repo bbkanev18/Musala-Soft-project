@@ -67,6 +67,7 @@ struct PERSON
 
 ```c++
 struct STUDENT
+struct STUDENT
 {
 	PERSON info;					//Student's Personal info
 	wchar_t Class = '!';				//The class that the student is in
@@ -86,7 +87,8 @@ struct TEAM
 	std::wstring description = L"Ora";				//Short summary of the team
 	struct tm dateOfSetup = {};					//TimeStamp for when the team was added
 	enum class STATUS status = STATUS::Undefined;			//Project's (Team's) current status
-	struct STUDENT students[4] = {};				//An array of students that are a part of the team
+	std::vector<STUDENT> students = {};				//A vector of students that are a part of the team
+	//struct STUDENT students[4] = {};				//An array of students that are a part of the team
 	PERSON teacherInfo;						//Personal info for the teacher that is the team's mentor
 };
 ```

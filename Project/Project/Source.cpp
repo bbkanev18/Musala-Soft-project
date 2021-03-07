@@ -6,6 +6,7 @@
 #include "io.h"
 #include "fcntl.h"
 #include "windows.h"
+#include "conio.h"
 
 #include "DataTypes.h"
 #include "Interface.h"
@@ -28,9 +29,8 @@ int main()
 
 		srand(time(NULL));
 
-		HANDLE hConsole;
-		hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-		SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+		//Update to pesho's standart;
+		SetColour(BASE_COLOUR);
 
 		int a = _setmode(_fileno(stdout), _O_U16TEXT);
 		a = _setmode(_fileno(stdin), _O_U16TEXT);
@@ -40,116 +40,11 @@ int main()
 		std::vector<std::wstring> teamnamesList =  GenerateWstringVector("Database\\teamnames.txt"  );
 		std::vector<std::wstring> schoolnamesList = GenerateWstringVector("Database\\schoolnames.txt");
 
-
-		/////////////////////////////////////////////////////////////////////////////////////
-		//===========================================
-		//TEAM testing site
-
-		//TEAM team = EnterTeam();
-		//TEAM team = CreateSampleTeam(teamnamesList, namesList, surnamesList);
-		//BoxPrintTeam(team, hConsole);
-	
-		//===========================================
-		//TEAM vector testing site
-
-		//std::vector<TEAM> tvec;
-		//std::vector<TEAM> tchlessVec;
-		//CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tvec, 50);
-		//UpdateTeacherlessTeamVector(tvec, tchlessVec);
-		//PrintTeamVector(tvec, hConsole, true);
-		//NewLine(3);
-		//PrintTeamVector(tvec, hConsole, false);
-		//NewLine(3);
-
-
-		/////////////////////////////////////////////////////////////////////////////////////
-		//===========================================
-		//STUDENT testing site
-
-		//STUDENT st = EnterStudent();
-		//BoxPrintStudent(st, hConsole);
-		//NewLine(3);
-		//InlinePrintStudent(st, hConsole);
-		//NewLine(3);
-
-		//===========================================
-		//STUDENT vector testing site
-
-		//std::vector<STUDENT> stvec;
-		//CreateSampleStudentVector(namesList, surnamesList, stvec, 50);
-		//PrintStudentVector(stvec, hConsole, false);
-		//NewLine(3);
-		//PrintStudentVector(stvec, hConsole, true);
-		//NewLine(3);
-
-
-		/////////////////////////////////////////////////////////////////////////////////////
-		//===========================================
-		//TEACHER testing site
-
-		//TEACHER tch = CreateSampleTeacher(namesList, surnamesList, tvec);
-		//BoxPrintTeacher(tch, hConsole);
-		//NewLine(3);
-		//InlinePrintTeacher(tch, hConsole);
-		//NewLine(3);
-		//UpdateTeacherlessTeamVector(tvec, tchlessVec);
-		//PrintTeamVector(tchlessVec, hConsole, 0, true, false);
-		//NewLine(3);
-		//TEACHER tch2;
-		//tch2 = EnterTeacher(tchlessVec, tvec, hConsole);
-		//BoxPrintTeacher(tch2, hConsole);
-
-
-		//===========================================
-		//TEACHER vector testing site
-
-		//std::vector<TEACHER> tcvec;
-		//CreateSampleTeacherVector(tvec, namesList, surnamesList, tcvec);
-		//PrintTeacherVector(tcvec, hConsole, 0, true);
-		//NewLine(3);
-		//PrintTeacherVector(tcvec, hConsole, 0, false);
-		//NewLine(3);
-
-		
-		/////////////////////////////////////////////////////////////////////////////////////
-		//===========================================
-		//SCHOOL testing site
-		
-		//SCHOOL sch = CreateSampleSchool(schoolnamesList, teamnamesList, namesList, surnamesList);
-		//BoxPrintSchool(sch, hConsole);
-		//InlinePrintSchool(sch, hConsole);
-		SCHOOL sch = EnterSchool(teamnamesList, namesList, surnamesList, hConsole);
-		BoxPrintSchool(sch, hConsole);
-		//std::wcout << L'\n';
-		//BoxPrintSchool(sch, hConsole, false, false, false);
-		//std::wcout << L'\n';
-
-		//===========================================
-		//SCHOOL vector testing site
-
-
-
-		/////////////////////////////////////////////////////////////////////////////////////
-		//===========================================
-		//QA testing site
-
-		//PERSON p;
-		//p = EnterPerson(hConsole);
-		//std::wcout << L'\n' << p.name;
-		//std::wcout << L'\n' << p.surname;
-		//std::wcout << L'\n' << EmailToWstring(p.email);
-
-
-
-
-
-
 		//▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
-
 		/*
 		Main menu bs...
 		
-		# 1
+		# IDEA 1
 
 		main menu
 
@@ -164,8 +59,19 @@ int main()
 		9. info
 		0. quit
 
-		## 3,4,5 and 6 will have submenues
+		## 3, 4, 5 and 6 will have submenues
+		<x> submenu
 
+		1. Enter
+		2. Create Sample -> amount?
+
+		3. Print all
+		4. Print by criteria
+
+		5. Delete?
+		6. Edit?
+
+		0. quit
 
 
 		*/
@@ -173,9 +79,280 @@ int main()
 
 
 
+//Connect students to teams, teachers and schools
+//Update the students vec with data from all other structs
+//Do the same for the other structs
+		std::vector<SCHOOL>		  schVec;
+		std::vector<TEACHER>	  tchVec;
+		std::vector<TEAM>		 teamVec;
+		std::vector<TEAM>	tchlessTeamsVec;
+		std::vector<STUDENT>	  stdVec;
+		size_t amount = 0;
+
+		char _getchErrorRemover = ' ';
+		bool inLoop = true;
+		while (inLoop)
+		{
+			amount = 0;
+			switch(PrintMainMenu())
+			{
+			case '1':
+				//load
+				break;
+			case '2':
+				//save
+				break;
+			case 'q':	//School
+				switch (StructSubMenu(L"School", schVec.empty()))
+				{
+				case 'a':	//Enter
+					AddObjectToVector(schVec, EnterSchool(teamnamesList, namesList, surnamesList));
+					break;
+				case 's':	//Sample
+					std::wcout << L"Amount of sample schools: ";
+					amount = ReadSizeInput();
+					CreateSampleSchoolVector(schoolnamesList, teamnamesList, namesList, surnamesList, schVec, amount);
+					break;
+				case 'd':	//Print all
+					//Ask if it should be inline, or box
+					PrintSchoolVector(schVec);
+					_getchErrorRemover = _getch();
+					break;
+				//case 'f':	//Print by criteria
+
+				//	//Ask for criteria!
+				//	//return and print a vec
+				//	break;
+				//case 'z':	//Delete?
+
+				//	break;
+				//case 'x':	//Edit?
+
+				//	break;
+				case 27:	//Esc
+					inLoop = false;
+					break;
+				default:
+					break;
+				}
+				break;
+			case 'w':	//Teacher
+				switch (StructSubMenu(L"Teacher", tchVec.empty()))
+				{
+				case 'a':	//Enter
+					AddObjectToVector(tchVec, EnterTeacher(tchlessTeamsVec, teamVec));
+					break;
+				case 's':	//Sample
+					std::wcout << L"Amount of sample teachers: ";
+					amount = ReadSizeInput();
+					CreateSampleTeacherVector(tchlessTeamsVec, teamVec, namesList, surnamesList, tchVec, amount);
+					break;
+				case 'd':	//Print all
+					PrintTeacherVector(tchVec);
+					_getchErrorRemover = _getch();
+					break;
+				//case 'f':	//Print by criteria
+				//	//Ask for criteria!
+				//	//return and print a vec
+				//	break;
+				//case 'z':	//Delete?
+
+				//	break;
+				//case 'x':	//Edit?
+
+				//	break;
+				case 27:	//Esc
+					inLoop = false;
+					break;
+				default:
+					break;
+				}
+				UpdateTeacherlessTeamVector(teamVec, tchlessTeamsVec);
+				break;
+			case 'e':	//Team
+				switch (StructSubMenu(L"Team", teamVec.empty()))
+				{
+				case 'a':	//Enter
+					AddObjectToVector(teamVec, EnterTeam());
+					break;
+				case 's':	//Sample
+					std::wcout << L"Amount of sample teams: ";
+					amount = ReadSizeInput();
+					CreateSampleTeamVector(teamnamesList, namesList, surnamesList, teamVec, amount);
+					break;
+				case 'd':	//Print all
+					PrintTeamVector(teamVec);
+					_getchErrorRemover = _getch();
+					break;
+				//case 'f':	//Print by criteria
+				//	//Ask for criteria!
+				//	//return and print a vec
+				//	break;
+				//case 'z':	//Delete?
+
+				//	break;
+				//case 'x':	//Edit?
+
+				//	break;
+				case 27:	//Esc
+					inLoop = false;
+					break;
+				default:
+					break;
+				}
+				UpdateTeacherlessTeamVector(teamVec, tchlessTeamsVec);
+				break;
+			case 'r':	//Student
+				switch (StructSubMenu(L"Student", stdVec.empty()))
+				{
+				case 'a':	//Enter
+					AddObjectToVector(stdVec, EnterStudent());
+					break;
+				case 's':	//Sample
+					std::wcout << L"Amount of sample students: ";
+					amount = ReadSizeInput();
+					CreateSampleStudentVector(namesList, surnamesList, stdVec, amount);
+					break;
+				case 'd':	//Print all
+					PrintStudentVector(stdVec);
+					_getchErrorRemover = _getch();
+					break;
+				//case 'f':	//Print by criteria
+				//	//Ask for criteria!
+				//	//return and print a vec
+				//	break;
+				//case 'z':	//Delete?
+
+				//	break;
+				//case 'x':	//Edit?
+
+				//	break;
+				case 27:	//Esc
+					inLoop = false;
+					break;
+				default:
+					break;
+				}
+				break;
+			case 9:		//tab
+				//info
+				break;
+			case 27:	//esc
+				inLoop = false;
+				break;
+			default:
+
+				break;
+			}
+		}
+
+
+
 
 
 		//▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+/*
+		/////////////////////////////////////////////////////////////////////////////////////
+		//===========================================
+		//TEAM testing site
+
+		//TEAM team = EnterTeam();
+		//TEAM team = CreateSampleTeam(teamnamesList, namesList, surnamesList);
+		//BoxPrintTeam(team);
+	
+		//===========================================
+		//TEAM vector testing site
+
+		//std::vector<TEAM> tvec;
+		//std::vector<TEAM> tchlessVec;
+		//CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tvec, 50);
+		//UpdateTeacherlessTeamVector(tvec, tchlessVec);
+		//PrintTeamVector(tvec, true);
+		//NewLine(3);
+		//PrintTeamVector(tvec, false);
+		//NewLine(3);
+
+
+		/////////////////////////////////////////////////////////////////////////////////////
+		//===========================================
+		//STUDENT testing site
+
+		//STUDENT st = EnterStudent();
+		//BoxPrintStudent(st);
+		//NewLine(3);
+		//InlinePrintStudent(st);
+		//NewLine(3);
+
+		//===========================================
+		//STUDENT vector testing site
+
+		//std::vector<STUDENT> stvec;
+		//CreateSampleStudentVector(namesList, surnamesList, stvec, 50);
+		//PrintStudentVector(stvec, false);
+		//NewLine(3);
+		//PrintStudentVector(stvec, true);
+		//NewLine(3);
+
+
+		/////////////////////////////////////////////////////////////////////////////////////
+		//===========================================
+		//TEACHER testing site
+
+		//TEACHER tch = CreateSampleTeacher(namesList, surnamesList, tvec);
+		//BoxPrintTeacher(tch);
+		//NewLine(3);
+		//InlinePrintTeacher(tch);
+		//NewLine(3);
+		//UpdateTeacherlessTeamVector(tvec, tchlessVec);
+		//PrintTeamVector(tchlessVec, 0, true, false);
+		//NewLine(3);
+		//TEACHER tch2;
+		//tch2 = EnterTeacher(tchlessVec, tvec);
+		//BoxPrintTeacher(tch2);
+
+
+		//===========================================
+		//TEACHER vector testing site
+
+		//std::vector<TEACHER> tcvec;
+		//CreateSampleTeacherVector(tvec, namesList, surnamesList, tcvec);
+		//PrintTeacherVector(tcvec, 0, true);
+		//NewLine(3);
+		//PrintTeacherVector(tcvec, 0, false);
+		//NewLine(3);
+
+		
+		/////////////////////////////////////////////////////////////////////////////////////
+		//===========================================
+		//SCHOOL testing site
+		
+		//SCHOOL sch = CreateSampleSchool(schoolnamesList, teamnamesList, namesList, surnamesList);
+		//BoxPrintSchool(sch);
+		//InlinePrintSchool(sch);
+		//SCHOOL sch = EnterSchool(teamnamesList, namesList, surnamesList);
+		//BoxPrintSchool(sch);
+		//std::wcout << L'\n';
+		//BoxPrintSchool(sch, false, false, false);
+		//std::wcout << L'\n';
+
+		//===========================================
+		//SCHOOL vector testing site
+
+
+
+		/////////////////////////////////////////////////////////////////////////////////////
+		//===========================================
+		//QA testing site
+
+		//PERSON p;
+		//p = EnterPerson();
+		//std::wcout << L'\n' << p.name;
+		//std::wcout << L'\n' << p.surname;
+		//std::wcout << L'\n' << EmailToWstring(p.email);
+*/
+
+
 
 		_log.Close();
 	}

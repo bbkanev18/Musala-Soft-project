@@ -34,13 +34,13 @@ std::vector<std::wstring> GenerateWstringVector(std::string path)
 	return vec;
 }
 
-void PrintBoxStyle(size_t hSize, HANDLE hConsole, std::wstring content, int baseColour, int specialColour, wchar_t wall, size_t indent)
+void PrintBoxStyle(size_t hSize, std::wstring content, int baseColour, int specialColour, wchar_t wall, size_t indent)
 {
 	std::wstring overflow = L"empty";			//Is the wstring that overflows through the boundry
 	int dif = (hSize - 3) - content.size();		//Is the difference between header's size and content's size
 	wchar_t tempC = L'-';						//Is a temporary wchar_t
 	
-	SetConsoleTextAttribute(hConsole, baseColour);
+	SetColour(baseColour);
 	NewLine();
 	PrintIndent(indent);
 	std::wcout << wall << L' ';
@@ -57,12 +57,12 @@ void PrintBoxStyle(size_t hSize, HANDLE hConsole, std::wstring content, int base
 		content = content.substr(0, hSize - 5) +  tempC;
 	}
 	
-	SetConsoleTextAttribute(hConsole, baseColour);
+	SetColour(baseColour);
 	PrintIndent(dif / 2);
-	SetConsoleTextAttribute(hConsole, specialColour);
+	SetColour(specialColour);
 	std::wcout << content;
 	
-	SetConsoleTextAttribute(hConsole, baseColour);
+	SetColour(baseColour);
 	if (hSize % 2 == 1 and content.size() % 2 == 1)
 		std::wcout << ' ';
 	else if (hSize % 2 == 0 and content.size() % 2 == 0)
@@ -72,36 +72,36 @@ void PrintBoxStyle(size_t hSize, HANDLE hConsole, std::wstring content, int base
 	std::wcout << wall;
 
 	if (overflow != L"empty")			//If there is any content in the overflow wstring recurse through PrintBoxStyle
-		PrintBoxStyle(hSize, hConsole, overflow, baseColour, specialColour, wall, indent);
+		PrintBoxStyle(hSize, overflow, baseColour, specialColour, wall, indent);
 }
 
-void PrintInlineStyle(std::vector<std::wstring>& content, HANDLE hConsole, size_t indent, int id, wchar_t seperator)
+void PrintInlineStyle(std::vector<std::wstring>& content, size_t indent, int id, wchar_t seperator)
 {
 	PrintIndent(indent);
 
 	if (id != -1)
 	{
-		SetConsoleTextAttribute(hConsole, WALL_COLOUR);
+		SetColour(WALL_COLOUR);
 		std::wcout << seperator;
-		SetConsoleTextAttribute(hConsole, INLINEPRINT_COLOUR);
+		SetColour(INLINEPRINT_COLOUR);
 		std::wcout << L' ' << std::to_wstring(id + 1) << L' ';
 	}
 
 
-	SetConsoleTextAttribute(hConsole, WALL_COLOUR);
+	SetColour(WALL_COLOUR);
 	std::wcout << seperator << L' ';
 
 	for (size_t i = 0; i < content.size(); i++)
 	{
-		SetConsoleTextAttribute(hConsole, INLINEPRINT_COLOUR);
+		SetColour(INLINEPRINT_COLOUR);
 		std::wcout << content[i];
-		SetConsoleTextAttribute(hConsole, WALL_COLOUR);
+		SetColour(WALL_COLOUR);
 		std::wcout << L' ' << seperator;
 
 		if (i != content.size() - 1)
 			std::wcout << L' ';
 	}
-	SetConsoleTextAttribute(hConsole, BASE_COLOUR);
+	SetColour(BASE_COLOUR);
 }
 
 std::wstring AddLeadingZeroes(int num)
@@ -178,4 +178,82 @@ void NewLine(size_t lines)
 {
 	for (size_t i = 0; i < lines; i++)
 		std::wcout << L'\n';
+}
+
+char PrintMainMenu()
+{
+	system("CLS");
+
+	std::wcout << L"\nmain menu\n\n";
+
+	std::wcout << L"1. load\n";
+	std::wcout << L"2. save\n\n";
+
+	std::wcout << L"q. school\n";
+	std::wcout << L"w. teacher\n";
+	std::wcout << L"e. team\n";
+	std::wcout << L"r. student\n\n";
+
+	std::wcout << L"Tab. info\n";
+	std::wcout << L"Esc. quit\n\n";
+
+	return _getch();
+}
+
+char StructSubMenu(std::wstring type, bool empty)
+{
+	if (!type.empty())
+		type += L' ';
+	std::wcout << L'\n' << type << L"sub menu\n\n";
+	std::wcout << L"a. Enter\n";
+	std::wcout << L"s. Create Sample -> amount?\n";
+
+	if (!empty)
+	{
+		std::wcout << L"\nd. Print all\n\n";
+		//std::wcout << L"f. Print by criteria\n\n";
+
+		//std::wcout << L"z. Delete?\n";
+		//std::wcout << L"x. Edit?\n\n";
+	}
+
+	std::wcout << L"Esc. quit\n";
+
+	char out = _getch();
+
+	switch (out)
+	{
+	case 'd':
+	//case 'f':
+	//case 'z':
+	//case 'x':
+		if (empty)
+			return 'p';
+	default:
+		return out;
+	}
+
+}
+
+size_t ReadSizeInput()
+{
+	size_t input = -1;
+	bool valid = false;
+	do
+	{
+		std::wcin >> input;
+		if (std::wcin.good())
+			return input;
+		else
+		{
+			std::wcin.clear();
+			std::wcin.ignore(SIZE_MAX, '\n');
+			std::wcout << L"Invalid input; please re-enter.\n";
+		}
+	} while (true);
+}
+
+void SetColour(const int colour)
+{
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colour);
 }

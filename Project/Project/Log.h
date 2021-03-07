@@ -21,8 +21,8 @@ std::wstring SeverityToWstring(SEVERITY severity);
 //A struct that can be used to log events and errors
 struct LOG
 {
-	tm timeStamp;									//Log's time stamp - Shows the time when the log was created
-	enum SEVERITY severity;							//Log's severity - Shows how severe the log is
+	tm timeStamp = {};								//Log's time stamp - Shows the time when the log was created
+	enum SEVERITY severity = SEVERITY::Info;		//Log's severity - Shows how severe the log is
 	enum SEVERITY severityFilter = SEVERITY::Info;	//Lowest severity to be logged
 	std::wstring message;							//Log's message
 
