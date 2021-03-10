@@ -58,4 +58,6 @@ char StructSubMenu(std::wstring type = L"", bool empty = true);
 
 size_t ReadSizeInput();
 
+wchar_t ReadWcharInput();
+
 void SetColour(const int colour);

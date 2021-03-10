@@ -253,6 +253,24 @@ size_t ReadSizeInput()
 	} while (true);
 }
 
+wchar_t ReadWcharInput()
+{
+	wchar_t input = 0;
+	bool valid = false;
+	do
+	{
+		std::wcin >> input;
+		if (std::wcin.good())
+			return input;
+		else
+		{
+			std::wcin.clear();
+			std::wcin.ignore(WCHAR_MAX, '\n');
+			std::wcout << L"Invalid input; please re-enter.\n";
+		}
+	} while (true);
+}
+
 void SetColour(const int colour)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colour);

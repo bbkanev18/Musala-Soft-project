@@ -1,339 +1,349 @@
-﻿//#include <iostream>
-//#include <string>
-//#include <vector>
-//#include <algorithm>
-//#include <ctime>
-//
-//#include "windows.h"
-//
-//#include "DataTypes.h"
-//#include "Interface.h"
-//#include "Log.h"
-//
-////Email
-//
-//EMAIL WstringToEmail(std::wstring email, std::wstring name, std::wstring surname)
-//{
-//	EMAIL out;
-//	bool writeInUsername = true;
-//	
-//	if ((email == L"autogen" or email == L"ag") and name != L"" and surname != L"")
-//		AutogenEmail(name, surname);
-//
-//	for (size_t i = 0; i < email.length(); i++)
-//	{
-//		if (email[i] == L'@')
-//		{
-//			writeInUsername = false;
-//			continue;
-//		}
-//
-//		if (writeInUsername)	//Adds the current char from the email to the username
-//			out.username += email[i];
-//		else					//Adds the current char from the email to the domain
-//			out.domain += email[i];
-//	}
-//	
-//	if (out.username.empty())	//Sets a default username if none was found
-//		out.username = L"Wrong_Input";
-//	if (out.domain.empty())		//Sets a default domain if none was found
-//		out.domain = L"badinput.io";
-//	
-//	return out;
-//}
-//
-//EMAIL AutogenEmail(std::wstring name, std::wstring surname)
-//{
-//	EMAIL out;
-//	std::wstring email = L"";												//The name and surname are used as the email's username
-//
-//	email += name + L'.';
-//	email += surname;
-//	std::transform(email.begin(), email.end(), email.begin(), ::tolower);	//Sets all characters to lower case
-//	out = WstringToEmail(email + L"@sample.io");							//Adds the sample domain
-//
-//	return out;
-//}
-//
-//std::wstring EmailToWstring(EMAIL email)
-//{
-//	return (email.username + L'@' + email.domain);
-//}
-//
-////Role
-//
-//std::wstring RoleToWstring(ROLE role, bool shortVersion)
-//{
-//	switch (role)
-//	{
-//	case ROLE::ScrumTrainer:
-//		if (shortVersion)
-//			return L"ST";
-//		return L"Scrum Trainer";
-//	case ROLE::QAEngineer:
-//		if (shortVersion)
-//			return L"QA";
-//		return L"Q&A Engineer";
-//	case ROLE::BackendDev:
-//		if (shortVersion)
-//			return L"BD";
-//		return L"Backend Developer";
-//	case ROLE::FrontendDev:
-//		if (shortVersion)
-//			return L"FD";
-//		return L"Frontend Developer";
-//	default:
-//		if (shortVersion)
-//			return L"UF";
-//		return L"Undefined";
-//	}
-//
-//	return L"ERROR!";
-//}
-//
-////Status
-//
-//std::wstring StatusToWstring(STATUS status, int& activeColour)
-//{
-//	//Word this in a better way
-//	//StatusToWstring is meant to be used in a printTeam function, it gets passed a refference to activeColour that would be the colour that the status is printed in
-//	switch (status)
-//	{
-//	case STATUS::InUse:
-//		activeColour = INUSE_COLOUR;
-//		return L"In Use";
-//	case STATUS::NotActive:
-//		activeColour = NOTACTIVE_COLOUR;
-//		return L"Not Active";
-//	case STATUS::Archived:
-//		activeColour = ARCHIVED_COLOUR;
-//		return L"Archived";
-//	default:
-//		activeColour = UNDEFINED_COLOUR;
-//		return L"Undefined";
-//	}
-//}
-//
-////Person
-//
-//PERSON EnterPerson()
-//{
-//	PERSON info;
-//	std::wstring temp = L"";
-//
-//	std::wcout << L"Name: ";
-//	std::wcin >> info.name;
-//	info.name = NameInputCheck(info.name);
-//	std::wcout << L"Surname: ";
-//	std::wcin >> info.surname;
-//	info.surname = NameInputCheck(info.surname);
-//	std::wcout << L"Email (write: \"autogen\" or \"ag\" to skip): ";
-//	std::wcin >> temp;
-//	info.email = WstringToEmail(temp, info.name, info.surname);
-//
-//	return info;
-//}
-//
-//PERSON CreateSamplePerson(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames)
-//{
-//	PERSON info;
-//
-//	info.name = names[rand() % names.size()];
-//	info.surname = surnames[rand() % surnames.size()];
-//	info.email = AutogenEmail(info.name, info.surname);
-//
-//	return info;
-//}
-//
-//bool ArePeopleEqual(PERSON a, PERSON b)
-//{
-//	if (EmailToWstring(a.email) == EmailToWstring(b.email) and a.name == b.name and a.surname == b.surname)
-//		return true;
-//
-//	return false;
-//}
-//
-//std::wstring NameInputCheck(std::wstring name)
-//{
-//	std::wstring allowedSymbols = L"etaoinsrhdlucmfywgpbvkxqjzETAOINSRHDLUCMFYWGPBVKXQJZабвгдежзийклмнопрстфхшщцчъюяѝАБВГДЕЖЗИЙКЛМНОПРСТФХШЩЦЧЪЮЯЍ";
-//	std::wstring out = L"";
-//
-//	for (size_t i = 0; i < name.length(); i++)
-//	{
-//		for (size_t j = 0; j < allowedSymbols.length(); j++)
-//		{
-//			if (name[i] == allowedSymbols[j])
-//			{
-//				out += name[i];
-//				break;
-//			}
-//		}
-//	}
-//
-//	return (out.empty() ? L"BadInput" : out);
-//}
-//
-////Student
-//
-//void BoxPrintStudent(STUDENT st, size_t indent)
-//{
-//	//Symbols used for the box
-//	//┌─┤├─┐└┘├┤─│
-//	std::wstring header = L"┌──────────────┤ STUDENT ├──────────────┐";
-//	std::wstring footer = L"└───────────────────────────────────────┘";
-//	std::wstring temp = L"Class ";	//Used to store st.Class
-//	temp += st.Class;
-//
-//	SetColour(BASE_COLOUR);
-//	PrintIndent(indent);
-//	std::wcout << header;
-//
-//	PrintBoxStyle(header.size(),(st.info.name + L' ' + st.info.surname), BASE_COLOUR, NAME_COLOUR, L'│', indent);
-//	PrintBoxStyle(header.size(), temp, BASE_COLOUR, CLASS_COLOUR, L'│', indent);
-//	PrintBoxStyle(header.size(), RoleToWstring(st.role), BASE_COLOUR, ROLE_COLOUR, L'│', indent);
-//	PrintBoxStyle(header.size(), EmailToWstring(st.info.email), BASE_COLOUR, EMAIL_COLOUR, L'│', indent);
-//
-//	SetColour(BASE_COLOUR);
-//	NewLine();
-//	PrintIndent(indent);
-//	std::wcout << footer;
-//	NewLine();
-//}
-//
-//void InlinePrintStudent(STUDENT st, size_t indent, int id)
-//{
-//	std::vector<std::wstring> content;
-//	std::wstring temp = L"Class ";
-//	temp += st.Class;
-//
-//	content.push_back((st.info.name + L" " + st.info.surname));
-//	content.push_back(temp);
-//	content.push_back(RoleToWstring(st.role));
-//	content.push_back(EmailToWstring(st.info.email));
-//	PrintInlineStyle(content, indent, id);
-//	content.clear();
-//	NewLine();
-//}
-//
-//STUDENT EnterStudent(int availableRoles)
-//{
-//	STUDENT st;
-//	size_t temp = 0;
-//
-//	st.info = EnterPerson();
-//	
-//	std::wcout << L"Class (A,B,C...): ";
-//	st.Class = wchar_t(ReadSizeInput());
-//	if (st.Class >= 'a' and st.Class <= 'z')
-//		st.Class -= ('a' - 'A');
-//	if (!(st.Class >= 'A' and st.Class <= 'Z'))
-//		st.Class = char(rand() % 26 + 65);
-//
-//	//Add special restrictions for roles, so that there is only one role in a team
-//	//Maybe optionall parameter
-//
-//	std::wcout << L"Role (1.BackendDev, 2.FrontendDev, 3.Q&A Engineer, 4.ScrumTrainer): ";
-//	temp = ReadSizeInput();
-//	st.role = ROLE(temp);	
-//	
-//	/*
-//	std::wcout << L"Role (";
-//	
-//	if(availableRoles % 2 == 1)				//---1
-//		std::wcout << L"1.BackendDev ";
-//	if((availableRoles / 10) % 2 == 1)		//--1-
-//		std::wcout << L"2.FrontendDev ";
-//	if((availableRoles / 100) % 2 == 1)		//-1--
-//		std::wcout << L"3.Q&A Engineer ";
-//	if((availableRoles / 1000) % 2 == 1)	//1---
-//		std::wcout << L"4.ScrumTrainer ";
-//
-//	std::wcout << L"): ";
-//	std::wcin >> temp;
-//
-//	//think of a smarter solution
-//	if (temp == 1 and (availableRoles % 2 == 1))					//---1
-//		st.role = ROLE(int(temp) - 48);
-//	else if (temp == 2 and ((availableRoles / 10) % 2 == 1))		//--1-
-//		st.role = ROLE(int(temp) - 48);
-//	else if (temp == 3 and ((availableRoles / 100) % 2 == 1))		//-1--
-//		st.role = ROLE(int(temp) - 48);
-//	else if (temp == 4 and ((availableRoles / 1000) % 2 == 1))		//1---
-//		st.role = ROLE(int(temp) - 48);
-//	else
-//	{
-//
-//	}
-//	*/
-//
-//	NewLine();
-//	return st;
-//}
-//
-//STUDENT CreateSampleStudent(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames)
-//{
-//	STUDENT st;
-//
-//	st.Class = char(rand() % 4 + 65);
-//	st.role = ROLE(rand() % 4);
-//	st.info = CreateSamplePerson(names, surnames);
-//
-//	return st;
-//}
-//
+﻿#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <ctime>
+
+#include "windows.h"
+
+#include "_ptr_DataTypes.h"
+#include "Interface.h"
+#include "Log.h"
+
+//Email
+
+EMAIL WstringToEmail(std::wstring email, std::wstring name, std::wstring surname)
+{
+	EMAIL out = {};
+	bool writeInUsername = true;
+
+	if ((email == L"autogen" or email == L"ag") and name != L"" and surname != L"")
+		return AutogenEmail(name, surname);
+
+	for (size_t i = 0; i < email.length(); i++)
+	{
+		if (email[i] == L'@')
+		{
+			writeInUsername = false;
+			continue;
+		}
+
+		if (writeInUsername)	//Adds the current char from the email to the username
+			out.username += email[i];
+		else					//Adds the current char from the email to the domain
+			out.domain += email[i];
+	}
+
+	if (out.username.empty())	//Sets a default username if none was found
+		out.username = L"Wrong_Input";
+	if (out.domain.empty())		//Sets a default domain if none was found
+		out.domain = L"badinput.io";
+
+	return out;
+}
+
+EMAIL AutogenEmail(std::wstring name, std::wstring surname)
+{
+	EMAIL out = {};
+	std::wstring email = L"";												//The name and surname are used as the email's username
+
+	email += name + L'.';
+	email += surname;
+	std::transform(email.begin(), email.end(), email.begin(), ::tolower);	//Sets all characters to lower case
+	out = WstringToEmail(email + L"@sample.io");							//Adds the sample domain
+
+	return out;
+}
+
+std::wstring EmailToWstring(EMAIL email)
+{
+	return (email.username + L'@' + email.domain);
+}
+
+//Role
+
+std::wstring RoleToWstring(ROLE role, bool shortVersion)
+{
+	switch (role)
+	{
+	case ROLE::ScrumTrainer:
+		if (shortVersion)
+			return L"ST";
+		return L"Scrum Trainer";
+	case ROLE::QAEngineer:
+		if (shortVersion)
+			return L"QA";
+		return L"Q&A Engineer";
+	case ROLE::BackendDev:
+		if (shortVersion)
+			return L"BD";
+		return L"Backend Developer";
+	case ROLE::FrontendDev:
+		if (shortVersion)
+			return L"FD";
+		return L"Frontend Developer";
+	default:
+		if (shortVersion)
+			return L"UF";
+		return L"Undefined";
+	}
+
+	return L"ERROR!";
+}
+
+//Status
+
+std::wstring StatusToWstring(STATUS status, int& activeColour)
+{
+	//Word this in a better way
+	//StatusToWstring is meant to be used in a printTeam function, it gets passed a refference to activeColour that would be the colour that the status is printed in
+	switch (status)
+	{
+	case STATUS::InUse:
+		activeColour = INUSE_COLOUR;
+		return L"In Use";
+	case STATUS::NotActive:
+		activeColour = NOTACTIVE_COLOUR;
+		return L"Not Active";
+	case STATUS::Archived:
+		activeColour = ARCHIVED_COLOUR;
+		return L"Archived";
+	default:
+		activeColour = UNDEFINED_COLOUR;
+		return L"Undefined";
+	}
+}
+
+//Person
+
+PERSON EnterPerson()
+{
+	PERSON info;
+	std::wstring temp = L"";
+
+	std::wcout << L"Name: ";
+	std::wcin >> info.name;
+	info.name = NameInputCheck(info.name);
+	std::wcout << L"Surname: ";
+	std::wcin >> info.surname;
+	info.surname = NameInputCheck(info.surname);
+	std::wcout << L"Email (write: \"autogen\" or \"ag\" to skip): ";
+	std::wcin >> temp;
+	info.email = WstringToEmail(temp, info.name, info.surname);
+
+	return info;
+}
+
+PERSON CreateSamplePerson(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames)
+{
+	PERSON info;
+
+	info.name = names[rand() % names.size()];
+	info.surname = surnames[rand() % surnames.size()];
+	info.email = AutogenEmail(info.name, info.surname);
+
+	return info;
+}
+
+bool ArePeopleEqual(PERSON a, PERSON b)
+{
+	if (EmailToWstring(a.email) == EmailToWstring(b.email) and a.name == b.name and a.surname == b.surname)
+		return true;
+
+	return false;
+}
+
+std::wstring NameInputCheck(std::wstring name)
+{
+	std::wstring allowedSymbols = L"etaoinsrhdlucmfywgpbvkxqjzETAOINSRHDLUCMFYWGPBVKXQJZабвгдежзийклмнопрстфхшщцчъюяѝАБВГДЕЖЗИЙКЛМНОПРСТФХШЩЦЧЪЮЯЍ";
+	std::wstring out = L"";
+
+	for (size_t i = 0; i < name.length(); i++)
+	{
+		for (size_t j = 0; j < allowedSymbols.length(); j++)
+		{
+			if (name[i] == allowedSymbols[j])
+			{
+				out += name[i];
+				break;
+			}
+		}
+	}
+
+	return (out.empty() ? L"BadInput" : out);
+}
+
+//Student
+
+void BoxPrintStudent(STUDENT st, size_t indent)
+{
+	//Symbols used for the box
+	//┌─┤├─┐└┘├┤─│
+	std::wstring header = L"┌──────────────┤ STUDENT ├──────────────┐";
+	std::wstring footer = L"└───────────────────────────────────────┘";
+	std::wstring temp = L"Class ";	//Used to store st.Class
+	temp += st.Class;
+
+	SetColour(BASE_COLOUR);
+	PrintIndent(indent);
+	std::wcout << header;
+
+	PrintBoxStyle(header.size(), (st.info.name + L' ' + st.info.surname), BASE_COLOUR, NAME_COLOUR, L'│', indent);
+	PrintBoxStyle(header.size(), temp, BASE_COLOUR, CLASS_COLOUR, L'│', indent);
+	PrintBoxStyle(header.size(), RoleToWstring(st.role), BASE_COLOUR, ROLE_COLOUR, L'│', indent);
+
+	//TESTING PURPOUSES ONLY
+	if (st.info.email.domain == L"badinput.io")
+		std::wcout << L"\n\n\n\nDIE\n\n\n\n";
+	
+	PrintBoxStyle(header.size(), EmailToWstring(st.info.email), BASE_COLOUR, EMAIL_COLOUR, L'│', indent);
+
+	SetColour(BASE_COLOUR);
+	NewLine();
+	PrintIndent(indent);
+	std::wcout << footer;
+	NewLine();
+}
+
+void InlinePrintStudent(STUDENT st, size_t indent, int id)
+{
+	std::vector<std::wstring> content;
+	std::wstring temp = L"Class ";
+	temp += st.Class;
+
+	content.push_back((st.info.name + L" " + st.info.surname));
+	content.push_back(temp);
+	content.push_back(RoleToWstring(st.role));
+	content.push_back(EmailToWstring(st.info.email));
+	PrintInlineStyle(content, indent, id);
+	content.clear();
+	NewLine();
+}
+
+STUDENT* EnterStudent()
+{
+	STUDENT* st = new STUDENT();
+	size_t temp = 0;
+
+	st->info = EnterPerson();
+
+	std::wcout << L"Class (A,B,C...): ";
+	st->Class = ReadWcharInput();
+	if (st->Class >= 'a' and st->Class <= 'z')
+		st->Class -= ('a' - 'A');
+	if (!(st->Class >= 'A' and st->Class <= 'Z'))
+		st->Class = char(rand() % 26 + 65);
+
+	//Add special restrictions for roles, so that there is only one role in a team
+	//Maybe optionall parameter
+
+	std::wcout << L"Role (1.BackendDev, 2.FrontendDev, 3.Q&A Engineer, 4.ScrumTrainer): ";
+	temp = ReadSizeInput();
+	st->role = ROLE(temp);
+
+	/*
+	std::wcout << L"Role (";
+
+	if(availableRoles % 2 == 1)				//---1
+		std::wcout << L"1.BackendDev ";
+	if((availableRoles / 10) % 2 == 1)		//--1-
+		std::wcout << L"2.FrontendDev ";
+	if((availableRoles / 100) % 2 == 1)		//-1--
+		std::wcout << L"3.Q&A Engineer ";
+	if((availableRoles / 1000) % 2 == 1)	//1---
+		std::wcout << L"4.ScrumTrainer ";
+
+	std::wcout << L"): ";
+	std::wcin >> temp;
+
+	//think of a smarter solution
+	if (temp == 1 and (availableRoles % 2 == 1))					//---1
+		st->role = ROLE(int(temp) - 48);
+	else if (temp == 2 and ((availableRoles / 10) % 2 == 1))		//--1-
+		st->role = ROLE(int(temp) - 48);
+	else if (temp == 3 and ((availableRoles / 100) % 2 == 1))		//-1--
+		st->role = ROLE(int(temp) - 48);
+	else if (temp == 4 and ((availableRoles / 1000) % 2 == 1))		//1---
+		st->role = ROLE(int(temp) - 48);
+	else
+	{
+
+	}
+	*/
+
+	NewLine();
+	return st;
+}
+
+STUDENT* CreateSampleStudent(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames)
+{
+	STUDENT* st = new STUDENT();
+
+	st->Class = char(rand() % 4 + 65);
+	st->role = ROLE(rand() % 4);
+	st->info = CreateSamplePerson(names, surnames);
+	
+	return st;
+}
+
 //void AddObjectToVector(std::vector<STUDENT>& vec, STUDENT obj)
 //{
 //	vec.push_back(obj);
 //}
-//
-//void RemoveObjectFromVector(std::vector<STUDENT>& vec, size_t posStart, size_t posEnd)
-//{
-//	if (posEnd != 0)
-//		vec.erase(vec.begin() + posStart, vec.begin() + posEnd);
-//	vec.erase(vec.begin() + posStart);
-//}
-//
-//void PrintStudentVector(std::vector<STUDENT>& vec, size_t indent, bool inlineStudents, bool index)
-//{
-//	if (inlineStudents)
-//		NewLine();
-//
-//	for (size_t i = 0; i < vec.size(); i++)
-//	{
-//		if (!inlineStudents) 
-//			BoxPrintStudent(vec[i]);
-//		else
-//			if (index)
-//				InlinePrintStudent(vec[i], indent, i);
-//			else
-//				InlinePrintStudent(vec[i], indent);
-//
-//		SetColour(BASE_COLOUR);
-//		if(!inlineStudents)
-//			NewLine();
-//	}
-//}
-//
-//void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<STUDENT>& stvec, size_t amount, bool empty)
-//{
-//	if (empty)
-//		return;
-//	for (size_t i = 0; i < amount; i++)
-//		AddObjectToVector(stvec, CreateSampleStudent(names, surnames));
-//}
-//
+
+void RemoveObjectFromVector(std::vector<STUDENT>& vec, size_t posStart, size_t posEnd)
+{
+	if (posEnd != 0)
+		vec.erase(vec.begin() + posStart, vec.begin() + posEnd);
+	vec.erase(vec.begin() + posStart);
+}
+
+void PrintStudentVector(std::vector<STUDENT*>& vec, size_t indent, bool inlineStudents, bool index)
+{
+	if (inlineStudents)
+		NewLine();
+
+	for (size_t i = 0; i < vec.size(); i++)
+	{
+		if (!inlineStudents)
+			BoxPrintStudent(*vec[i]);
+		else
+			if (index)
+				InlinePrintStudent(*vec[i], indent, i);
+			else
+				InlinePrintStudent(*vec[i], indent);
+
+		SetColour(BASE_COLOUR);
+		if (!inlineStudents)
+			NewLine();
+	}
+}
+
+void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<STUDENT*>& stvec, size_t amount, bool empty)
+{
+	if (empty)
+		return;
+	for (size_t i = 0; i < amount; i++)
+		AddPointerToVector(stvec, CreateSampleStudent(names, surnames));
+}
+
+void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj)
+{
+	vec.push_back(obj);
+}
+
 ////Team
 //
 //void BoxPrintTeam(TEAM team, size_t indent, bool inlineStudents)
 //{
 //	//Symbols used for box
 //	//┃━┏┓┗┛┫┣┅┄┎─┖┨┠┒┚
-//	std::wstring header =   L"┏━━━━━━━━━━━━━━━━━━┫ TEAM ┣━━━━━━━━━━━━━━━━━━┓";
+//	std::wstring header = L"┏━━━━━━━━━━━━━━━━━━┫ TEAM ┣━━━━━━━━━━━━━━━━━━┓";
 //	std::wstring splitstr = L"┗┅┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┅┛";
 //	std::wstring splitend = L"┏┅┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┅┓";
-//	std::wstring footer =   L"┗━━━━━━━━━━━━━━━━━━┫ END. ┣━━━━━━━━━━━━━━━━━━┛";
-//	std::wstring tchHeader    = L"┎────────────┨ TEACHER ┠────────────┒";
-//	std::wstring tchFooter    = L"┖───────────────────────────────────┚";
+//	std::wstring footer = L"┗━━━━━━━━━━━━━━━━━━┫ END. ┣━━━━━━━━━━━━━━━━━━┛";
+//	std::wstring tchHeader = L"┎────────────┨ TEACHER ┠────────────┒";
+//	std::wstring tchFooter = L"┖───────────────────────────────────┚";
 //	std::wstring temp = L"";
 //	int activeColour = UNDEFINED_COLOUR;
 //
@@ -388,7 +398,7 @@
 //{
 //	std::vector<std::wstring> content;
 //	int n = 0;
-//	
+//
 //	content.push_back((team.name));
 //	content.push_back(StatusToWstring(team.status, n));
 //	PrintInlineStyle(content, indent, id);
@@ -401,14 +411,14 @@
 //	struct TEAM team;
 //	team.name = teamNames[rand() % teamNames.size()];
 //	team.description = L"Medesimi novellare fa divina niuno sé";
-//	
+//
 //	time_t _t;
 //	time(&_t);
 //	localtime_s(&team.dateOfSetup, &_t);
-//	
+//
 //	if (!empty)
 //		CreateSampleStudentVector(names, surnames, team.students, 4);
-//	
+//
 //	switch (rand() % 3)
 //	{
 //	case 0:
@@ -424,7 +434,7 @@
 //		team.status = STATUS::Undefined;
 //		break;
 //	}
-//	
+//
 //	return team;
 //}
 //
@@ -441,15 +451,15 @@
 //	std::wcout << L"Description: ";
 //	getline(std::wcin, team.description);
 //	team.description = NameInputCheck(team.description);
-//	
+//
 //	//TEMPORARY SOLUTION???
-//	
+//
 //	time_t _t;
 //	time(&_t);
 //	localtime_s(&team.dateOfSetup, &_t);
 //
 //	//LET THE USER CHOOSE???
-//	
+//
 //	std::wcout << L"Status (1.InUse, 2.Not Active, 3.Archived): ";
 //	temp = ReadSizeInput();
 //
@@ -504,7 +514,7 @@
 //				InlinePrintTeam(vec[i], indent, i);
 //			else
 //				InlinePrintTeam(vec[i], indent);
-//		
+//
 //		SetColour(BASE_COLOUR);
 //		if (!inlineTeams)
 //			NewLine();
@@ -544,28 +554,28 @@
 //{
 //	//Symbols used for box
 //	//─┤├──┠┨┎┒┃┖┚┄
-//	std::wstring header =   L"┎────────────────┨ TEACHER ┠────────────────┒";
+//	std::wstring header = L"┎────────────────┨ TEACHER ┠────────────────┒";
 //	std::wstring splitstr = L"┖┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┚";
 //	std::wstring splitend = L"┎┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┒";
-//	std::wstring footer =   L"┖───────────────────────────────────────────┚";
+//	std::wstring footer = L"┖───────────────────────────────────────────┚";
 //	std::wstring temp = L"";
-//	
+//
 //	SetColour(BASE_COLOUR);
 //	PrintIndent(indent);
 //	std::wcout << header;
-//	
+//
 //	PrintBoxStyle(header.size(), (tch.info.name + L' ' + tch.info.surname), BASE_COLOUR, NAME_COLOUR, L'┃', indent);
 //	PrintBoxStyle(header.size(), EmailToWstring(tch.info.email), BASE_COLOUR, EMAIL_COLOUR, L'┃', indent);
-//	
+//
 //	NewLine();
 //	PrintIndent(indent);
 //	std::wcout << splitstr;
-//	
+//
 //	PrintTeamVector(tch.teams, 3, true, true);
-//	
+//
 //	PrintIndent(indent);
 //	std::wcout << splitend;
-//	
+//
 //	SetColour(BASE_COLOUR);
 //	NewLine();
 //	PrintIndent(indent);
@@ -606,7 +616,7 @@
 //		//Could use some cleanup, but it works!!!
 //
 //		//Maybe add an option to display a max of 30 teams and have the rest in seperate pages?
-//		
+//
 //		choice = 0;
 //		NewLine();
 //		std::wcout << L"━━━━━━━━━━━━━━━━━━┫ AVAILABLE TEAMS ┣━━━━━━━━━━━━━━━━━━";
@@ -696,7 +706,7 @@
 //				InlinePrintTeacher(vec[i], indent, i);
 //			else
 //				InlinePrintTeacher(vec[i], indent);
-//		
+//
 //		SetColour(BASE_COLOUR);
 //		if (!inlineTeacher)
 //			NewLine();
@@ -724,10 +734,10 @@
 //	//Symbols used for box
 //	//─┤├──┠┨┎┒┃┖┚┄
 //	//║╔╗╚╝╠═╍╌╣
-//	std::wstring header =   L"╔════════════════════════════╣ SCHOOL ╠════════════════════════════╗";
+//	std::wstring header = L"╔════════════════════════════╣ SCHOOL ╠════════════════════════════╗";
 //	std::wstring splitstr = L"╚╍╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╍╝";
 //	std::wstring splitend = L"╔╍╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╍╗";
-//	std::wstring footer =   L"╚══════════════════════════════════════════════════════════════════╝";
+//	std::wstring footer = L"╚══════════════════════════════════════════════════════════════════╝";
 //	std::wstring temp = L"";
 //
 //	SetColour(BASE_COLOUR);
@@ -737,7 +747,7 @@
 //	PrintBoxStyle(header.size(), sch.name, BASE_COLOUR, NAME_COLOUR, L'║', indent);
 //	PrintBoxStyle(header.size(), sch.city, BASE_COLOUR, EMAIL_COLOUR, L'║', indent);
 //	PrintBoxStyle(header.size(), sch.address, BASE_COLOUR, DESCRIPTION_COLOUR, L'║', indent);
-//	
+//
 //	NewLine();
 //	PrintIndent(indent);
 //	std::wcout << splitstr;
@@ -761,7 +771,7 @@
 //	NewLine();
 //	PrintIndent(indent);
 //	std::wcout << splitstr;
-//	
+//
 //	if (!inlineTeams)
 //		NewLine();
 //	PrintTeamVector(sch.teams, indent + 2, inlineTeams, inlineStudents);
@@ -776,7 +786,7 @@
 //	NewLine();
 //
 //	if (!inlineStudents)
-//			NewLine();
+//		NewLine();
 //	for (size_t i = 0; i < sch.teams.size(); i++)
 //		PrintStudentsFromTeam(sch.teams[i], indent + 3, inlineStudents);
 //
@@ -815,7 +825,7 @@
 //	NewLine();
 //	std::wcout << L"════════════════════════╣ MAKING SCHOOL ╠════════════════════════";
 //	NewLine();
-//	
+//
 //	//wsrtring name
 //	std::wcout << L"Name: ";
 //	std::wcin >> sch.name;
@@ -847,7 +857,7 @@
 //	//Ask how many
 //	std::wcout << L"How many Teams (0 for none): ";
 //	temp = ReadSizeInput();
-//	
+//
 //	if (temp > 0)
 //	{
 //		//Ask if user wants to make the teams manually or automatically
@@ -908,7 +918,7 @@
 //
 //	CreateSampleTeamVector(teamNames, names, surnames, tchlessVec, 40);
 //	CreateSampleTeacherVector(tchlessVec, sch.teams, names, surnames, sch.teachers, 8);
-//	
+//
 //	size_t size = tchlessVec.size();
 //	for (size_t i = 0; i < size; i++)
 //		AddObjectToVector(sch.teams, tchlessVec[i]);
@@ -958,3 +968,241 @@
 //			NewLine();
 //	}
 //}
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
+
+//Team
+
+void BoxPrintTeam(_ptr_TEAM team, size_t indent, bool inlineStudents)
+{
+	//Symbols used for box
+	//┃━┏┓┗┛┫┣┅┄┎─┖┨┠┒┚
+	std::wstring header    = L"┏━━━━━━━━━━━━━━━━━━┫ TEAM ┣━━━━━━━━━━━━━━━━━━┓";
+	std::wstring splitstr  = L"┗┅┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┅┛";
+	std::wstring splitend  = L"┏┅┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┅┓";
+	std::wstring footer    = L"┗━━━━━━━━━━━━━━━━━━┫ END. ┣━━━━━━━━━━━━━━━━━━┛";
+	std::wstring tchHeader = L"┎────────────┨ TEACHER ┠────────────┒";
+	std::wstring tchFooter = L"┖───────────────────────────────────┚";
+	std::wstring temp = L"";
+	int activeColour = UNDEFINED_COLOUR;
+
+	SetColour(BASE_COLOUR);
+	NewLine();
+	PrintIndent(indent);
+	std::wcout << header;
+
+	PrintBoxStyle(header.size(), team.name, BASE_COLOUR, NAME_COLOUR, L'┃', indent); //TAKE CARE OF COLOURS!!
+	PrintBoxStyle(header.size(), team.description, BASE_COLOUR, DESCRIPTION_COLOUR, L'┃', indent);
+	PrintBoxStyle(header.size(), (TmToDateWstring(team.dateOfSetup, true)), BASE_COLOUR, DATEOFSETUP_COLOUR, L'┃', indent);
+
+	NewLine();
+	PrintIndent(indent);
+	std::wcout << splitstr;
+	NewLine(2);
+	PrintIndent(indent + 4);
+	std::wcout << tchHeader;
+
+	/*
+	Figure it out??!!
+
+	if (!(ArePeopleEqual(team.teacherInfo)))
+	{
+		PrintBoxStyle(tchHeader.size(), (team.teacherInfo.name + L" " + team.teacherInfo.surname), BASE_COLOUR, NAME_COLOUR, L'┃', indent + 4);
+		PrintBoxStyle(tchHeader.size(), EmailToWstring(team.teacherInfo.email), BASE_COLOUR, EMAIL_COLOUR, L'┃', indent + 4);
+	}
+	else
+		PrintBoxStyle(tchHeader.size(), L"No teacher has been assigned", BASE_COLOUR, EMAIL_COLOUR, L'┃', indent + 4);
+	*/
+
+	NewLine();
+	PrintIndent(indent + 4);
+	std::wcout << tchFooter;
+	NewLine(2);
+
+	//FIGURE OUT A SMARTER SOLUTION!!!
+	//A FOR LOOP ISN'T GOOD ENOUGH!
+	PrintStudentsFromTeam(team, indent, inlineStudents);
+
+	NewLine();
+	PrintIndent(indent);
+	std::wcout << splitend;
+
+	temp = StatusToWstring(team.status, activeColour);
+	PrintBoxStyle(header.size(), temp, BASE_COLOUR, activeColour, L'┃', indent);
+
+	SetColour(BASE_COLOUR);
+	NewLine();
+	PrintIndent(indent);
+	std::wcout << footer;
+	NewLine();
+}
+
+void InlinePrintTeam(_ptr_TEAM team, size_t indent, int id)
+{
+	std::vector<std::wstring> content;
+	int n = 0;
+
+	content.push_back((team.name));
+	content.push_back(StatusToWstring(team.status, n));
+	PrintInlineStyle(content, indent, id);
+	content.clear();
+	NewLine();
+}
+
+_ptr_TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty, bool trash)
+{
+	struct _ptr_TEAM team;
+	team.name = teamNames[rand() % teamNames.size()];
+	team.description = L"Medesimi novellare fa divina niuno sé";
+
+	time_t _t;
+	time(&_t);
+	localtime_s(&team.dateOfSetup, &_t);
+
+	if (!empty)
+		CreateSampleStudentVector(names, surnames, team._ptr_students, 4);
+
+	switch (rand() % 3)
+	{
+	case 0:
+		team.status = STATUS::InUse;
+		break;
+	case 1:
+		team.status = STATUS::Archived;
+		break;
+	case 2:
+		team.status = STATUS::NotActive;
+		break;
+	default:
+		team.status = STATUS::Undefined;
+		break;
+	}
+
+	return team;
+}
+
+_ptr_TEAM EnterTeam(bool trash)
+{
+	_ptr_TEAM team;
+	size_t temp = 0;
+
+	std::wcin.clear();
+	std::wcin.ignore();
+	std::wcout << L"Name: ";
+	getline(std::wcin, team.name);
+	team.name = NameInputCheck(team.name);
+	std::wcout << L"Description: ";
+	getline(std::wcin, team.description);
+	team.description = NameInputCheck(team.description);
+
+	//TEMPORARY SOLUTION???
+
+	time_t _t;
+	time(&_t);
+	localtime_s(&team.dateOfSetup, &_t);
+
+	//LET THE USER CHOOSE???
+
+	std::wcout << L"Status (1.InUse, 2.Not Active, 3.Archived): ";
+	temp = ReadSizeInput();
+
+	if (temp >= 1 and temp <= 3)
+		team.status = STATUS(int(temp) - 48);
+	else
+		team.status = STATUS::Undefined;
+
+	//Seperate into a function?!
+	for (size_t i = 0; i < 4; i++)
+	{
+		NewLine();
+		std::wcout << L"Student " + std::to_wstring(i + 1);
+		NewLine();
+		/*
+		Figure it out??!!
+
+		team._ptr_students.push_back(EnterStudent());
+		*/
+	}
+
+	return team;
+}
+
+void AddObjectToVector(std::vector<_ptr_TEAM>& vec, _ptr_TEAM obj)
+{
+	vec.push_back(obj);
+}
+
+void RemoveObjectFromVector(std::vector<_ptr_TEAM>& vec, size_t posStart, size_t posEnd)
+{
+	if (posEnd != 0)
+		vec.erase(vec.begin() + posStart, vec.begin() + posEnd);
+	vec.erase(vec.begin() + posStart);
+}
+
+void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<_ptr_TEAM>& vec, size_t amount, bool empty)
+{
+	if (empty)
+		return;
+	for (size_t i = 0; i < amount; i++)
+		AddObjectToVector(vec, CreateSampleTeam(teamNames, names, surnames));
+}
+
+void PrintTeamVector(std::vector<_ptr_TEAM>& vec, size_t indent, bool inlineTeams, bool inlineStudents, bool index)
+{
+	if (inlineTeams)
+		NewLine();
+
+	for (size_t i = 0; i < vec.size(); i++)
+	{
+		if (!inlineTeams)
+			BoxPrintTeam(vec[i], indent, inlineStudents);
+		else
+			if (index)
+				InlinePrintTeam(vec[i], indent, i);
+			else
+				InlinePrintTeam(vec[i], indent);
+
+		SetColour(BASE_COLOUR);
+		if (!inlineTeams)
+			NewLine();
+	}
+}
+
+void UpdateTeacherlessTeamVector(std::vector<_ptr_TEAM>& allTeams, std::vector<_ptr_TEAM>& tchlessTeams)
+{
+	int size = tchlessTeams.size();
+	for (int i = size - 1; i >= 0; i--)
+	{
+		/*
+		Figure it out??!!
+
+		if (!ArePeopleEqual(tchlessTeams[i].teacherInfo))
+		{
+			AddObjectToVector(allTeams, tchlessTeams[i]);
+			RemoveObjectFromVector(tchlessTeams, i);
+		}
+		*/
+	}
+}
+
+void PrintStudentsFromTeam(_ptr_TEAM team, size_t indent, bool inlineStudents)
+{
+	for (size_t i = 0; i < 4; i++)
+	{
+		/*
+		Figure it out??!!
+
+		if (inlineStudents)
+			InlinePrintStudent(team.students[i], indent + 2);
+		else
+		{
+			BoxPrintStudent(team.students[i], indent + 2);
+			NewLine();
+		}
+		*/
+	}
+}

@@ -8,7 +8,7 @@
 #include "windows.h"
 #include "conio.h"
 
-#include "DataTypes.h"
+#include "_ptr_DataTypes.h"
 #include "Interface.h"
 #include "Log.h"
 
@@ -77,16 +77,16 @@ int main()
 		*/
 
 
+		/*
 
-
-//Connect students to teams, teachers and schools
-//Update the students vec with data from all other structs
-//Do the same for the other structs
-		std::vector<SCHOOL>		  schVec;
-		std::vector<TEACHER>	  tchVec;
-		std::vector<TEAM>		 teamVec;
+		//Connect students to teams, teachers and schools
+		//Update the students vec with data from all other structs
+		//Do the same for the other structs
+		std::vector<SCHOOL>			 schVec;
+		std::vector<TEACHER>		 tchVec;
+		std::vector<TEAM>			teamVec;
 		std::vector<TEAM>	tchlessTeamsVec;
-		std::vector<STUDENT>	  stdVec;
+		std::vector<STUDENT>		 stdVec;
 		size_t amount = 0;
 
 		char _getchErrorRemover = ' ';
@@ -247,12 +247,12 @@ int main()
 		}
 
 
-
+		*/
 
 
 		//▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-/*
+		/*
 		/////////////////////////////////////////////////////////////////////////////////////
 		//===========================================
 		//TEAM testing site
@@ -350,8 +350,17 @@ int main()
 		//std::wcout << L'\n' << p.name;
 		//std::wcout << L'\n' << p.surname;
 		//std::wcout << L'\n' << EmailToWstring(p.email);
-*/
+		*/
 
+		/////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////
+
+		std::vector<STUDENT*> stdVec;
+		
+		CreateSampleStudentVector(namesList, surnamesList, stdVec);
+		//AddPointerToVector(stdVec, EnterStudent());
+		PrintStudentVector(stdVec, 0, true);
 
 
 		_log.Close();
