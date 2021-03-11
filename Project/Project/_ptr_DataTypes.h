@@ -23,6 +23,7 @@ EMAIL AutogenEmail(std::wstring name, std::wstring surname);
 std::wstring EmailToWstring(EMAIL email);
 
 //Student's role in a team
+//There must 1 of each role per team (undefined doesn't count)
 enum class ROLE
 {
 	Undefined,		//The role is not defined
@@ -67,8 +68,6 @@ PERSON CreateSamplePerson(std::vector<std::wstring>& names, std::vector<std::wst
 //If no person is pushed to b, b will be the default value of PERSON
 bool ArePeopleEqual(PERSON a, PERSON b = { L"Homo", L"Sapiens", L"Iamarealhuman" , L"mars.com" });
 
-std::wstring NameInputCheck(std::wstring name);
-
 //A struct to store STUDENT info
 struct STUDENT
 {
@@ -78,10 +77,10 @@ struct STUDENT
 };
 
 //Print a STUDENT in Box Style
-void BoxPrintStudent(STUDENT st, size_t indent = 0);
+void BoxPrintStudent(STUDENT* st, size_t indent = 0);
 
 //Print a STUDENT in Inline Style
-void InlinePrintStudent(STUDENT st, size_t indent = 0, int id = -1);
+void InlinePrintStudent(STUDENT* st, size_t indent = 0, int id = -1);
 
 //Return a STUDENT made by user input
 STUDENT* EnterStudent();
@@ -97,11 +96,13 @@ void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std
 void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj);
 
 //Removes a STUDENT from a vector of STUDENTs
-void RemoveObjectFromVector(std::vector<STUDENT>& vec, size_t posStart, size_t posEnd = 0);
+void RemoveObjectFromVector(std::vector<STUDENT*>& vec, size_t posStart, size_t posEnd = 0);
 
 //Prints a vector of STUDENTs
 //Styles can be toggled by changing inlineStudents to true(for inline) or false(for box)
 void PrintStudentVector(std::vector<STUDENT*>& vec, size_t indent = 0, bool inlineStudents = false, bool index = false);
+
+void ClearPointerVector(std::vector<STUDENT*>& vec);
 
 ////A struct to store TEAM info
 //struct TEAM
@@ -223,7 +224,7 @@ struct TEACHER
 	PERSON info;
 };
 
-//A struct to store _ptr_TEAM info
+//A struct to store _ptr_TEAM* info
 struct _ptr_TEAM
 {
 	std::wstring name = L"‎Decameron";
@@ -234,34 +235,44 @@ struct _ptr_TEAM
 	TEACHER* _ptr_teacherInfo;
 };
 
-//Print a _ptr_TEAM in Box Style
-void BoxPrintTeam(_ptr_TEAM team, size_t indent = 0, bool inlineStudents = false);
+//Print a _ptr_TEAM* in Box Style
+void BoxPrintTeam(_ptr_TEAM* team, size_t indent = 0, bool inlineStudents = false);
 
-//Print a _ptr_TEAM in Inline Style
-void InlinePrintTeam(_ptr_TEAM team, size_t indent = 0, int id = -1);
+//Print a _ptr_TEAM* in Inline Style
+void InlinePrintTeam(_ptr_TEAM* team, size_t indent = 0, int id = -1);
 
-//Return a _ptr_TEAM made by the computer
-_ptr_TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty = false, bool trash = true);
+//Return a _ptr_TEAM* made by the computer
+_ptr_TEAM* CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty = false);
 
-//Return a _ptr_TEAM made by user input
-_ptr_TEAM EnterTeam(bool trash = true);
+//Return a _ptr_TEAM* made by user input
+_ptr_TEAM* EnterTeam();
 
 //Fills a vector with _ptr_TEAMs made by the computer
-void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<_ptr_TEAM>& vec, size_t amount = 5, bool empty = false);
+void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<_ptr_TEAM*>& vec, size_t amount = 5, bool empty = false);
 
-//Adds a _ptr_TEAM to a vector of _ptr_TEAMs
-void AddObjectToVector(std::vector<_ptr_TEAM>& vec, _ptr_TEAM obj);
+//Adds a _ptr_TEAM* to a vector of _ptr_TEAMs
+void AddObjectToVector(std::vector<_ptr_TEAM*>& vec, _ptr_TEAM* obj);
 
-//Removes a _ptr_TEAM from a vector of _ptr_TEAMs
-void RemoveObjectFromVector(std::vector<_ptr_TEAM>& vec, size_t posStart, size_t posEnd = 0);
+//Removes a _ptr_TEAM* from a vector of _ptr_TEAMs
+void RemoveObjectFromVector(std::vector<_ptr_TEAM*>& vec, size_t posStart, size_t posEnd = 0);
 
 //Prints a vector of _ptr_TEAMs
 //Styles for the students in the teams can be toggled by changing inlineStudents to true(for inline) or false(for box)
 //Styles for the teams can be toggled by changing inlineTeamss to true(for inline) or false(for box)
-void PrintTeamVector(std::vector<_ptr_TEAM>& vec, size_t indent = 0, bool inlineTeams = false, bool inlineStudents = false, bool index = false);
+void PrintTeamVector(std::vector<_ptr_TEAM*>& vec, size_t indent = 0, bool inlineTeams = false, bool inlineStudents = false, bool index = false);
+
+void AddPointerToVector(std::vector<_ptr_TEAM*>& vec, _ptr_TEAM* obj);
+
+void ClearPointerVector(std::vector<_ptr_TEAM*>& vec);
 
 //A function that updates a vector with the teams that dont have a teacher
-void UpdateTeacherlessTeamVector(std::vector<_ptr_TEAM>& allTeams, std::vector<_ptr_TEAM>& tchlessTeams);
+void UpdateTeacherlessTeamVector(std::vector<_ptr_TEAM*>& allTeams, std::vector<_ptr_TEAM*>& tchlessTeams);
 
-//Prints all students that are from the same team
-void PrintStudentsFromTeam(_ptr_TEAM team, size_t indent = 0, bool inlineStudents = true);
+//Make the team interact with the teachers!!!!
+//Make the team interact with the teachers!!!!
+//Make the team interact with the teachers!!!!
+//Make the team interact with the teachers!!!!
+//Make the team interact with the teachers!!!!
+//Make the team interact with the teachers!!!!
+//Make the team interact with the teachers!!!!
+//Make the team interact with the teachers!!!!

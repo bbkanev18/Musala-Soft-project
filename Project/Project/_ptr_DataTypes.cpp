@@ -153,50 +153,30 @@ bool ArePeopleEqual(PERSON a, PERSON b)
 	return false;
 }
 
-std::wstring NameInputCheck(std::wstring name)
-{
-	std::wstring allowedSymbols = L"etaoinsrhdlucmfywgpbvkxqjzETAOINSRHDLUCMFYWGPBVKXQJZабвгдежзийклмнопрстфхшщцчъюяѝАБВГДЕЖЗИЙКЛМНОПРСТФХШЩЦЧЪЮЯЍ";
-	std::wstring out = L"";
-
-	for (size_t i = 0; i < name.length(); i++)
-	{
-		for (size_t j = 0; j < allowedSymbols.length(); j++)
-		{
-			if (name[i] == allowedSymbols[j])
-			{
-				out += name[i];
-				break;
-			}
-		}
-	}
-
-	return (out.empty() ? L"BadInput" : out);
-}
-
 //Student
 
-void BoxPrintStudent(STUDENT st, size_t indent)
+void BoxPrintStudent(STUDENT* st, size_t indent)
 {
 	//Symbols used for the box
 	//┌─┤├─┐└┘├┤─│
 	std::wstring header = L"┌──────────────┤ STUDENT ├──────────────┐";
 	std::wstring footer = L"└───────────────────────────────────────┘";
-	std::wstring temp = L"Class ";	//Used to store st.Class
-	temp += st.Class;
+	std::wstring temp = L"Class ";	//Used to store st->Class
+	temp += st->Class;
 
 	SetColour(BASE_COLOUR);
 	PrintIndent(indent);
 	std::wcout << header;
 
-	PrintBoxStyle(header.size(), (st.info.name + L' ' + st.info.surname), BASE_COLOUR, NAME_COLOUR, L'│', indent);
+	PrintBoxStyle(header.size(), (st->info.name + L' ' + st->info.surname), BASE_COLOUR, NAME_COLOUR, L'│', indent);
 	PrintBoxStyle(header.size(), temp, BASE_COLOUR, CLASS_COLOUR, L'│', indent);
-	PrintBoxStyle(header.size(), RoleToWstring(st.role), BASE_COLOUR, ROLE_COLOUR, L'│', indent);
+	PrintBoxStyle(header.size(), RoleToWstring(st->role), BASE_COLOUR, ROLE_COLOUR, L'│', indent);
 
 	//TESTING PURPOUSES ONLY
-	if (st.info.email.domain == L"badinput.io")
+	if (st->info.email.domain == L"badinput.io")
 		std::wcout << L"\n\n\n\nDIE\n\n\n\n";
 	
-	PrintBoxStyle(header.size(), EmailToWstring(st.info.email), BASE_COLOUR, EMAIL_COLOUR, L'│', indent);
+	PrintBoxStyle(header.size(), EmailToWstring(st->info.email), BASE_COLOUR, EMAIL_COLOUR, L'│', indent);
 
 	SetColour(BASE_COLOUR);
 	NewLine();
@@ -205,16 +185,16 @@ void BoxPrintStudent(STUDENT st, size_t indent)
 	NewLine();
 }
 
-void InlinePrintStudent(STUDENT st, size_t indent, int id)
+void InlinePrintStudent(STUDENT* st, size_t indent, int id)
 {
 	std::vector<std::wstring> content;
 	std::wstring temp = L"Class ";
-	temp += st.Class;
+	temp += st->Class;
 
-	content.push_back((st.info.name + L" " + st.info.surname));
+	content.push_back((st->info.name + L" " + st->info.surname));
 	content.push_back(temp);
-	content.push_back(RoleToWstring(st.role));
-	content.push_back(EmailToWstring(st.info.email));
+	content.push_back(RoleToWstring(st->role));
+	content.push_back(EmailToWstring(st->info.email));
 	PrintInlineStyle(content, indent, id);
 	content.clear();
 	NewLine();
@@ -286,12 +266,7 @@ STUDENT* CreateSampleStudent(std::vector<std::wstring>& names, std::vector<std::
 	return st;
 }
 
-//void AddObjectToVector(std::vector<STUDENT>& vec, STUDENT obj)
-//{
-//	vec.push_back(obj);
-//}
-
-void RemoveObjectFromVector(std::vector<STUDENT>& vec, size_t posStart, size_t posEnd)
+void RemoveObjectFromVector(std::vector<STUDENT*>& vec, size_t posStart, size_t posEnd)
 {
 	if (posEnd != 0)
 		vec.erase(vec.begin() + posStart, vec.begin() + posEnd);
@@ -300,36 +275,36 @@ void RemoveObjectFromVector(std::vector<STUDENT>& vec, size_t posStart, size_t p
 
 void PrintStudentVector(std::vector<STUDENT*>& vec, size_t indent, bool inlineStudents, bool index)
 {
-	if (inlineStudents)
-		NewLine();
+	NewLine(inlineStudents);
 
 	for (size_t i = 0; i < vec.size(); i++)
 	{
 		if (!inlineStudents)
-			BoxPrintStudent(*vec[i]);
+			BoxPrintStudent(vec[i]);
 		else
-			if (index)
-				InlinePrintStudent(*vec[i], indent, i);
-			else
-				InlinePrintStudent(*vec[i], indent);
+			InlinePrintStudent(vec[i], indent, ((i * index) + (-1 * !index)));
 
 		SetColour(BASE_COLOUR);
-		if (!inlineStudents)
-			NewLine();
+		NewLine(!inlineStudents);
 	}
 }
 
 void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<STUDENT*>& stvec, size_t amount, bool empty)
 {
-	if (empty)
-		return;
-	for (size_t i = 0; i < amount; i++)
+	for (size_t i = 0; i < amount * !empty; i++)
 		AddPointerToVector(stvec, CreateSampleStudent(names, surnames));
 }
 
 void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj)
 {
 	vec.push_back(obj);
+}
+
+void ClearPointerVector(std::vector<STUDENT*>& vec)
+{
+	for (size_t i = 0; i < vec.size(); i++)
+		delete vec[i];
+	vec.clear();
 }
 
 ////Team
@@ -352,9 +327,9 @@ void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj)
 //	PrintIndent(indent);
 //	std::wcout << header;
 //
-//	PrintBoxStyle(header.size(), team.name, BASE_COLOUR, NAME_COLOUR, L'┃', indent); //TAKE CARE OF COLOURS!!
-//	PrintBoxStyle(header.size(), team.description, BASE_COLOUR, DESCRIPTION_COLOUR, L'┃', indent);
-//	PrintBoxStyle(header.size(), (TmToDateWstring(team.dateOfSetup, true)), BASE_COLOUR, DATEOFSETUP_COLOUR, L'┃', indent);
+//	PrintBoxStyle(header.size(), team->name, BASE_COLOUR, NAME_COLOUR, L'┃', indent); //TAKE CARE OF COLOURS!!
+//	PrintBoxStyle(header.size(), team->description, BASE_COLOUR, DESCRIPTION_COLOUR, L'┃', indent);
+//	PrintBoxStyle(header.size(), (TmToDateWstring(team->dateOfSetup, true)), BASE_COLOUR, DATEOFSETUP_COLOUR, L'┃', indent);
 //
 //	NewLine();
 //	PrintIndent(indent);
@@ -363,10 +338,10 @@ void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj)
 //	PrintIndent(indent + 4);
 //	std::wcout << tchHeader;
 //
-//	if (!(ArePeopleEqual(team.teacherInfo)))
+//	if (!(ArePeopleEqual(team->teacherInfo)))
 //	{
-//		PrintBoxStyle(tchHeader.size(), (team.teacherInfo.name + L" " + team.teacherInfo.surname), BASE_COLOUR, NAME_COLOUR, L'┃', indent + 4);
-//		PrintBoxStyle(tchHeader.size(), EmailToWstring(team.teacherInfo.email), BASE_COLOUR, EMAIL_COLOUR, L'┃', indent + 4);
+//		PrintBoxStyle(tchHeader.size(), (team->teacherInfo.name + L" " + team->teacherInfo.surname), BASE_COLOUR, NAME_COLOUR, L'┃', indent + 4);
+//		PrintBoxStyle(tchHeader.size(), EmailToWstring(team->teacherInfo.email), BASE_COLOUR, EMAIL_COLOUR, L'┃', indent + 4);
 //	}
 //	else
 //		PrintBoxStyle(tchHeader.size(), L"No teacher has been assigned", BASE_COLOUR, EMAIL_COLOUR, L'┃', indent + 4);
@@ -384,7 +359,7 @@ void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj)
 //	PrintIndent(indent);
 //	std::wcout << splitend;
 //
-//	temp = StatusToWstring(team.status, activeColour);
+//	temp = StatusToWstring(team->status, activeColour);
 //	PrintBoxStyle(header.size(), temp, BASE_COLOUR, activeColour, L'┃', indent);
 //
 //	SetColour(BASE_COLOUR);
@@ -399,8 +374,8 @@ void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj)
 //	std::vector<std::wstring> content;
 //	int n = 0;
 //
-//	content.push_back((team.name));
-//	content.push_back(StatusToWstring(team.status, n));
+//	content.push_back((team->name));
+//	content.push_back(StatusToWstring(team->status, n));
 //	PrintInlineStyle(content, indent, id);
 //	content.clear();
 //	NewLine();
@@ -409,29 +384,29 @@ void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj)
 //TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty)
 //{
 //	struct TEAM team;
-//	team.name = teamNames[rand() % teamNames.size()];
-//	team.description = L"Medesimi novellare fa divina niuno sé";
+//	team->name = teamNames[rand() % teamNames.size()];
+//	team->description = L"Medesimi novellare fa divina niuno sé";
 //
 //	time_t _t;
 //	time(&_t);
-//	localtime_s(&team.dateOfSetup, &_t);
+//	localtime_s(&team->dateOfSetup, &_t);
 //
 //	if (!empty)
-//		CreateSampleStudentVector(names, surnames, team.students, 4);
+//		CreateSampleStudentVector(names, surnames, team->students, 4);
 //
 //	switch (rand() % 3)
 //	{
 //	case 0:
-//		team.status = STATUS::InUse;
+//		team->status = STATUS::InUse;
 //		break;
 //	case 1:
-//		team.status = STATUS::Archived;
+//		team->status = STATUS::Archived;
 //		break;
 //	case 2:
-//		team.status = STATUS::NotActive;
+//		team->status = STATUS::NotActive;
 //		break;
 //	default:
-//		team.status = STATUS::Undefined;
+//		team->status = STATUS::Undefined;
 //		break;
 //	}
 //
@@ -446,17 +421,17 @@ void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj)
 //	std::wcin.clear();
 //	std::wcin.ignore();
 //	std::wcout << L"Name: ";
-//	getline(std::wcin, team.name);
-//	team.name = NameInputCheck(team.name);
+//	getline(std::wcin, team->name);
+//	team->name = NameInputCheck(team->name);
 //	std::wcout << L"Description: ";
-//	getline(std::wcin, team.description);
-//	team.description = NameInputCheck(team.description);
+//	getline(std::wcin, team->description);
+//	team->description = NameInputCheck(team->description);
 //
 //	//TEMPORARY SOLUTION???
 //
 //	time_t _t;
 //	time(&_t);
-//	localtime_s(&team.dateOfSetup, &_t);
+//	localtime_s(&team->dateOfSetup, &_t);
 //
 //	//LET THE USER CHOOSE???
 //
@@ -464,9 +439,9 @@ void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj)
 //	temp = ReadSizeInput();
 //
 //	if (temp >= 1 and temp <= 3)
-//		team.status = STATUS(int(temp) - 48);
+//		team->status = STATUS(int(temp) - 48);
 //	else
-//		team.status = STATUS::Undefined;
+//		team->status = STATUS::Undefined;
 //
 //	//Seperate into a function?!
 //	for (size_t i = 0; i < 4; i++)
@@ -474,7 +449,7 @@ void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj)
 //		NewLine();
 //		std::wcout << L"Student " + std::to_wstring(i + 1);
 //		NewLine();
-//		team.students.push_back(EnterStudent());
+//		team->students.push_back(EnterStudent());
 //	}
 //
 //	return team;
@@ -539,10 +514,10 @@ void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj)
 //	for (size_t i = 0; i < 4; i++)
 //	{
 //		if (inlineStudents)
-//			InlinePrintStudent(team.students[i], indent + 2);
+//			InlinePrintStudent(team->students[i], indent + 2);
 //		else
 //		{
-//			BoxPrintStudent(team.students[i], indent + 2);
+//			BoxPrintStudent(team->students[i], indent + 2);
 //			NewLine();
 //		}
 //	}
@@ -969,15 +944,9 @@ void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj)
 //	}
 //}
 
-/////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////
-
-
 //Team
 
-void BoxPrintTeam(_ptr_TEAM team, size_t indent, bool inlineStudents)
+void BoxPrintTeam(_ptr_TEAM* team, size_t indent, bool inlineStudents)
 {
 	//Symbols used for box
 	//┃━┏┓┗┛┫┣┅┄┎─┖┨┠┒┚
@@ -995,9 +964,9 @@ void BoxPrintTeam(_ptr_TEAM team, size_t indent, bool inlineStudents)
 	PrintIndent(indent);
 	std::wcout << header;
 
-	PrintBoxStyle(header.size(), team.name, BASE_COLOUR, NAME_COLOUR, L'┃', indent); //TAKE CARE OF COLOURS!!
-	PrintBoxStyle(header.size(), team.description, BASE_COLOUR, DESCRIPTION_COLOUR, L'┃', indent);
-	PrintBoxStyle(header.size(), (TmToDateWstring(team.dateOfSetup, true)), BASE_COLOUR, DATEOFSETUP_COLOUR, L'┃', indent);
+	PrintBoxStyle(header.size(), team->name, BASE_COLOUR, NAME_COLOUR, L'┃', indent); //TAKE CARE OF COLOURS!!
+	PrintBoxStyle(header.size(), team->description, BASE_COLOUR, DESCRIPTION_COLOUR, L'┃', indent);
+	PrintBoxStyle(header.size(), (TmToDateWstring(team->dateOfSetup, true)), BASE_COLOUR, DATEOFSETUP_COLOUR, L'┃', indent);
 
 	NewLine();
 	PrintIndent(indent);
@@ -1009,10 +978,10 @@ void BoxPrintTeam(_ptr_TEAM team, size_t indent, bool inlineStudents)
 	/*
 	Figure it out??!!
 
-	if (!(ArePeopleEqual(team.teacherInfo)))
+	if (!(ArePeopleEqual(team->teacherInfo)))
 	{
-		PrintBoxStyle(tchHeader.size(), (team.teacherInfo.name + L" " + team.teacherInfo.surname), BASE_COLOUR, NAME_COLOUR, L'┃', indent + 4);
-		PrintBoxStyle(tchHeader.size(), EmailToWstring(team.teacherInfo.email), BASE_COLOUR, EMAIL_COLOUR, L'┃', indent + 4);
+		PrintBoxStyle(tchHeader.size(), (team->teacherInfo.name + L" " + team->teacherInfo.surname), BASE_COLOUR, NAME_COLOUR, L'┃', indent + 4);
+		PrintBoxStyle(tchHeader.size(), EmailToWstring(team->teacherInfo.email), BASE_COLOUR, EMAIL_COLOUR, L'┃', indent + 4);
 	}
 	else
 		PrintBoxStyle(tchHeader.size(), L"No teacher has been assigned", BASE_COLOUR, EMAIL_COLOUR, L'┃', indent + 4);
@@ -1021,17 +990,15 @@ void BoxPrintTeam(_ptr_TEAM team, size_t indent, bool inlineStudents)
 	NewLine();
 	PrintIndent(indent + 4);
 	std::wcout << tchFooter;
-	NewLine(2);
+	NewLine(!inlineStudents * 2 + 1 * inlineStudents);
 
-	//FIGURE OUT A SMARTER SOLUTION!!!
-	//A FOR LOOP ISN'T GOOD ENOUGH!
-	PrintStudentsFromTeam(team, indent, inlineStudents);
+	PrintStudentVector(team->_ptr_students, indent + 2, inlineStudents, inlineStudents);
 
 	NewLine();
 	PrintIndent(indent);
 	std::wcout << splitend;
 
-	temp = StatusToWstring(team.status, activeColour);
+	temp = StatusToWstring(team->status, activeColour);
 	PrintBoxStyle(header.size(), temp, BASE_COLOUR, activeColour, L'┃', indent);
 
 	SetColour(BASE_COLOUR);
@@ -1041,69 +1008,68 @@ void BoxPrintTeam(_ptr_TEAM team, size_t indent, bool inlineStudents)
 	NewLine();
 }
 
-void InlinePrintTeam(_ptr_TEAM team, size_t indent, int id)
+void InlinePrintTeam(_ptr_TEAM* team, size_t indent, int id)
 {
 	std::vector<std::wstring> content;
 	int n = 0;
 
-	content.push_back((team.name));
-	content.push_back(StatusToWstring(team.status, n));
+	content.push_back(team->name);
+	content.push_back(StatusToWstring(team->status, n));
 	PrintInlineStyle(content, indent, id);
 	content.clear();
 	NewLine();
 }
 
-_ptr_TEAM CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty, bool trash)
+_ptr_TEAM* CreateSampleTeam(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, bool empty)
 {
-	struct _ptr_TEAM team;
-	team.name = teamNames[rand() % teamNames.size()];
-	team.description = L"Medesimi novellare fa divina niuno sé";
+	_ptr_TEAM* team = new _ptr_TEAM();
+	team->name = teamNames[rand() % teamNames.size()];
+	team->description = L"Medesimi novellare fa divina niuno sé";
 
 	time_t _t;
 	time(&_t);
-	localtime_s(&team.dateOfSetup, &_t);
+	localtime_s(&team->dateOfSetup, &_t);
 
-	if (!empty)
-		CreateSampleStudentVector(names, surnames, team._ptr_students, 4);
+	CreateSampleStudentVector(names, surnames, team->_ptr_students, 4 * !empty + 0);
 
 	switch (rand() % 3)
 	{
 	case 0:
-		team.status = STATUS::InUse;
+		team->status = STATUS::InUse;
 		break;
 	case 1:
-		team.status = STATUS::Archived;
+		team->status = STATUS::Archived;
 		break;
 	case 2:
-		team.status = STATUS::NotActive;
+		team->status = STATUS::NotActive;
 		break;
 	default:
-		team.status = STATUS::Undefined;
+		team->status = STATUS::Undefined;
 		break;
 	}
 
 	return team;
 }
 
-_ptr_TEAM EnterTeam(bool trash)
+_ptr_TEAM* EnterTeam()
 {
-	_ptr_TEAM team;
+	_ptr_TEAM* team = new _ptr_TEAM();
 	size_t temp = 0;
 
 	std::wcin.clear();
 	std::wcin.ignore();
 	std::wcout << L"Name: ";
-	getline(std::wcin, team.name);
-	team.name = NameInputCheck(team.name);
+	getline(std::wcin, team->name);
+	//team->name = NameInputCheck(team->name);
 	std::wcout << L"Description: ";
-	getline(std::wcin, team.description);
-	team.description = NameInputCheck(team.description);
+	getline(std::wcin, team->description);
+	//team->description = NameInputCheck(team->description);
 
 	//TEMPORARY SOLUTION???
 
 	time_t _t;
 	time(&_t);
-	localtime_s(&team.dateOfSetup, &_t);
+	localtime_s(&team->dateOfSetup, &_t);
 
 	//LET THE USER CHOOSE???
 
@@ -1111,9 +1077,9 @@ _ptr_TEAM EnterTeam(bool trash)
 	temp = ReadSizeInput();
 
 	if (temp >= 1 and temp <= 3)
-		team.status = STATUS(int(temp) - 48);
+		team->status = STATUS(int(temp) - 48);
 	else
-		team.status = STATUS::Undefined;
+		team->status = STATUS::Undefined;
 
 	//Seperate into a function?!
 	for (size_t i = 0; i < 4; i++)
@@ -1121,58 +1087,55 @@ _ptr_TEAM EnterTeam(bool trash)
 		NewLine();
 		std::wcout << L"Student " + std::to_wstring(i + 1);
 		NewLine();
-		/*
-		Figure it out??!!
-
-		team._ptr_students.push_back(EnterStudent());
-		*/
+		team->_ptr_students.push_back(EnterStudent());
 	}
 
 	return team;
 }
 
-void AddObjectToVector(std::vector<_ptr_TEAM>& vec, _ptr_TEAM obj)
-{
-	vec.push_back(obj);
-}
-
-void RemoveObjectFromVector(std::vector<_ptr_TEAM>& vec, size_t posStart, size_t posEnd)
+void RemoveObjectFromVector(std::vector<_ptr_TEAM*>& vec, size_t posStart, size_t posEnd)
 {
 	if (posEnd != 0)
 		vec.erase(vec.begin() + posStart, vec.begin() + posEnd);
 	vec.erase(vec.begin() + posStart);
 }
 
-void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<_ptr_TEAM>& vec, size_t amount, bool empty)
+void CreateSampleTeamVector(std::vector<std::wstring>& teamNames, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<_ptr_TEAM*>& vec, size_t amount, bool empty)
 {
-	if (empty)
-		return;
-	for (size_t i = 0; i < amount; i++)
-		AddObjectToVector(vec, CreateSampleTeam(teamNames, names, surnames));
+	for (size_t i = 0; i < amount * !empty; i++)
+		AddPointerToVector(vec, CreateSampleTeam(teamNames, names, surnames));
 }
 
-void PrintTeamVector(std::vector<_ptr_TEAM>& vec, size_t indent, bool inlineTeams, bool inlineStudents, bool index)
+void PrintTeamVector(std::vector<_ptr_TEAM*>& vec, size_t indent, bool inlineTeams, bool inlineStudents, bool index)
 {
-	if (inlineTeams)
-		NewLine();
+	NewLine(inlineTeams);
 
 	for (size_t i = 0; i < vec.size(); i++)
 	{
 		if (!inlineTeams)
 			BoxPrintTeam(vec[i], indent, inlineStudents);
 		else
-			if (index)
-				InlinePrintTeam(vec[i], indent, i);
-			else
-				InlinePrintTeam(vec[i], indent);
+			InlinePrintTeam(vec[i], indent, ((i * index) + (-1 * !index)));
 
 		SetColour(BASE_COLOUR);
-		if (!inlineTeams)
-			NewLine();
+		NewLine(!inlineTeams);
 	}
 }
 
-void UpdateTeacherlessTeamVector(std::vector<_ptr_TEAM>& allTeams, std::vector<_ptr_TEAM>& tchlessTeams)
+
+void AddPointerToVector(std::vector<_ptr_TEAM*>& vec, _ptr_TEAM* obj)
+{
+	vec.push_back(obj);
+}
+
+void ClearPointerVector(std::vector<_ptr_TEAM*>& vec)
+{
+	for (size_t i = 0; i < vec.size(); i++)
+		delete vec[i];
+	vec.clear();
+}
+
+void UpdateTeacherlessTeamVector(std::vector<_ptr_TEAM*>& allTeams, std::vector<_ptr_TEAM*>& tchlessTeams)
 {
 	int size = tchlessTeams.size();
 	for (int i = size - 1; i >= 0; i--)
@@ -1184,24 +1147,6 @@ void UpdateTeacherlessTeamVector(std::vector<_ptr_TEAM>& allTeams, std::vector<_
 		{
 			AddObjectToVector(allTeams, tchlessTeams[i]);
 			RemoveObjectFromVector(tchlessTeams, i);
-		}
-		*/
-	}
-}
-
-void PrintStudentsFromTeam(_ptr_TEAM team, size_t indent, bool inlineStudents)
-{
-	for (size_t i = 0; i < 4; i++)
-	{
-		/*
-		Figure it out??!!
-
-		if (inlineStudents)
-			InlinePrintStudent(team.students[i], indent + 2);
-		else
-		{
-			BoxPrintStudent(team.students[i], indent + 2);
-			NewLine();
 		}
 		*/
 	}

@@ -153,25 +153,6 @@
 //	return false;
 //}
 //
-//std::wstring NameInputCheck(std::wstring name)
-//{
-//	std::wstring allowedSymbols = L"etaoinsrhdlucmfywgpbvkxqjzETAOINSRHDLUCMFYWGPBVKXQJZабвгдежзийклмнопрстфхшщцчъюяѝАБВГДЕЖЗИЙКЛМНОПРСТФХШЩЦЧЪЮЯЍ";
-//	std::wstring out = L"";
-//
-//	for (size_t i = 0; i < name.length(); i++)
-//	{
-//		for (size_t j = 0; j < allowedSymbols.length(); j++)
-//		{
-//			if (name[i] == allowedSymbols[j])
-//			{
-//				out += name[i];
-//				break;
-//			}
-//		}
-//	}
-//
-//	return (out.empty() ? L"BadInput" : out);
-//}
 //
 ////Student
 //

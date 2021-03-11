@@ -67,7 +67,6 @@
 ////If no person is pushed to b, b will be the default value of PERSON
 //bool ArePeopleEqual(PERSON a, PERSON b = { L"Homo", L"Sapiens", L"Iamarealhuman" , L"mars.com"});
 //
-//std::wstring NameInputCheck(std::wstring name);
 //
 ////A struct to store STUDENT info
 //struct STUDENT

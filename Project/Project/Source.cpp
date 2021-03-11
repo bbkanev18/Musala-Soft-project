@@ -356,12 +356,29 @@ int main()
 		/////////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		std::vector<STUDENT*> stdVec;
-		
-		CreateSampleStudentVector(namesList, surnamesList, stdVec);
-		//AddPointerToVector(stdVec, EnterStudent());
-		PrintStudentVector(stdVec, 0, true);
+		if (false)
+		{
 
+			std::vector<STUDENT*> stdVec;
+
+			CreateSampleStudentVector(namesList, surnamesList, stdVec);
+			//AddPointerToVector(stdVec, EnterStudent());
+			PrintStudentVector(stdVec, 0, false);
+			NewLine();
+			PrintStudentVector(stdVec, 0, true, false);
+			NewLine();
+			PrintStudentVector(stdVec, 0, true, true);
+			ClearPointerVector(stdVec);
+		}
+
+		std::vector<_ptr_TEAM*> temVec;
+
+		CreateSampleTeamVector(teamnamesList, namesList, surnamesList, temVec);
+		PrintTeamVector(temVec);
+		NewLine();
+		PrintTeamVector(temVec, 0, false, true, true);
+		NewLine();
+		PrintTeamVector(temVec, 0, true);
 
 		_log.Close();
 	}

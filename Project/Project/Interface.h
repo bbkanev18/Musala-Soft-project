@@ -60,4 +60,6 @@ size_t ReadSizeInput();
 
 wchar_t ReadWcharInput();
 
+std::wstring NameInputCheck(std::wstring name);
+
 void SetColour(const int colour);
