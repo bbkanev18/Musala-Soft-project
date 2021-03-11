@@ -371,14 +371,32 @@ int main()
 			ClearPointerVector(stdVec);
 		}
 
+		if (false)
+		{
+
+			std::vector<_ptr_TEAM*> temVec;
+
+			CreateSampleTeamVector(teamnamesList, namesList, surnamesList, temVec);
+			PrintTeamVector(temVec);
+			NewLine();
+			PrintTeamVector(temVec, 0, false, true, true);
+			NewLine();
+			PrintTeamVector(temVec, 0, true);
+		}
+
+		std::vector<_ptr_TEAM*> tchlessVec;
+		CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tchlessVec, 20);
+		std::vector<_ptr_TEAM*> tchTemVec;
 		std::vector<_ptr_TEAM*> temVec;
 
-		CreateSampleTeamVector(teamnamesList, namesList, surnamesList, temVec);
+		std::vector<_ptr_TEACHER*> tchVec;
+
+		CreateSampleTeacherVector(tchlessVec, tchTemVec, namesList, surnamesList, tchVec);
+		//AddPointerToVector(tchVec, EnterTeacher(tchlessVec, tchTemVec));
+		PrintTeacherVector(tchVec);
+		NewLine(2);
+		temVec = CombineTeamVectors(tchTemVec, tchlessVec);
 		PrintTeamVector(temVec);
-		NewLine();
-		PrintTeamVector(temVec, 0, false, true, true);
-		NewLine();
-		PrintTeamVector(temVec, 0, true);
 
 		_log.Close();
 	}
