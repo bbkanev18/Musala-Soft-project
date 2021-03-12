@@ -384,19 +384,28 @@ int main()
 			PrintTeamVector(temVec, 0, true);
 		}
 
-		std::vector<_ptr_TEAM*> tchlessVec;
-		CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tchlessVec, 20);
-		std::vector<_ptr_TEAM*> tchTemVec;
-		std::vector<_ptr_TEAM*> temVec;
+		if (false)
+		{
+			std::vector<_ptr_TEAM*> tchlessVec;
+			CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tchlessVec, 20);
+			std::vector<_ptr_TEAM*> tchTemVec;
+			std::vector<_ptr_TEAM*> temVec;
 
-		std::vector<_ptr_TEACHER*> tchVec;
+			std::vector<_ptr_TEACHER*> tchVec;
 
-		CreateSampleTeacherVector(tchlessVec, tchTemVec, namesList, surnamesList, tchVec);
-		//AddPointerToVector(tchVec, EnterTeacher(tchlessVec, tchTemVec));
-		PrintTeacherVector(tchVec);
-		NewLine(2);
-		temVec = CombineTeamVectors(tchTemVec, tchlessVec);
-		PrintTeamVector(temVec);
+			CreateSampleTeacherVector(tchlessVec, tchTemVec, namesList, surnamesList, tchVec);
+			//AddPointerToVector(tchVec, EnterTeacher(tchlessVec, tchTemVec));
+			PrintTeacherVector(tchVec);
+			NewLine(2);
+			temVec = CombineTeamVectors(tchTemVec, tchlessVec);
+			PrintTeamVector(temVec);
+		}
+		
+		std::vector<SCHOOL*> schVec;
+
+		CreateSampleSchoolVector(schoolnamesList, teamnamesList, namesList, surnamesList, schVec);
+		//AddPointerToVector(schVec, EnterSchool(teamnamesList, namesList, surnamesList));
+		PrintSchoolVector(schVec);
 
 		_log.Close();
 	}
@@ -412,6 +421,7 @@ int main()
 // HOWEVER, A FEW TEAMS GET LOST IN THE PROCCESS
 // 
 // MANUAL MODE ISNT FINISHED!!!
+// 
 // 
 // 
 // 
