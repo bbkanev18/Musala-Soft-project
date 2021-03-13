@@ -184,19 +184,19 @@ char PrintMainMenu()
 {
 	system("CLS");
 
-	std::wcout << L"\nmain menu\n\n";
 
-	std::wcout << L"1. load\n";
-	std::wcout << L"2. save\n\n";
-
-	std::wcout << L"q. school\n";
-	std::wcout << L"w. teacher\n";
-	std::wcout << L"e. team\n";
-	std::wcout << L"r. student\n\n";
-
-	std::wcout << L"Tab. info\n";
-	std::wcout << L"Esc. quit\n\n";
-
+	std::wcout << L"                        ╔═══════════════╗\n"					;
+	std::wcout << L"                        ║   MAIN MENU   ║\n"					;
+	std::wcout << L"                        ╚═══════════════╝\n"					;
+	std::wcout << L"    ╔═══════════════╗   ╔═══════════════╗   ╔═══════════════╗\n";
+	std::wcout << L"    ║   Save&Load   ║   ║    _TOKEN_    ║   ║    Others     ║\n";
+	std::wcout << L"    ╚═══════════════╝   ╚═══════════════╝   ╚═══════════════╝\n";
+	std::wcout << L"    ╔═══════════════╗   ╔═══════════════╗   ╔═══════════════╗\n";
+	std::wcout << L"    ║   1. Save     ║   ║   q. school   ║   ║   Tab. info   ║\n";
+	std::wcout << L"    ║   2. Load     ║   ║   w. teacher  ║   ║   Esc. quit   ║\n";
+	std::wcout << L"    ╚═══════════════╝   ║   e. team     ║   ╚═══════════════╝\n";
+	std::wcout << L"                        ║   r. student  ║\n"					;
+	std::wcout << L"                        ╚═══════════════╝\n"					;
 	return _getch();
 
 
@@ -233,24 +233,19 @@ char PrintMainMenu()
 char StructSubMenu(std::wstring type, bool empty)
 {
 	system("CLS");
-	if (!type.empty())
-		type += L' ';
-	std::wcout << type << L"sub menu\n\n";
-	std::wcout << L"a. Enter\n";
-	std::wcout << L"s. Create Sample -> amount?\n";
 
 	/*
 							╔═══════════════╗
 							║	SUB MENU	║
 							╚═══════════════╝
-							
-							╔═══════════════╗
-							║  Enter&Create ║
-							╚═══════════════╝
-							╔═══════════════╗
-							║	a. Enter	║
-							║	   └Sample	║
-							╚═══════════════╝
+				   ╔═══════════════╗	╔═══════════════╗
+				   ║  Enter&Create ║	║	 Go Bac		║
+				   ╚═══════════════╝	╚═══════════════╝
+				   ╔═══════════════╗	╔═══════════════╗
+				   ║   a. Enter    ║	║ Esc. Go back  ║
+				   ║   s. Create   ║	╚═══════════════╝
+				   ║      └Sample  ║
+				   ╚═══════════════╝
 							
 	
 	
@@ -258,7 +253,6 @@ char StructSubMenu(std::wstring type, bool empty)
 
 	if (!empty)
 	{
-		std::wcout << L"\nd. Print all\n\n";
 		//std::wcout << L"f. Print by criteria\n\n";
 
 		//std::wcout << L"z. Delete?\n";
@@ -266,9 +260,9 @@ char StructSubMenu(std::wstring type, bool empty)
 
 
 		/*
-							╔═══════════════╗
-							║	SUB MENU	║
-							╚═══════════════╝
+							 ╔═══════════════╗
+							 ║	 SUB MENU	 ║
+							 ╚═══════════════╝
 					╔═══════════════╗	╔═══════════════╗
 					║  Enter&Create ║	║	 Display 	║
 					╚═══════════════╝	╚═══════════════╝
@@ -277,13 +271,46 @@ char StructSubMenu(std::wstring type, bool empty)
 					║	s. Create	║	║	f. Print	║
 					║	   └Sample	║	║	 criteria	║
 					╚═══════════════╝	╚═══════════════╝
-										
+							 ╔══════════════╗
+							 ║ Esc. Go back ║
+							 ╚══════════════╝
 		
 		
 		*/
+		std::wcout << L"                       ╔══════════════╗\n"			;
+		std::wcout << L"                       ║   SUB MENU   ║\n"			;
+		std::wcout << L"                       ╚══════════════╝\n"			;
+		std::wcout << L"            ╔═══════════════╗   ╔═══════════════╗\n";
+		std::wcout << L"            ║  Enter&Create ║   ║    Display    ║\n";
+		std::wcout << L"            ╚═══════════════╝   ╚═══════════════╝\n";
+		std::wcout << L"            ╔═══════════════╗   ╔═══════════════╗\n";
+		std::wcout << L"            ║   a. Enter    ║   ║   d. Print    ║\n";
+		std::wcout << L"            ║   s. Create   ║   ║   f. Print    ║\n";
+		std::wcout << L"            ║      └Sample  ║   ║    criteria   ║\n";
+		std::wcout << L"            ╚═══════════════╝   ╚═══════════════╝\n";
+		std::wcout << L"                       ╔══════════════╗\n"			;
+		std::wcout << L"                       ║ Esc. Go back ║\n"			;
+		std::wcout << L"                       ╚══════════════╝\n\n"			;
+	}
+	else
+	{
+		std::wcout << L"                         ╔═══════════════╗\n";
+		std::wcout << L"                         ║   SUB MENU    ║\n";
+		std::wcout << L"                         ╚═══════════════╝\n";
+		std::wcout << L"                         ╔═══════════════╗\n";
+		std::wcout << L"                         ║  Enter&Create ║\n";
+		std::wcout << L"                         ╚═══════════════╝\n";
+		std::wcout << L"                         ╔═══════════════╗\n";
+		std::wcout << L"                         ║   a. Enter    ║\n";
+		std::wcout << L"                         ║   s. Create   ║\n";
+		std::wcout << L"                         ║      └Sample  ║\n";
+		std::wcout << L"                         ╚═══════════════╝\n";
+		std::wcout << L"                         ╔═══════════════╗\n";
+		std::wcout << L"                         ║ Esc. Go back  ║\n";
+		std::wcout << L"                         ╚═══════════════╝\n\n";
 	}
 
-	std::wcout << L"Esc. Go back...\n";
+	
 
 	char out = _getch();
 
