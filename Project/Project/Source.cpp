@@ -129,9 +129,6 @@ int main()
 				//case 'x':	//Edit?
 
 				//	break;
-				case 27:	//Esc
-					inLoop = false;
-					break;
 				default:
 					break;
 				}
@@ -161,9 +158,6 @@ int main()
 				//case 'x':	//Edit?
 
 				//	break;
-				case 27:	//Esc
-					inLoop = false;
-					break;
 				default:
 					break;
 				}
@@ -194,9 +188,6 @@ int main()
 				//case 'x':	//Edit?
 
 				//	break;
-				case 27:	//Esc
-					inLoop = false;
-					break;
 				default:
 					break;
 				}
@@ -227,9 +218,6 @@ int main()
 				//case 'x':	//Edit?
 
 				//	break;
-				case 27:	//Esc
-					inLoop = false;
-					break;
 				default:
 					break;
 				}

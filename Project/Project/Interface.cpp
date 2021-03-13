@@ -198,15 +198,63 @@ char PrintMainMenu()
 	std::wcout << L"Esc. quit\n\n";
 
 	return _getch();
+
+
+	/*
+		╔ ╗ ╝ ╚ ║ ═
+		
+		
+							╔═══════════════╗
+							║	MAIN MENU	║
+							╚═══════════════╝
+					
+		╔═══════════════╗	╔═══════════════╗	╔═══════════════╗
+		║	Save&Load	║	║	 _TOKEN_ 	║	║	 Others		║
+		╚═══════════════╝	╚═══════════════╝	╚═══════════════╝
+		╔═══════════════╗	╔═══════════════╗	╔═══════════════╗
+		║	1. Save		║	║	q. school	║	║	Tab. info	║
+		║	2. Load		║	║	w. teacher	║	║	Esc. quit	║
+		╚═══════════════╝	║	e. team		║	╚═══════════════╝
+							║	r. student	║
+							╚═══════════════╝
+
+	
+	
+	
+	
+	*/
+
+
+
+
+
 }
 
 char StructSubMenu(std::wstring type, bool empty)
 {
+	system("CLS");
 	if (!type.empty())
 		type += L' ';
-	std::wcout << L'\n' << type << L"sub menu\n\n";
+	std::wcout << type << L"sub menu\n\n";
 	std::wcout << L"a. Enter\n";
 	std::wcout << L"s. Create Sample -> amount?\n";
+
+	/*
+							╔═══════════════╗
+							║	SUB MENU	║
+							╚═══════════════╝
+							
+							╔═══════════════╗
+							║  Enter&Create ║
+							╚═══════════════╝
+							╔═══════════════╗
+							║	a. Enter	║
+							║	   └Sample	║
+							╚═══════════════╝
+							
+	
+	
+	*/
 
 	if (!empty)
 	{
@@ -215,9 +263,27 @@ char StructSubMenu(std::wstring type, bool empty)
 
 		//std::wcout << L"z. Delete?\n";
 		//std::wcout << L"x. Edit?\n\n";
+
+
+		/*
+							╔═══════════════╗
+							║	SUB MENU	║
+							╚═══════════════╝
+					╔═══════════════╗	╔═══════════════╗
+					║  Enter&Create ║	║	 Display 	║
+					╚═══════════════╝	╚═══════════════╝
+					╔═══════════════╗	╔═══════════════╗
+					║	a. Enter	║	║	d. Print	║
+					║	s. Create	║	║	f. Print	║
+					║	   └Sample	║	║	 criteria	║
+					╚═══════════════╝	╚═══════════════╝
+										
+		
+		
+		*/
 	}
 
-	std::wcout << L"Esc. quit\n";
+	std::wcout << L"Esc. Go back...\n";
 
 	char out = _getch();
 
