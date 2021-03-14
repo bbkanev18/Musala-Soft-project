@@ -18,21 +18,15 @@ void CreateSaveDir()
 
 std::wstring SeverityToWstring(SEVERITY severity)
 {
-	switch (severity)
-	{
-	case SEVERITY::Critical:
-		return L"CRITICAL";
-	case SEVERITY::Error:
-		return L"ERROR";
-	case SEVERITY::Warning:
-		return L"WARNING";
-	case SEVERITY::Debug:
-		return L"DEBUG";
-	case SEVERITY::Info:
-		return L"INFO";
-	default:
-		return L"UNKNOWN";
-	}
+	std::vector<std::wstring> out = {
+		L"CRITICAL",
+		L"ERROR",
+		L"WARNING",
+		L"DEBUG",
+		L"INFO"
+	};
+
+	return out[(size_t)severity];
 }
 
 //Log

@@ -18,24 +18,30 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataTypes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Interface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

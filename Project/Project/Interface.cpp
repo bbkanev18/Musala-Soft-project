@@ -12,28 +12,6 @@
 #include "Log.h"
 #include "DataTypes.h"
 
-std::vector<std::wstring> GenerateWstringVector(std::string path)
-{
-	std::wifstream wif(path);
-	std::wstringstream wss;
-	std::vector<std::wstring> vec;
-	std::wstring line = L"ENDOFFILE";
-
-	//Do some research to figure out how the hell it works
-	wif.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
-	wss << wif.rdbuf();
-	wif.close();
-
-	while (true)
-	{
-		getline(wss, line);
-		if (line == L"ENDOFFILE")
-			break;
-		vec.push_back(line);
-	}
-	return vec;
-}
-
 void PrintBoxStyle(size_t hSize, std::wstring content, int baseColour, int specialColour, wchar_t wall, size_t indent)
 {
 	std::wstring overflow = L"empty";			//Is the wstring that overflows through the boundry
@@ -344,6 +322,44 @@ size_t ReadSizeInput()
 			std::wcout << L"Invalid input; please re-enter.\n";
 		}
 	} while (true);
+}
+
+wchar_t ReadWcharInput()
+{
+	wchar_t input = 0;
+	bool valid = false;
+	do
+	{
+		std::wcin >> input;
+		if (std::wcin.good())
+			return input;
+		else
+		{
+			std::wcin.clear();
+			std::wcin.ignore(WCHAR_MAX, '\n');
+			std::wcout << L"Invalid input; please re-enter.\n";
+		}
+	} while (true);
+}
+
+std::wstring NameInputCheck(std::wstring name)
+{
+	std::wstring allowedSymbols = L"etaoinsrhdlucmfywgpbvkxqjzETAOINSRHDLUCMFYWGPBVKXQJZабвгдежзийклмнопрстфхшщцчъюяѝАБВГДЕЖЗИЙКЛМНОПРСТФХШЩЦЧЪЮЯЍ";
+	std::wstring out = L"";
+
+	for (size_t i = 0; i < name.length(); i++)
+	{
+		for (size_t j = 0; j < allowedSymbols.length(); j++)
+		{
+			if (name[i] == allowedSymbols[j])
+			{
+				out += name[i];
+				break;
+			}
+		}
+	}
+
+	return (out.empty() ? L"BadInput" : out);
 }
 
 void SetColour(const int colour)

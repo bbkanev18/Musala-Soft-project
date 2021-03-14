@@ -11,6 +11,7 @@
 #include "DataTypes.h"
 #include "Interface.h"
 #include "Log.h"
+#include "FileHandler.h"
 
 #include <sstream>
 #include <fstream>
@@ -77,16 +78,16 @@ int main()
 		*/
 
 
+		/*
 
-
-//Connect students to teams, teachers and schools
-//Update the students vec with data from all other structs
-//Do the same for the other structs
-		std::vector<SCHOOL>		  schVec;
-		std::vector<TEACHER>	  tchVec;
-		std::vector<TEAM>		 teamVec;
+		//Connect students to teams, teachers and schools
+		//Update the students vec with data from all other structs
+		//Do the same for the other structs
+		std::vector<SCHOOL>			 schVec;
+		std::vector<TEACHER>		 tchVec;
+		std::vector<TEAM>			teamVec;
 		std::vector<TEAM>	tchlessTeamsVec;
-		std::vector<STUDENT>	  stdVec;
+		std::vector<STUDENT>		 stdVec;
 		size_t amount = 0;
 
 		char _getchErrorRemover = ' ';
@@ -235,12 +236,12 @@ int main()
 		}
 
 
-
+		*/
 
 
 		//▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-/*
+		/*
 		/////////////////////////////////////////////////////////////////////////////////////
 		//===========================================
 		//TEAM testing site
@@ -338,8 +339,67 @@ int main()
 		//std::wcout << L'\n' << p.name;
 		//std::wcout << L'\n' << p.surname;
 		//std::wcout << L'\n' << EmailToWstring(p.email);
-*/
+		*/
 
+		/////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////
+
+		if (false)
+		{
+
+			std::vector<STUDENT*> stdVec;
+
+			CreateSampleStudentVector(namesList, surnamesList, stdVec);
+			//AddPointerToVector(stdVec, EnterStudent());
+			//SaveStudents(stdVec, "c:\\ProjectSaveFiles\\Musala_Soft_Project\\Saves\\studentsTest.txt");
+			PrintStudentVector(stdVec, 0, false);
+			NewLine();
+			PrintStudentVector(stdVec, 0, true, false);
+			NewLine();
+			PrintStudentVector(stdVec, 0, true, true);
+			ClearPointerVector(stdVec);
+		}
+
+		if (false)
+		{
+
+			std::vector<TEAM*> temVec;
+
+			CreateSampleTeamVector(teamnamesList, namesList, surnamesList, temVec);
+			PrintTeamVector(temVec);
+			NewLine();
+			PrintTeamVector(temVec, 0, false, true, true);
+			NewLine();
+			PrintTeamVector(temVec, 0, true);
+		}
+
+		if (false)
+		{
+			std::vector<TEAM*> tchlessVec;
+			CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tchlessVec, 20);
+			std::vector<TEAM*> tchTemVec;
+			std::vector<TEAM*> temVec;
+
+			std::vector<TEACHER*> tchVec;
+
+			CreateSampleTeacherVector(tchlessVec, tchTemVec, namesList, surnamesList, tchVec);
+			//AddPointerToVector(tchVec, EnterTeacher(tchlessVec, tchTemVec));
+			PrintTeacherVector(tchVec);
+			NewLine(2);
+			temVec = CombineTeamVectors(tchTemVec, tchlessVec);
+			PrintTeamVector(temVec);
+		}
+		
+
+		if (false)
+		{
+		std::vector<SCHOOL*> schVec;
+
+		CreateSampleSchoolVector(schoolnamesList, teamnamesList, namesList, surnamesList, schVec);
+		//AddPointerToVector(schVec, EnterSchool(teamnamesList, namesList, surnamesList));
+		PrintSchoolVector(schVec);
+		}
 
 
 		_log.Close();
@@ -356,6 +416,7 @@ int main()
 // HOWEVER, A FEW TEAMS GET LOST IN THE PROCCESS
 // 
 // MANUAL MODE ISNT FINISHED!!!
+// 
 // 
 // 
 // 

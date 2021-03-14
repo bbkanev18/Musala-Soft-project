@@ -138,15 +138,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DataTypes.cpp" />
+    <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="DataTypes.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataTypes.h" />
+    <ClInclude Include="FileHandler.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="DataTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Notes.md" />
