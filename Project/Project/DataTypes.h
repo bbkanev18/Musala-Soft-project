@@ -93,7 +93,7 @@ STUDENT* CreateSampleStudent(std::vector<std::wstring>& names, std::vector<std::
 void CreateSampleStudentVector(std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<STUDENT*>& stvec, size_t amount = 5, bool empty = false);
 
 //Adds a STUDENT to a vector of STUDENTs
-//void AddObjectToVector(std::vector<STUDENT>& vec, STUDENT obj);
+//void AddPointerToVector(std::vector<STUDENT>& vec, STUDENT obj);
 void AddPointerToVector(std::vector<STUDENT*>& vec, STUDENT* obj);
 
 //Removes a STUDENT from a vector of STUDENTs

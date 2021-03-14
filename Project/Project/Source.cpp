@@ -107,7 +107,7 @@ int main()
 				switch (StructSubMenu(L"School", schVec.empty()))
 				{
 				case 'a':	//Enter
-					AddObjectToVector(schVec, EnterSchool(teamnamesList, namesList, surnamesList));
+					AddPointerToVector(schVec, EnterSchool(teamnamesList, namesList, surnamesList));
 					break;
 				case 's':	//Sample
 					std::wcout << L"Amount of sample schools: ";
@@ -138,7 +138,7 @@ int main()
 				switch (StructSubMenu(L"Teacher", tchVec.empty()))
 				{
 				case 'a':	//Enter
-					AddObjectToVector(tchVec, EnterTeacher(tchlessTeamsVec, teamVec));
+					AddPointerToVector(tchVec, EnterTeacher(tchlessTeamsVec, teamVec));
 					break;
 				case 's':	//Sample
 					std::wcout << L"Amount of sample teachers: ";
@@ -168,7 +168,7 @@ int main()
 				switch (StructSubMenu(L"Team", teamVec.empty()))
 				{
 				case 'a':	//Enter
-					AddObjectToVector(teamVec, EnterTeam());
+					AddPointerToVector(teamVec, EnterTeam());
 					break;
 				case 's':	//Sample
 					std::wcout << L"Amount of sample teams: ";
@@ -198,7 +198,7 @@ int main()
 				switch (StructSubMenu(L"Student", stdVec.empty()))
 				{
 				case 'a':	//Enter
-					AddObjectToVector(stdVec, EnterStudent());
+					AddPointerToVector(stdVec, EnterStudent());
 					break;
 				case 's':	//Sample
 					std::wcout << L"Amount of sample students: ";
@@ -394,13 +394,218 @@ int main()
 
 		if (false)
 		{
-		std::vector<SCHOOL*> schVec;
+			std::vector<SCHOOL*> schVec;
 
-		CreateSampleSchoolVector(schoolnamesList, teamnamesList, namesList, surnamesList, schVec);
-		//AddPointerToVector(schVec, EnterSchool(teamnamesList, namesList, surnamesList));
-		PrintSchoolVector(schVec);
+			CreateSampleSchoolVector(schoolnamesList, teamnamesList, namesList, surnamesList, schVec);
+			//AddPointerToVector(schVec, EnterSchool(teamnamesList, namesList, surnamesList));
+			PrintSchoolVector(schVec);
 		}
 
+		std::vector<MENU_ITEM> mainMenu = {
+			{25,                         L"╔═══════════════╗\n"},
+			{25,                         L"║   MAIN MENU   ║\n"},
+			{25,                         L"╚═══════════════╝\n"},
+			{5 ,     L"╔═══════════════╗   ╔═══════════════╗   ╔═══════════════╗\n"},
+			{5 ,     L"║   Save&Load   ║   ║   DataTypes   ║   ║    Others     ║\n"},
+			{5 ,     L"╚═══════════════╝   ╚═══════════════╝   ╚═══════════════╝\n"},
+			{5 ,     L"╔═══════════════╗   ╔═══════════════╗   ╔═══════════════╗\n"},
+			{5 ,     L"║   1. Save     ║   ║   q. school   ║   ║   Tab. info   ║\n"},
+			{5 ,     L"║   2. Load     ║   ║   w. teacher  ║   ║   Esc. quit   ║\n"},
+			{5 ,     L"╚═══════════════╝   ║   e. team     ║   ╚═══════════════╝\n"},
+			{25,                         L"║   r. student  ║\n"},
+			{25,                         L"╚═══════════════╝\n"}
+		};
+
+		std::vector<MENU_ITEM> subMenu = {
+			{25 ,                        L"╔══════════════╗\n"},
+			{25 ,                        L"║   SUB MENU   ║\n"},
+			{25 ,                        L"╚══════════════╝\n"},
+			{13 ,            L"╔═══════════════╗   ╔═══════════════╗\n"},
+			{13 ,            L"║    Create     ║   ║    Display    ║\n"},
+			{13 ,            L"╚═══════════════╝   ╚═══════════════╝\n"},
+			{13 ,            L"╔═══════════════╗   ╔═══════════════╗\n"},
+			{13 ,            L"║   a. Enter    ║   ║   d. Print    ║\n"},
+			{13 ,            L"║   s. Create   ║   ║   f. Print    ║\n"},
+			{13 ,            L"║      └Sample  ║   ║    criteria   ║\n"},
+			{13 ,            L"╚═══════════════╝   ╚═══════════════╝\n"},
+			{25 ,                        L"╔══════════════╗\n"},
+			{25 ,                        L"║ Esc. Go back ║\n"},
+			{25 ,                        L"╚══════════════╝\n\n"}
+		};
+
+		std::vector<MENU_ITEM> emptySubMenu = {
+			{25 ,                        L"╔═══════════════╗\n"},
+			{25 ,                        L"║   SUB MENU    ║\n"},
+			{25 ,                        L"╚═══════════════╝\n"},
+			{25 ,                        L"╔═══════════════╗\n"},
+			{25 ,                        L"║    Create     ║\n"},
+			{25 ,                        L"╚═══════════════╝\n"},
+			{25 ,                        L"╔═══════════════╗\n"},
+			{25 ,                        L"║   a. Enter    ║\n"},
+			{25 ,                        L"║   s. Create   ║\n"},
+			{25 ,                        L"║      └Sample  ║\n"},
+			{25 ,                        L"╚═══════════════╝\n"},
+			{25 ,                        L"╔═══════════════╗\n"},
+			{25 ,                        L"║ Esc. Go back  ║\n"},
+			{25 ,                        L"╚═══════════════╝\n\n"}
+		};
+
+		std::vector<MENU_ITEM> continueMenu = {
+			{23 ,                      L"╔══════════════════╗\n"},
+			{23 ,                      L"║ Esc. To continue ║\n"},
+			{23 ,                      L"╚══════════════════╝\n\n"}
+		};
+
+		std::vector<SCHOOL*>		 schVec;
+		std::vector<TEACHER*>		 tchVec;
+		std::vector<TEAM*>			teamVec;
+		std::vector<TEAM*>	tchlessTeamsVec;
+		std::vector<STUDENT*>		 stdVec;
+
+		size_t amount = 0;
+
+		char _getchErrorRemover = ' ';
+		bool inLoop = true;
+		while (inLoop)
+		{
+			amount = 0;
+			switch (PrintMenuVector(mainMenu))
+			{
+			case '1':
+				//load
+				break;
+			case '2':
+				//save
+				break;
+			case 'q':	//School
+				switch (StructSubMenu(schVec.empty() ? emptySubMenu : subMenu, schVec.empty()))
+				{
+				case 'a':	//Enter
+					AddPointerToVector(schVec, EnterSchool(teamnamesList, namesList, surnamesList));
+					break;
+				case 's':	//Sample
+					std::wcout << L"Amount of sample schools: ";
+					amount = ReadSizeInput();
+					CreateSampleSchoolVector(schoolnamesList, teamnamesList, namesList, surnamesList, schVec, amount);
+					break;
+				case 'd':	//Print all
+					//Ask if it should be inline, or box
+					PrintSchoolVector(schVec);
+					_getchErrorRemover = PrintMenuVector(continueMenu, false);
+					break;
+					//case 'f':	//Print by criteria
+
+					//	//Ask for criteria!
+					//	//return and print a vec
+					//	break;
+					//case 'z':	//Delete?
+
+					//	break;
+					//case 'x':	//Edit?
+
+					//	break;
+				default:
+					break;
+				}
+				break;
+			case 'w':	//Teacher
+				switch (StructSubMenu(tchVec.empty() ? emptySubMenu : subMenu, tchVec.empty()))
+				{
+				case 'a':	//Enter
+					AddPointerToVector(tchVec, EnterTeacher(tchlessTeamsVec, teamVec));
+					break;
+				case 's':	//Sample
+					std::wcout << L"Amount of sample teachers: ";
+					amount = ReadSizeInput();
+					CreateSampleTeacherVector(tchlessTeamsVec, teamVec, namesList, surnamesList, tchVec, amount);
+					break;
+				case 'd':	//Print all
+					PrintTeacherVector(tchVec);
+					_getchErrorRemover = PrintMenuVector(continueMenu, false);
+					break;
+					//case 'f':	//Print by criteria
+					//	//Ask for criteria!
+					//	//return and print a vec
+					//	break;
+					//case 'z':	//Delete?
+
+					//	break;
+					//case 'x':	//Edit?
+
+					//	break;
+				default:
+					break;
+				}
+				break;
+			case 'e':	//Team
+				switch (StructSubMenu(teamVec.empty() ? emptySubMenu : subMenu, teamVec.empty()))
+				{
+				case 'a':	//Enter
+					AddPointerToVector(teamVec, EnterTeam());
+					break;
+				case 's':	//Sample
+					std::wcout << L"Amount of sample teams: ";
+					amount = ReadSizeInput();
+					CreateSampleTeamVector(teamnamesList, namesList, surnamesList, teamVec, amount);
+					break;
+				case 'd':	//Print all
+					PrintTeamVector(teamVec);
+					_getchErrorRemover = PrintMenuVector(continueMenu, false);
+					break;
+					//case 'f':	//Print by criteria
+					//	//Ask for criteria!
+					//	//return and print a vec
+					//	break;
+					//case 'z':	//Delete?
+
+					//	break;
+					//case 'x':	//Edit?
+
+					//	break;
+				default:
+					break;
+				}
+				break;
+			case 'r':	//Student
+				switch (StructSubMenu(stdVec.empty() ? emptySubMenu : subMenu, stdVec.empty()))
+				{
+				case 'a':	//Enter
+					AddPointerToVector(stdVec, EnterStudent());
+					break;
+				case 's':	//Sample
+					std::wcout << L"Amount of sample students: ";
+					amount = ReadSizeInput();
+					CreateSampleStudentVector(namesList, surnamesList, stdVec, amount);
+					break;
+				case 'd':	//Print all
+					PrintStudentVector(stdVec);
+					_getchErrorRemover = PrintMenuVector(continueMenu, false);
+					break;
+					//case 'f':	//Print by criteria
+					//	//Ask for criteria!
+					//	//return and print a vec
+					//	break;
+					//case 'z':	//Delete?
+
+					//	break;
+					//case 'x':	//Edit?
+
+					//	break;
+				default:
+					break;
+				}
+				break;
+			case 9:		//tab
+				//info
+				break;
+			case 27:	//esc
+				inLoop = false;
+				break;
+			default:
+
+				break;
+			}
+		}
 
 		_log.Close();
 	}

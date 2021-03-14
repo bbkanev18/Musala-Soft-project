@@ -49,10 +49,6 @@ void PrintIndent(size_t indent = 3);
 //Print new lines
 void NewLine(size_t lines = 1);
 
-char PrintMainMenu();
-
-char StructSubMenu(std::wstring type = L"", bool empty = true);
-
 size_t ReadSizeInput();
 
 wchar_t ReadWcharInput();
@@ -60,3 +56,15 @@ wchar_t ReadWcharInput();
 std::wstring NameInputCheck(std::wstring name);
 
 void SetColour(const int colour);
+
+struct MENU_ITEM
+{
+	size_t indent = 0;
+	std::wstring content = L"";
+	
+	void PrintMenuItem();
+};
+
+char PrintMenuVector(std::vector<MENU_ITEM>& menu, bool clearScreen = true);
+
+char StructSubMenu(std::vector<MENU_ITEM>& menu, bool empty = true);

@@ -158,153 +158,6 @@ void NewLine(size_t lines)
 		std::wcout << L'\n';
 }
 
-char PrintMainMenu()
-{
-	system("CLS");
-
-
-	std::wcout << L"                        ╔═══════════════╗\n"					;
-	std::wcout << L"                        ║   MAIN MENU   ║\n"					;
-	std::wcout << L"                        ╚═══════════════╝\n"					;
-	std::wcout << L"    ╔═══════════════╗   ╔═══════════════╗   ╔═══════════════╗\n";
-	std::wcout << L"    ║   Save&Load   ║   ║    _TOKEN_    ║   ║    Others     ║\n";
-	std::wcout << L"    ╚═══════════════╝   ╚═══════════════╝   ╚═══════════════╝\n";
-	std::wcout << L"    ╔═══════════════╗   ╔═══════════════╗   ╔═══════════════╗\n";
-	std::wcout << L"    ║   1. Save     ║   ║   q. school   ║   ║   Tab. info   ║\n";
-	std::wcout << L"    ║   2. Load     ║   ║   w. teacher  ║   ║   Esc. quit   ║\n";
-	std::wcout << L"    ╚═══════════════╝   ║   e. team     ║   ╚═══════════════╝\n";
-	std::wcout << L"                        ║   r. student  ║\n"					;
-	std::wcout << L"                        ╚═══════════════╝\n"					;
-	return _getch();
-
-
-	/*
-		╔ ╗ ╝ ╚ ║ ═
-		
-		
-							╔═══════════════╗
-							║	MAIN MENU	║
-							╚═══════════════╝
-					
-		╔═══════════════╗	╔═══════════════╗	╔═══════════════╗
-		║	Save&Load	║	║	 _TOKEN_ 	║	║	 Others		║
-		╚═══════════════╝	╚═══════════════╝	╚═══════════════╝
-		╔═══════════════╗	╔═══════════════╗	╔═══════════════╗
-		║	1. Save		║	║	q. school	║	║	Tab. info	║
-		║	2. Load		║	║	w. teacher	║	║	Esc. quit	║
-		╚═══════════════╝	║	e. team		║	╚═══════════════╝
-							║	r. student	║
-							╚═══════════════╝
-
-	
-	
-	
-	
-	*/
-
-
-
-
-
-}
-
-char StructSubMenu(std::wstring type, bool empty)
-{
-	system("CLS");
-
-	/*
-							╔═══════════════╗
-							║	SUB MENU	║
-							╚═══════════════╝
-				   ╔═══════════════╗	╔═══════════════╗
-				   ║  Enter&Create ║	║	 Go Bac		║
-				   ╚═══════════════╝	╚═══════════════╝
-				   ╔═══════════════╗	╔═══════════════╗
-				   ║   a. Enter    ║	║ Esc. Go back  ║
-				   ║   s. Create   ║	╚═══════════════╝
-				   ║      └Sample  ║
-				   ╚═══════════════╝
-							
-	
-	
-	*/
-
-	if (!empty)
-	{
-		//std::wcout << L"f. Print by criteria\n\n";
-
-		//std::wcout << L"z. Delete?\n";
-		//std::wcout << L"x. Edit?\n\n";
-
-
-		/*
-							 ╔═══════════════╗
-							 ║	 SUB MENU	 ║
-							 ╚═══════════════╝
-					╔═══════════════╗	╔═══════════════╗
-					║  Enter&Create ║	║	 Display 	║
-					╚═══════════════╝	╚═══════════════╝
-					╔═══════════════╗	╔═══════════════╗
-					║	a. Enter	║	║	d. Print	║
-					║	s. Create	║	║	f. Print	║
-					║	   └Sample	║	║	 criteria	║
-					╚═══════════════╝	╚═══════════════╝
-							 ╔══════════════╗
-							 ║ Esc. Go back ║
-							 ╚══════════════╝
-		
-		
-		*/
-		std::wcout << L"                       ╔══════════════╗\n"			;
-		std::wcout << L"                       ║   SUB MENU   ║\n"			;
-		std::wcout << L"                       ╚══════════════╝\n"			;
-		std::wcout << L"            ╔═══════════════╗   ╔═══════════════╗\n";
-		std::wcout << L"            ║  Enter&Create ║   ║    Display    ║\n";
-		std::wcout << L"            ╚═══════════════╝   ╚═══════════════╝\n";
-		std::wcout << L"            ╔═══════════════╗   ╔═══════════════╗\n";
-		std::wcout << L"            ║   a. Enter    ║   ║   d. Print    ║\n";
-		std::wcout << L"            ║   s. Create   ║   ║   f. Print    ║\n";
-		std::wcout << L"            ║      └Sample  ║   ║    criteria   ║\n";
-		std::wcout << L"            ╚═══════════════╝   ╚═══════════════╝\n";
-		std::wcout << L"                       ╔══════════════╗\n"			;
-		std::wcout << L"                       ║ Esc. Go back ║\n"			;
-		std::wcout << L"                       ╚══════════════╝\n\n"			;
-	}
-	else
-	{
-		std::wcout << L"                         ╔═══════════════╗\n";
-		std::wcout << L"                         ║   SUB MENU    ║\n";
-		std::wcout << L"                         ╚═══════════════╝\n";
-		std::wcout << L"                         ╔═══════════════╗\n";
-		std::wcout << L"                         ║  Enter&Create ║\n";
-		std::wcout << L"                         ╚═══════════════╝\n";
-		std::wcout << L"                         ╔═══════════════╗\n";
-		std::wcout << L"                         ║   a. Enter    ║\n";
-		std::wcout << L"                         ║   s. Create   ║\n";
-		std::wcout << L"                         ║      └Sample  ║\n";
-		std::wcout << L"                         ╚═══════════════╝\n";
-		std::wcout << L"                         ╔═══════════════╗\n";
-		std::wcout << L"                         ║ Esc. Go back  ║\n";
-		std::wcout << L"                         ╚═══════════════╝\n\n";
-	}
-
-	
-
-	char out = _getch();
-
-	switch (out)
-	{
-	case 'd':
-	//case 'f':
-	//case 'z':
-	//case 'x':
-		if (empty)
-			return 'p';
-	default:
-		return out;
-	}
-
-}
 
 size_t ReadSizeInput()
 {
@@ -365,4 +218,93 @@ std::wstring NameInputCheck(std::wstring name)
 void SetColour(const int colour)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colour);
+}
+
+char PrintMenuVector(std::vector<MENU_ITEM>& menu, bool clearScreen)
+{
+	if (clearScreen)
+		system("CLS");
+	
+	for (size_t i = 0; i < menu.size(); i++)
+		menu[i].PrintMenuItem();
+	
+	return _getch();
+
+
+	/*
+		╔ ╗ ╝ ╚ ║ ═
+							╔═══════════════╗
+							║	MAIN MENU	║
+							╚═══════════════╝
+					
+		╔═══════════════╗	╔═══════════════╗	╔═══════════════╗
+		║	Save&Load	║	║	 _TOKEN_ 	║	║	 Others		║
+		╚═══════════════╝	╚═══════════════╝	╚═══════════════╝
+		╔═══════════════╗	╔═══════════════╗	╔═══════════════╗
+		║	1. Save		║	║	q. school	║	║	Tab. info	║
+		║	2. Load		║	║	w. teacher	║	║	Esc. quit	║
+		╚═══════════════╝	║	e. team		║	╚═══════════════╝
+							║	r. student	║
+							╚═══════════════╝
+	*/
+
+
+
+
+
+}
+
+char StructSubMenu(std::vector<MENU_ITEM>& menu, bool empty)
+{
+	/*
+	╔═══════════════╗
+	║   SUB MENU    ║
+	╚═══════════════╝
+	╔═══════════════╗
+	║    Create     ║
+	╚═══════════════╝
+	╔═══════════════╗
+	║   a. Enter    ║
+	║   s. Create   ║
+	║      └Sample  ║
+	╚═══════════════╝
+	╔═══════════════╗
+	║ Esc. Go back  ║
+	╚═══════════════╝
+		
+			 ╔═══════════════╗
+			 ║	 SUB MENU	 ║
+			 ╚═══════════════╝
+	╔═══════════════╗	╔═══════════════╗
+	║  Enter&Create ║	║	 Display 	║
+	╚═══════════════╝	╚═══════════════╝
+	╔═══════════════╗	╔═══════════════╗
+	║	a. Enter	║	║	d. Print	║
+	║	s. Create	║	║	f. Print	║
+	║	   └Sample	║	║	 criteria	║
+	╚═══════════════╝	╚═══════════════╝
+			 ╔══════════════╗
+			 ║ Esc. Go back ║
+			 ╚══════════════╝
+	*/
+
+
+	char out = PrintMenuVector(menu);
+	switch (out)
+	{
+	case 'd':
+	//case 'f':
+	//case 'z':
+	//case 'x':
+		if (empty)
+			return 'p';
+	default:
+		return out;
+	}
+}
+
+void MENU_ITEM::PrintMenuItem()
+{
+	PrintIndent(indent);
+	std::wcout << content;
 }

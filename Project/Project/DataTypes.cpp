@@ -614,7 +614,7 @@ TEACHER* CreateSampleTeacher(std::vector<std::wstring>& names, std::vector<std::
 
 	if (tchlessTeams.size() > 0)
 	{
-		for (size_t i = 0; i < tchlessTeams.size(); i++)
+		for (size_t i = 0; i < tchlessTeams.size() and !tchlessTeams.empty(); i++)
 		{
 			//There is an 80% chance for a team to be assigned to a teacher
 			if (rand() % 100 + 1 >= 80 and ArePeopleEqual(tchlessTeams[i]->teacherInfo))
@@ -662,7 +662,7 @@ void PrintTeacherVector(std::vector<TEACHER*>& vec, size_t indent, bool inlineTe
 
 void CreateSampleTeacherVector(std::vector<TEAM*>& tchlessTeams, std::vector<TEAM*>& tchTemVec, std::vector<std::wstring>& names, std::vector<std::wstring>& surnames, std::vector<TEACHER*>& vec, size_t amount, bool empty)
 {
-	for (size_t i = 0; i < amount * !empty and !tchlessTeams.empty(); i++)
+	for (size_t i = 0; i < amount * !empty; i++)
 	{
 		AddPointerToVector(vec, CreateSampleTeacher(names, surnames, tchlessTeams, tchTemVec));
 
