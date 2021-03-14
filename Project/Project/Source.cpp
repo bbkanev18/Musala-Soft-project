@@ -8,9 +8,10 @@
 #include "windows.h"
 #include "conio.h"
 
-#include "_ptr_DataTypes.h"
+#include "DataTypes.h"
 #include "Interface.h"
 #include "Log.h"
+#include "FileHandler.h"
 
 #include <sstream>
 #include <fstream>
@@ -363,6 +364,7 @@ int main()
 
 			CreateSampleStudentVector(namesList, surnamesList, stdVec);
 			//AddPointerToVector(stdVec, EnterStudent());
+			//SaveStudents(stdVec, "c:\\ProjectSaveFiles\\Musala_Soft_Project\\Saves\\studentsTest.txt");
 			PrintStudentVector(stdVec, 0, false);
 			NewLine();
 			PrintStudentVector(stdVec, 0, true, false);
@@ -374,7 +376,7 @@ int main()
 		if (false)
 		{
 
-			std::vector<_ptr_TEAM*> temVec;
+			std::vector<TEAM*> temVec;
 
 			CreateSampleTeamVector(teamnamesList, namesList, surnamesList, temVec);
 			PrintTeamVector(temVec);
@@ -386,12 +388,12 @@ int main()
 
 		if (false)
 		{
-			std::vector<_ptr_TEAM*> tchlessVec;
+			std::vector<TEAM*> tchlessVec;
 			CreateSampleTeamVector(teamnamesList, namesList, surnamesList, tchlessVec, 20);
-			std::vector<_ptr_TEAM*> tchTemVec;
-			std::vector<_ptr_TEAM*> temVec;
+			std::vector<TEAM*> tchTemVec;
+			std::vector<TEAM*> temVec;
 
-			std::vector<_ptr_TEACHER*> tchVec;
+			std::vector<TEACHER*> tchVec;
 
 			CreateSampleTeacherVector(tchlessVec, tchTemVec, namesList, surnamesList, tchVec);
 			//AddPointerToVector(tchVec, EnterTeacher(tchlessVec, tchTemVec));
@@ -401,11 +403,16 @@ int main()
 			PrintTeamVector(temVec);
 		}
 		
+
+		if (false)
+		{
 		std::vector<SCHOOL*> schVec;
 
 		CreateSampleSchoolVector(schoolnamesList, teamnamesList, namesList, surnamesList, schVec);
 		//AddPointerToVector(schVec, EnterSchool(teamnamesList, namesList, surnamesList));
 		PrintSchoolVector(schVec);
+		}
+
 
 		_log.Close();
 	}

@@ -12,28 +12,6 @@
 #include "Log.h"
 #include "DataTypes.h"
 
-std::vector<std::wstring> GenerateWstringVector(std::string path)
-{
-	std::wifstream wif(path);
-	std::wstringstream wss;
-	std::vector<std::wstring> vec;
-	std::wstring line = L"ENDOFFILE";
-
-	//Do some research to figure out how the hell it works
-	wif.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
-	wss << wif.rdbuf();
-	wif.close();
-
-	while (true)
-	{
-		getline(wss, line);
-		if (line == L"ENDOFFILE")
-			break;
-		vec.push_back(line);
-	}
-	return vec;
-}
-
 void PrintBoxStyle(size_t hSize, std::wstring content, int baseColour, int specialColour, wchar_t wall, size_t indent)
 {
 	std::wstring overflow = L"empty";			//Is the wstring that overflows through the boundry

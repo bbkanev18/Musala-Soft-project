@@ -22,9 +22,6 @@
 #define ARCHIVED_COLOUR    (14 + 4  * 16)
 #define UNDEFINED_COLOUR   (0  + 13 * 16)
 
-//Creates a wstring vector from a .txt file, path is the file's path
-std::vector<std::wstring> GenerateWstringVector(std::string path);
-
 //Prints the content in Box Style
 //Eg:
 //| Esse esse allo occulta noi |
