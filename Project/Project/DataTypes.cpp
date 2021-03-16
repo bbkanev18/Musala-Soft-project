@@ -64,14 +64,26 @@ std::wstring EmailToWstring(EMAIL email)
 
 std::wstring RoleToWstring(ROLE role)
 {
-	std::vector<std::wstring> out = { 
-		L"SCRUM MASTER",
-		L"QA ENGINEER",
-		L"BACKEND DEV",
-		L"FRONTEND DEV" 
-	};
-
-	return out[(size_t)role - 1];
+	switch (role)
+	{
+	case ROLE::Undefined:
+		return L"UNDEFINED";
+		break;
+	case ROLE::ScrumTrainer:
+		return L"SCRUM MASTER";
+		break;
+	case ROLE::QAEngineer:
+		return L"QA ENGINEER";
+		break;
+	case ROLE::BackendDev:
+		return L"BACKEND DEV";
+		break;
+	case ROLE::FrontendDev:
+		return L"FRONTEND DEV";
+		break;
+	default:
+		break;
+	}
 }
 
 //Status
