@@ -71,7 +71,7 @@ std::wstring RoleToWstring(ROLE role)
 		L"FRONTEND DEV" 
 	};
 
-	return out[(size_t)role];
+	return out[(size_t)role - 1];
 }
 
 //Status
